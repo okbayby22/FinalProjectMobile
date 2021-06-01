@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity_add">
+
+    <TextView
+        android:id="@+id/lbTeacherID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/strTeacherID"
+        app:layout_constraintEnd_toStartOf="@+id/txtTeacherID_Add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lbTeacherName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/strTeacherName"
+        app:layout_constraintEnd_toEndOf="@+id/lbTeacherID"
+        app:layout_constraintTop_toBottomOf="@+id/lbTeacherID" />
+
+    <TextView
+        android:id="@+id/lbTeacherImageURL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="@string/strTeacherImg"
+        app:layout_constraintEnd_toEndOf="@+id/lbTeacherName"
+        app:layout_constraintTop_toBottomOf="@+id/lbTeacherName" />
+
+    <EditText
+        android:id="@+id/txtTeacherName_Add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="13dp"
+        android:ems="10"
+        android:hint="@string/strTeacherNameHint"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/txtImageURL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtTeacherID_Add"
+        app:layout_constraintTop_toBottomOf="@+id/txtTeacherID_Add" />
+
+    <EditText
+        android:id="@+id/txtImageURL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginRight="96dp"
+        android:ems="10"
+        android:hint="@string/strTeacherImgHint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtTeacherName_Add"
+        app:layout_constraintTop_toBottomOf="@+id/txtTeacherName_Add" />
+
+    <Button
+        android:id="@+id/btnOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:onClick="btnOK"
+        android:text="@string/btnOK"
+        app:layout_constraintEnd_toStartOf="@+id/btnCancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtImageURL" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="111dp"
+        android:layout_marginLeft="111dp"
+        android:layout_marginTop="24dp"
+        android:onClick="btnCancel"
+        android:text="@string/btnCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnOK"
+        app:layout_constraintTop_toBottomOf="@+id/txtImageURL" />
+
+    <EditText
+        android:id="@+id/txtTeacherID_Add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="@string/strTeacherID"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/lbTeacherID"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

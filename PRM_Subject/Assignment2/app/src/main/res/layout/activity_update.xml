@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateActivity">
+
+    <ImageView
+        android:id="@+id/imgTeacher"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="141dp"
+        android:layout_marginLeft="141dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="142dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars"
+        android:scaleType="fitXY"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgTeacher"
+        tools:context=".activity_add">
+
+        <TextView
+            android:id="@+id/lbTeacherID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/strTeacherID"
+            app:layout_constraintEnd_toStartOf="@+id/txtTeacherID_Update"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lbTeacherName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:text="@string/strTeacherName"
+            app:layout_constraintEnd_toEndOf="@+id/lbTeacherID"
+            app:layout_constraintTop_toBottomOf="@+id/lbTeacherID" />
+
+        <TextView
+            android:id="@+id/lbTeacherImageURL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="@string/strTeacherImg"
+            app:layout_constraintEnd_toEndOf="@+id/lbTeacherName"
+            app:layout_constraintTop_toBottomOf="@+id/lbTeacherName" />
+
+        <EditText
+            android:id="@+id/txtTeacherName_Update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="13dp"
+            android:ems="10"
+            android:hint="@string/strTeacherNameHint"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/txtImageURL_Update"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txtTeacherID_Update"
+            app:layout_constraintTop_toBottomOf="@+id/txtTeacherID_Update" />
+
+        <EditText
+            android:id="@+id/txtImageURL_Update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="96dp"
+            android:layout_marginRight="96dp"
+            android:ems="10"
+            android:hint="@string/strTeacherImgHint"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txtTeacherName_Update"
+            app:layout_constraintTop_toBottomOf="@+id/txtTeacherName_Update" />
+
+        <Button
+            android:id="@+id/btnOK_Update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/btnOK"
+            app:layout_constraintEnd_toStartOf="@+id/btnCancel_Update"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtImageURL_Update" />
+
+        <Button
+            android:id="@+id/btnCancel_Update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="111dp"
+            android:layout_marginLeft="111dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/btnCancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnOK_Update"
+            app:layout_constraintTop_toBottomOf="@+id/txtImageURL_Update" />
+
+        <EditText
+            android:id="@+id/txtTeacherID_Update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="60dp"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="@string/strTeacherID"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toEndOf="@+id/lbTeacherID"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

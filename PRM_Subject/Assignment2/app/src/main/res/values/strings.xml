@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Assignment2</string>
+    <string name="strTeacherName">Teacher Name</string>
+    <string name="strTeacherImg">Teacher Image</string>
+    <string name="strTeacherID">Teacher ID</string>
+    <string name="strTeacherNameHint">Name</string>
+    <string name="strTeacherImgHint">URL image</string>
+    <string name="btnOK">OK</string>
+    <string name="btnCancel">CANCEL</string>
+    <string name="btnAdd">ADD ONE</string>
+    <string name="errDuplicate">Input ID has already exist please enter another ID !!!</string>
+    <string name="errEmpty">Teacher name can not empty !!!</string>
+    <string name="errTitleEmpty">Teacher name is empty</string>
+    <string name="errEmptyID">Teacher ID can not empty !!!</string>
+    <string name="errTitleEmptyID">Teacher ID is empty</string>
+    <string name="errTitleDuplicate">Teacher ID is duplicate</string>
+    <string name="errTitleURL">Can not load URL !</string>
+    <string name="errURL">Wrong URL or URL is not found !!!\nImage URL will be set to default !</string>
+
+</resources>
