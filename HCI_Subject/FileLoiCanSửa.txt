@@ -1,0 +1,49 @@
+Slide: 
+chữ tối,
+ không có logo, 
+số ở table content chìm  (5,6)
+Chữ title chìm
+
+Use case : nhiều không gian trống, chữ nhỏ => không cân đối
+Site map: chữ nhỏ , không cân đối
+Demo:
+Hình 1: 
++Thanh search bự so với thanh navtop (chỉnh padding thanh search)
++ Font chữ nhỏ ở navbar
++ Tên của hàng quá nhỏ
++ Cart in đậm
+Hình 1.2:
++ Căn giữa của show now
++ Spacing trái phải dư thừa
++ PC Gaming và Laptop in đậm và thường
++ Laptop có 's'
++ Hình ảnh không cần description
++ Dấu $ + USD
+Hình 2:
++ Lằn ranh ngăn các thể loại
++ Icon cần có màu khác
++ Tiêu đề mờ 
++ Sai logic các nội dung
++ Lệch các item trên dưới
+Hình 3-1:
++ Chữ "Laptop" mờ
++ Card Item khá mờ, hình avartar ko border
++ Ava ko border
+Hình 4.1:
++Logic của thanh điều hướng : Home - laptop - câtlog
+Hình 5:
++ Submit -> Sign in
++ Space ở Sigin với trên
++ Không có nhấn Submit
+Hình 6:
++ Spacing của Submit và bottom
+Hình 8:
++ Popup thông báo lệch
+kịch bản thiếu, 8-9 cần có thêm
+Hình 12:
++ Box hộp cần lưu trữ lại user nhập
+Hình 13:
++ Ava tự sáng
+Hình 14-1:
++ Chữ requierd cần có màu đỏ
++ Margin chữ apply
