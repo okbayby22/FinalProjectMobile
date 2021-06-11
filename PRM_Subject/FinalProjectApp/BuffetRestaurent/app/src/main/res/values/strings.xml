@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BuffetRestaurent</string>
+    <string name="strSignIn">Sign In</string>
+    <string name="strSignUp">Sign Up</string>
+    <string name="strAccount">Email address</string>
+    <string name="strPass">Password</string>
+    <string name="strRePass">Confirm Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
