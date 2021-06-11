@@ -29,7 +29,7 @@ public class signUpFragment extends Fragment {
 
     Button btnSignUp;
     CustomerService service;
-    TextView txtEmail,txtPass,txtRePass,txtEmailError;
+    TextView txtEmail,txtPass,txtRePass,txtEmailError,txtRePassError;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +81,7 @@ public class signUpFragment extends Fragment {
         txtPass= rootView.findViewById(R.id.signUp_txtPass);
         txtRePass= rootView.findViewById(R.id.signUp_lblRePass);
         txtEmailError= rootView.findViewById(R.id.signUp_EmailError);
+        txtRePassError= rootView.findViewById(R.id.signUp_txtErrorRePass);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,8 +103,16 @@ public class signUpFragment extends Fragment {
                     if(check){
                         txtEmailError.setText("This email has already exist !!!");
                     }
+                    else if(txtRePass.getText().toString().compareTo(txtPass.getText().toString())!=0){
+                        txtRePassError.setText("Confirm password not correct with password !!!");
+                        txtEmailError.setText("");
+                    }
                     else {
                         AddNewCus(v);
+                        txtEmail.setText("");
+                        txtEmailError.setText("");
+                        txtPass.setText("");
+                        txtRePass.setText("");
                     }
                 }
             }
