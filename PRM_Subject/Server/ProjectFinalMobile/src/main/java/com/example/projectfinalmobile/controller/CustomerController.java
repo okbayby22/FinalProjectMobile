@@ -18,16 +18,7 @@ public class CustomerController {
 
     @GetMapping("/{email}/{password}/login")
     public int login(@PathVariable("email")String email, @PathVariable("password")String password){
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        md.update(password.getBytes());
-        byte[] digest = md.digest();
-        String myHash = DatatypeConverter.printHexBinary(digest).toLowerCase();
-        return service.login(email,myHash);
+        return service.login(email,password);
     }
 
     @GetMapping("/{email}/email")
