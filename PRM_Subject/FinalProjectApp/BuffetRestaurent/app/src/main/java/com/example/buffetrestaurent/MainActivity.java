@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         mainTabLayout=findViewById(R.id.tabBar);
         tabView=findViewById(R.id.viewPage);
 
+        getSupportActionBar().hide();
+
         pagerAdapter=new PagerAdapter(this
                 );
         tabView.setAdapter(pagerAdapter);

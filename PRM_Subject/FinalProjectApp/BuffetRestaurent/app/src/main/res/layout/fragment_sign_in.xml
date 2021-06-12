@@ -46,7 +46,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@+id/signIn_lblPass"
             app:layout_constraintTop_toBottomOf="@+id/signIn_lblPass" />
 

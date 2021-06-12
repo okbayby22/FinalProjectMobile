@@ -29,7 +29,7 @@ public class signUpFragment extends Fragment {
 
     Button btnSignUp;
     CustomerService service;
-    TextView txtEmail,txtPass,txtRePass,txtEmailError;
+    TextView txtEmail,txtPass,txtRePass,txtEmailError,txtRePassError,txtPassError;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,10 +81,46 @@ public class signUpFragment extends Fragment {
         txtPass= rootView.findViewById(R.id.signUp_txtPass);
         txtRePass= rootView.findViewById(R.id.signUp_lblRePass);
         txtEmailError= rootView.findViewById(R.id.signUp_EmailError);
+        txtRePassError= rootView.findViewById(R.id.signUp_txtErrorRePass);
+        txtPassError= rootView.findViewById(R.id.signUp_PassError);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean emailStatus=true;
+                boolean passStatus=true;
+                boolean rePassStatus=true;
+                if(txtEmail.getText().toString().isEmpty()){
+                    txtEmailError.setText("Email can not empty !!!");
+                    emailStatus=false;
+                }
+                else{
+                    txtEmailError.setText("");
+                    emailStatus=true;
+                }
+                if(txtPass.getText().toString().isEmpty()){
+                    txtPassError.setText("Password can not empty !!!");
+                    passStatus=false;
+                }
+                else{
+                    txtPassError.setText("");
+                    passStatus=true;
+                }
+                if(txtRePass.getText().toString().compareTo(txtPass.getText().toString())!=0){
+                    txtRePassError.setText("Confirm password not correct with password !!!");
+                    rePassStatus=false;
+                }
+                else {
+                    txtRePassError.setText("");
+                    rePassStatus=true;
+                }
+                if(emailStatus && passStatus && rePassStatus) {
+                    AddNewCus(v);
+                    txtEmail.setText("");
+                    txtEmailError.setText("");
+                    txtPass.setText("");
+                    txtRePass.setText("");
+                }
                 checkDuplicaEmail(v);
             }
         });
@@ -99,12 +135,6 @@ public class signUpFragment extends Fragment {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()){
                     Boolean check =response.body();
-                    if(check){
-                        txtEmailError.setText("This email has already exist !!!");
-                    }
-                    else {
-                        AddNewCus(v);
-                    }
                 }
             }
             @Override

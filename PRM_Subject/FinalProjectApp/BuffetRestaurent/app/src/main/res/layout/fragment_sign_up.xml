@@ -47,7 +47,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@+id/signUp_lblPass"
             app:layout_constraintTop_toBottomOf="@+id/signUp_lblPass" />
 
@@ -65,7 +65,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@+id/signUp_lblPass"
             app:layout_constraintTop_toBottomOf="@+id/signUp_lblRePass" />
 
@@ -91,6 +91,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signUp_txtEmail" />
+
+        <TextView
+            android:id="@+id/signUp_txtErrorRePass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/Red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtRePass" />
+
+        <TextView
+            android:id="@+id/signUp_PassError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/Red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtPass" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

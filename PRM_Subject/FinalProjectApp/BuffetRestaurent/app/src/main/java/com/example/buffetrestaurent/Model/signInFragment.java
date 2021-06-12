@@ -94,6 +94,7 @@ public class signInFragment extends Fragment {
                             Integer check=response.body();
                             if(check==9){
                                 Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
+                                txtError.setText("");
                             }
                             else{
                                 txtError.setText("Email or password is incorrect !!");
