@@ -1,11 +1,11 @@
 package com.example.projectfinalmobile.entity;
 
-import org.hibernate.criterion.Restrictions;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,9 +22,6 @@ public class Reservation {
 
     @Column(length = 1)
     private int reservationStatus;
-
-    @Column(length = 10)
-    private int deskId;
 
     @Column(length = 2)
     private int numberOfTickets;
@@ -49,12 +46,11 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(int reservationId, Date reservationDate, String reservationTime, int reservationStatus, int deskId, int numberOfTickets, double reservationAmount, Set<ReservationDesks> reservationDesks, Customer customer, Discount discount, Staff staff) {
+    public Reservation(int reservationId, Date reservationDate, String reservationTime, int reservationStatus, int numberOfTickets, double reservationAmount, Set<ReservationDesks> reservationDesks, Customer customer, Discount discount, Staff staff) {
         this.reservationId = reservationId;
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.reservationStatus = reservationStatus;
-        this.deskId = deskId;
         this.numberOfTickets = numberOfTickets;
         this.reservationAmount = reservationAmount;
         this.reservationDesks = reservationDesks;
@@ -93,14 +89,6 @@ public class Reservation {
 
     public void setReservationStatus(int reservationStatus) {
         this.reservationStatus = reservationStatus;
-    }
-
-    public int getDeskId() {
-        return deskId;
-    }
-
-    public void setDeskId(int deskId) {
-        this.deskId = deskId;
     }
 
     public int getNumberOfTickets() {
