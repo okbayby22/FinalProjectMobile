@@ -21,9 +21,9 @@ public class ReservationController {
         return service.listReservationByCustomerId(customerid);
     }
 
-    @PostMapping("/add")
-    public Reservation addReservation(@RequestBody Reservation reservation){
-        return service.addReservation(reservation);
+    @PostMapping("/{date}/add")
+    public Reservation addReservation(@RequestBody Reservation reservation, @PathVariable ("date")String date){
+        return service.addReservation(reservation, date);
     }
 
     @PutMapping("/{id}/updatecustomer")

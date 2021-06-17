@@ -190,7 +190,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/AddReservation_btnAdd"
         android:layout_width="162dp"
         android:layout_height="40dp"
         android:layout_marginStart="115dp"

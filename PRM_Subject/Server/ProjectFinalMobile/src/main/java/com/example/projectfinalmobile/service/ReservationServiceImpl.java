@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -18,7 +20,9 @@ public class ReservationServiceImpl implements ReservationService{
         return reserRepo.findByCustomer_CustomerId(customerid);
     }
 
-    public Reservation addReservation(Reservation reservation){
+    public Reservation addReservation(Reservation reservation,String date){
+        Date newdate = Date.valueOf(date);
+        reservation.setReservationDate(newdate);
         return reserRepo.save(reservation);
     }
 
