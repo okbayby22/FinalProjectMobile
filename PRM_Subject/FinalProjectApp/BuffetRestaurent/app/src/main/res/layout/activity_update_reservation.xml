@@ -7,7 +7,7 @@
     tools:context=".AddReservation">
 
     <CalendarView
-        android:id="@+id/AddReservation_CalendarView"
+        android:id="@+id/UpdateReservation_CalendarView"
         android:layout_width="354dp"
         android:layout_height="299dp"
         android:layout_marginTop="30dp"
@@ -22,31 +22,31 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/AddReservation_txtTimePick"
+        android:id="@+id/UpdateReservation_txtTimePick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:text="Touch Here To Pick Time"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/AddReservation_InputArea"
+        app:layout_constraintBottom_toTopOf="@+id/UpdateReservation_InputArea"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddReservation_CalendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/UpdateReservation_CalendarView" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/AddReservation_InputArea"
+        android:id="@+id/UpdateReservation_InputArea"
         android:layout_width="349dp"
         android:layout_height="208dp"
         android:background="@drawable/border_layout"
-        app:layout_constraintBottom_toTopOf="@+id/AddReservation_TotalLayout"
+        app:layout_constraintBottom_toTopOf="@+id/UpdateReservation_TotalLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddReservation_txtTimePick">
+        app:layout_constraintTop_toBottomOf="@+id/UpdateReservation_txtTimePick">
 
         <EditText
-            android:id="@+id/AddReservation_inputName"
+            android:id="@+id/UpdateReservation_inputName"
             android:layout_width="308dp"
             android:layout_height="46dp"
             android:layout_marginTop="20dp"
@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/AddReservation_inputPhone"
+            android:id="@+id/UpdateReservation_inputPhone"
             android:layout_width="307dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
@@ -70,7 +70,7 @@
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/AddReservation_inputName" />
+            app:layout_constraintTop_toBottomOf="@+id/UpdateReservation_inputName" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout3"
@@ -86,23 +86,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.807"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/AddReservation_inputPhone">
+            app:layout_constraintTop_toBottomOf="@+id/UpdateReservation_inputPhone">
 
             <TextView
-                android:id="@+id/AddReservation_NumberOfTicket"
+                android:id="@+id/UpdateReservation_NumberOfTicket"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Number of tickets"
                 android:textColor="@color/black"
                 android:textSize="16dp"
-                app:layout_constraintEnd_toStartOf="@+id/AddReservation_btnDecrease"
+                app:layout_constraintEnd_toStartOf="@+id/UpdateReservation_btnDecrease"
                 app:layout_constraintHorizontal_bias="0.188"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="11dp"
                 tools:ignore="MissingConstraints" />
 
             <Button
-                android:id="@+id/AddReservation_btnDecrease"
+                android:id="@+id/UpdateReservation_btnDecrease"
                 android:layout_width="26dp"
                 android:layout_height="36dp"
                 android:layout_margin="0dp"
@@ -113,21 +113,21 @@
                 android:textSize="14dp"
                 app:backgroundTint="@color/Theme"
                 app:cornerRadius="0dp"
-                app:layout_constraintEnd_toStartOf="@+id/AddReservation_txtNumTickets"
+                app:layout_constraintEnd_toStartOf="@+id/UpdateReservation_txtNumTickets"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/AddReservation_txtNumTickets"
+                android:id="@+id/UpdateReservation_txtNumTickets"
                 android:layout_width="58dp"
                 android:layout_height="27dp"
                 android:layout_marginTop="2dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="1"
-                app:layout_constraintEnd_toStartOf="@+id/AddReservation_btnIncrease"
+                app:layout_constraintEnd_toStartOf="@+id/UpdateReservation_btnIncrease"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/AddReservation_btnIncrease"
+                android:id="@+id/UpdateReservation_btnIncrease"
                 android:layout_width="28dp"
                 android:layout_height="35dp"
                 android:layout_margin="0dp"
@@ -142,7 +142,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/AddReservation_TotalLayout"
+        android:id="@+id/UpdateReservation_TotalLayout"
         android:layout_width="353dp"
         android:layout_height="52dp"
         android:layout_marginStart="50dp"
@@ -154,7 +154,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddReservation_InputArea">
+        app:layout_constraintTop_toBottomOf="@+id/UpdateReservation_InputArea">
 
         <TextView
             android:id="@+id/textView3"
@@ -173,7 +173,7 @@
             app:layout_constraintVertical_bias="0.362" />
 
         <TextView
-            android:id="@+id/AddReservation_txtPrice"
+            android:id="@+id/UpdateReservation_txtPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -190,7 +190,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/AddReservation_btnUpdate"
+        android:id="@+id/UpdateReservation_btnUpdate"
         android:layout_width="162dp"
         android:layout_height="40dp"
         android:layout_marginStart="115dp"
@@ -201,11 +201,11 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/button_shape"
         android:padding="0dp"
-        android:text="@string/strSubmit"
+        android:text="@string/strUpdate"
         app:backgroundTint="@color/Theme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddReservation_TotalLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/UpdateReservation_TotalLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

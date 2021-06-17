@@ -13,8 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".AddReservation">
+        <activity android:name=".AddReservation"></activity>
+        <activity android:name=".UpdateReservation" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".CancelReservation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

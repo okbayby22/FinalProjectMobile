@@ -14,7 +14,7 @@ public class Customer {
     @Column(length = 100)
     private String customerName;
 
-    @Column(nullable = false,length = 255,unique = true)
+    @Column(nullable = false,length = 255)
     private String customerEmail;
 
     @Column(length = 255)

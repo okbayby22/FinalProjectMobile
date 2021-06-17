@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ReservationService {
     List<Reservation> listReservationByCustomerId(int customerid);
-    Reservation addReservation(Reservation reservation);
+    Reservation addReservation(Reservation reservation,String date);
     Reservation editReservationForCustomer(int id, Reservation reservationUpdate);
     Reservation editReservationForStaff(int id,int status);
     List<Reservation> findByCustomerName(String name);
