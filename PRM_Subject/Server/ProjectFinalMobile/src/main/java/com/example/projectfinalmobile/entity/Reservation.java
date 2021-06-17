@@ -32,7 +32,7 @@ public class Reservation {
     private double reservationAmount;
 
     @OneToMany(mappedBy = "reservations", cascade = CascadeType.ALL)
-    private List<ReservationDesks> reservationDesks;
+    private Set<ReservationDesks> reservationDesks;
 
     @ManyToOne
     @JoinColumn(name = "customerId")
@@ -49,7 +49,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(int reservationId, Date reservationDate, String reservationTime, int reservationStatus, int deskId, int numberOfTickets, double reservationAmount, List<ReservationDesks> reservationDesks, Customer customer, Discount discount, Staff staff) {
+    public Reservation(int reservationId, Date reservationDate, String reservationTime, int reservationStatus, int deskId, int numberOfTickets, double reservationAmount, Set<ReservationDesks> reservationDesks, Customer customer, Discount discount, Staff staff) {
         this.reservationId = reservationId;
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
@@ -119,11 +119,11 @@ public class Reservation {
         this.reservationAmount = reservationAmount;
     }
 
-    public List<ReservationDesks> getReservationDesks() {
+    public Set<ReservationDesks> getReservationDesks() {
         return reservationDesks;
     }
 
-    public void setReservationDesks(List<ReservationDesks> reservationDesks) {
+    public void setReservationDesks(Set<ReservationDesks> reservationDesks) {
         this.reservationDesks = reservationDesks;
     }
 

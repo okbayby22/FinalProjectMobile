@@ -45,12 +45,12 @@ public class Customer {
     private Set<DiscountInventory> discountInventory;
 
     @OneToMany(mappedBy = "customer")
-    private List<Reservation> reservations;
+    private Set<Reservation> reservations;
 
     public Customer() {
     }
 
-    public Customer(int customerId, String customerName, String customerEmail, String customerAddress, String customerPhone, String customerPassword, int customerGender, double customerBalance, int customerPoint, int customerStatus, String customerAvatar, Set<DiscountInventory> discountInventory, List<Reservation> reservations) {
+    public Customer(int customerId, String customerName, String customerEmail, String customerAddress, String customerPhone, String customerPassword, int customerGender, double customerBalance, int customerPoint, int customerStatus, String customerAvatar, Set<DiscountInventory> discountInventory, Set<Reservation> reservations) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -162,11 +162,11 @@ public class Customer {
         this.discountInventory = discountInventory;
     }
 
-    public List<Reservation> getReservations() {
+    public Set<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(List<Reservation> reservations) {
+    public void setReservations(Set<Reservation> reservations) {
         this.reservations = reservations;
     }
 }
