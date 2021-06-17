@@ -11,22 +11,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buffetrestaurent.Model.Desk;
+import com.example.buffetrestaurent.R;
 
 import java.util.ArrayList;
 
 
-public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.ViewHolder>{
+public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.ViewHolder> {
 
-     ArrayList<Desk> desksList;
+    ArrayList<Desk> desksList;
 
 
-     Context context;
+    Context context;
 
     /**
      * Constructor method Teacher adapter
      *
      * @param listTeacher: stores the teacher list
-     * @param context     : stores the context
+     * @param context      : stores the context
      */
     public DeskAdapter(ArrayList desksList, Context context) {
         this.desksList = desksList;
@@ -37,7 +38,7 @@ public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.ViewHolder>{
     /**
      * Method onCreateViewHolder : create ViewHolder object and store the view for showing data
      *
-     * @param parent  : stores the parent group containing all views inside
+     * @param parent    : stores the parent group containing all views inside
      * @param viewType: stores the type of view
      * @return the new ViewHolder after inflating a new view based on xml file
      */
@@ -57,9 +58,9 @@ public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.ViewHolder>{
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Teacher teacher = listTeacher.get(position);
-        holder.teacherName.setText(teacher.getName());
-        new ImageURL(holder.itemView.findViewById(R.id.imageView2)).execute(teacher.getUrlImage());
+//        Teacher teacher = listTeacher.get(position);
+//        holder.teacherName.setText(teacher.getName());
+//        new ImageURL(holder.itemView.findViewById(R.id.imageView2)).execute(teacher.getUrlImage());
     }
 
 
@@ -70,7 +71,7 @@ public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.ViewHolder>{
      */
     @Override
     public int getItemCount() {
-        return listTeacher.size();
+        return 1;
     }
 
     /**
@@ -95,3 +96,4 @@ public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.ViewHolder>{
             teacherName = itemView.findViewById(R.id.textView);
         }
     }
+}
