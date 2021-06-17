@@ -1,6 +1,8 @@
 package com.example.projectfinalmobile.entity;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Customer {
@@ -8,21 +10,47 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
+
+    @Column(length = 100)
     private String customerName;
+
+    @Column(nullable = false,length = 255,unique = true)
     private String customerEmail;
+
+    @Column(length = 255)
     private String customerAddress;
+
+    @Column(length = 13)
     private String customerPhone;
+
+    @Column(nullable = false, length = 32)
     private String customerPassword;
+
+    @Column(length = 1)
     private int customerGender;
+
+    @Column(length = 15)
     private double customerBalance;
+
+    @Column(length = 10)
     private int customerPoint;
+
+    @Column(length = 1)
     private int customerStatus;
+
+    @Column(length = 255)
     private String customerAvatar;
+
+    @OneToMany(mappedBy = "customers")
+    private Set<DiscountInventory> discountInventory;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Reservation> reservations;
 
     public Customer() {
     }
 
-    public Customer(int customerId, String customerName, String customerEmail, String customerAddress, String customerPhone, String customerPassword, int customerGender, double customerBalance, int customerPoint, int customerStatus, String customerAvatar) {
+    public Customer(int customerId, String customerName, String customerEmail, String customerAddress, String customerPhone, String customerPassword, int customerGender, double customerBalance, int customerPoint, int customerStatus, String customerAvatar, Set<DiscountInventory> discountInventory, List<Reservation> reservations) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -34,6 +62,8 @@ public class Customer {
         this.customerPoint = customerPoint;
         this.customerStatus = customerStatus;
         this.customerAvatar = customerAvatar;
+        this.discountInventory = discountInventory;
+        this.reservations = reservations;
     }
 
     public int getCustomerId() {
@@ -122,5 +152,21 @@ public class Customer {
 
     public void setCustomerAvatar(String customerAvatar) {
         this.customerAvatar = customerAvatar;
+    }
+
+    public Set<DiscountInventory> getDiscountInventory() {
+        return discountInventory;
+    }
+
+    public void setDiscountInventory(Set<DiscountInventory> discountInventory) {
+        this.discountInventory = discountInventory;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

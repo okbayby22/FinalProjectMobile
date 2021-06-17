@@ -1,26 +1,36 @@
 package com.example.projectfinalmobile.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Menu {
 
     @Id
     private int menuId;
+
     private Date menuDate;
+
+    @Column(length = 200)
     private String menuName;
-    private int staffId;
+
+    @OneToMany(mappedBy = "menu")
+    private Set<MenuDetail> menuDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "staffId")
+    private Staff staff;
 
     public Menu() {
     }
 
-    public Menu(int menuId, Date menuDate, String menuName, int staffId) {
+    public Menu(int menuId, Date menuDate, String menuName, Set<MenuDetail> menuDetails, Staff staff) {
         this.menuId = menuId;
         this.menuDate = menuDate;
         this.menuName = menuName;
-        this.staffId = staffId;
+        this.menuDetails = menuDetails;
+        this.staff = staff;
     }
 
     public int getMenuId() {
@@ -47,11 +57,19 @@ public class Menu {
         this.menuName = menuName;
     }
 
-    public int getStaffId() {
-        return staffId;
+    public Set<MenuDetail> getMenuDetails() {
+        return menuDetails;
     }
 
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
+    public void setMenuDetails(Set<MenuDetail> menuDetails) {
+        this.menuDetails = menuDetails;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }

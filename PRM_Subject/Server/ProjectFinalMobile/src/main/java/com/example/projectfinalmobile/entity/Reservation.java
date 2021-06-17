@@ -1,32 +1,66 @@
 package com.example.projectfinalmobile.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.hibernate.criterion.Restrictions;
+
+import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Reservation {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reservationId;
-    private Time reservationTime;
+
+    private Date reservationDate;
+
+    @Column(length = 30)
+    private String reservationTime;
+
+    @Column(length = 1)
     private int reservationStatus;
-    private int staffId;
+
+    @Column(length = 10)
     private int deskId;
-    private int numberOfPeople;
-    private int discountCode;
+
+    @Column(length = 2)
+    private int numberOfTickets;
+
+    private double reservationAmount;
+
+    @OneToMany(mappedBy = "reservations", cascade = CascadeType.ALL)
+    private List<ReservationDesks> reservationDesks;
+
+    @ManyToOne
+    @JoinColumn(name = "customerId")
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "discountId")
+    private Discount discount;
+
+    @ManyToOne
+    @JoinColumn(name = "staffId")
+    private Staff staff;
 
     public Reservation() {
     }
 
-    public Reservation(int reservationId, Time reservationTime, int reservationStatus, int staffId, int deskId, int numberOfPeople, int discountCode) {
+    public Reservation(int reservationId, Date reservationDate, String reservationTime, int reservationStatus, int deskId, int numberOfTickets, double reservationAmount, List<ReservationDesks> reservationDesks, Customer customer, Discount discount, Staff staff) {
         this.reservationId = reservationId;
+        this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.reservationStatus = reservationStatus;
-        this.staffId = staffId;
         this.deskId = deskId;
-        this.numberOfPeople = numberOfPeople;
-        this.discountCode = discountCode;
+        this.numberOfTickets = numberOfTickets;
+        this.reservationAmount = reservationAmount;
+        this.reservationDesks = reservationDesks;
+        this.customer = customer;
+        this.discount = discount;
+        this.staff = staff;
     }
 
     public int getReservationId() {
@@ -37,11 +71,19 @@ public class Reservation {
         this.reservationId = reservationId;
     }
 
-    public Time getReservationTime() {
+    public Date getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(Date reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public String getReservationTime() {
         return reservationTime;
     }
 
-    public void setReservationTime(Time reservationTime) {
+    public void setReservationTime(String reservationTime) {
         this.reservationTime = reservationTime;
     }
 
@@ -53,14 +95,6 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-    public int getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
-    }
-
     public int getDeskId() {
         return deskId;
     }
@@ -69,19 +103,51 @@ public class Reservation {
         this.deskId = deskId;
     }
 
-    public int getNumberOfPeople() {
-        return numberOfPeople;
+    public int getNumberOfTickets() {
+        return numberOfTickets;
     }
 
-    public void setNumberOfPeople(int numberOfPeople) {
-        this.numberOfPeople = numberOfPeople;
+    public void setNumberOfTickets(int numberOfTickets) {
+        this.numberOfTickets = numberOfTickets;
     }
 
-    public int getDiscountCode() {
-        return discountCode;
+    public double getReservationAmount() {
+        return reservationAmount;
     }
 
-    public void setDiscountCode(int discountCode) {
-        this.discountCode = discountCode;
+    public void setReservationAmount(double reservationAmount) {
+        this.reservationAmount = reservationAmount;
+    }
+
+    public List<ReservationDesks> getReservationDesks() {
+        return reservationDesks;
+    }
+
+    public void setReservationDesks(List<ReservationDesks> reservationDesks) {
+        this.reservationDesks = reservationDesks;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Discount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }

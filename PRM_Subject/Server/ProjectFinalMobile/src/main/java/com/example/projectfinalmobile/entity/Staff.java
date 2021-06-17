@@ -1,27 +1,60 @@
 package com.example.projectfinalmobile.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
 public class Staff {
 
     @Id
     private int staffId;
+
+    @Column(length = 100)
     private String staffName;
+
+    @Column(length = 255)
     private String staffEmail;
+
+    @Column(length = 255)
     private String staffAddress;
+
+    @Column(length = 13)
     private String staffPhone;
+
+    @Column(length = 32)
     private String staffPassword;
+
+    @Column(length = 1)
     private int staffGender;
+
+    @Column(length = 1)
     private int staffRole;
+
+    @Column(length = 1)
     private int staffStatus;
+
+    @Column(length = 255)
     private String staffImage;
+
+    @OneToMany(mappedBy = "staff")
+    private Set<Reservation> reservations;
+
+    @OneToMany(mappedBy = "staff")
+    private Set<Discount> discounts;
+
+    @OneToMany(mappedBy = "staff")
+    private Set<WeeklyTimeTable> weeklyTimeTables;
+
+    @OneToMany(mappedBy = "staff")
+    private Set<Menu> menus;
 
     public Staff() {
     }
 
-    public Staff(int staffId, String staffName, String staffEmail, String staffAddress, String staffPhone, String staffPassword, int staffGender, int staffRole, int staffStatus, String staffImage) {
+    public Staff(int staffId, String staffName, String staffEmail, String staffAddress, String staffPhone, String staffPassword, int staffGender, int staffRole, int staffStatus, String staffImage, Set<Reservation> reservations, Set<Discount> discounts, Set<WeeklyTimeTable> weeklyTimeTables, Set<Menu> menus) {
         this.staffId = staffId;
         this.staffName = staffName;
         this.staffEmail = staffEmail;
@@ -32,6 +65,10 @@ public class Staff {
         this.staffRole = staffRole;
         this.staffStatus = staffStatus;
         this.staffImage = staffImage;
+        this.reservations = reservations;
+        this.discounts = discounts;
+        this.weeklyTimeTables = weeklyTimeTables;
+        this.menus = menus;
     }
 
     public int getStaffId() {
@@ -112,5 +149,37 @@ public class Staff {
 
     public void setStaffImage(String staffImage) {
         this.staffImage = staffImage;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Set<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(Set<Discount> discounts) {
+        this.discounts = discounts;
+    }
+
+    public Set<WeeklyTimeTable> getWeeklyTimeTables() {
+        return weeklyTimeTables;
+    }
+
+    public void setWeeklyTimeTables(Set<WeeklyTimeTable> weeklyTimeTables) {
+        this.weeklyTimeTables = weeklyTimeTables;
+    }
+
+    public Set<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(Set<Menu> menus) {
+        this.menus = menus;
     }
 }
