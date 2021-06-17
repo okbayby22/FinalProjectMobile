@@ -1,28 +1,39 @@
 package com.example.buffetrestaurent.Model;
 
-import java.sql.Time;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
 
 public class Reservation {
 
+    @SerializedName("id")
+    @Expose
     private int reservationId;
-    private Time reservationTime;
+    private Date reservationDate;
+    private String reservationTime;
     private int reservationStatus;
-    private int staffId;
+    private int numberTickets;
+    private Double reservationAmount;
     private int deskId;
-    private int numberOfPeople;
-    private int discountCode;
+    private int customerId;
+    private int discountId;
+    private int staffId;
 
     public Reservation() {
     }
 
-    public Reservation(int reservationId, Time reservationTime, int reservationStatus, int staffId, int deskId, int numberOfPeople, int discountCode) {
-        this.reservationId = reservationId;
+    public Reservation(Date reservationDate, String reservationTime, int reservationStatus, int numberTickets, Double reservationAmount, int deskId, int customerId, int discountId, int staffId) {
+        this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.reservationStatus = reservationStatus;
-        this.staffId = staffId;
+        this.numberTickets = numberTickets;
+        this.reservationAmount = reservationAmount;
         this.deskId = deskId;
-        this.numberOfPeople = numberOfPeople;
-        this.discountCode = discountCode;
+        this.customerId = customerId;
+        this.discountId = discountId;
+        this.staffId = staffId;
     }
 
     public int getReservationId() {
@@ -33,11 +44,19 @@ public class Reservation {
         this.reservationId = reservationId;
     }
 
-    public Time getReservationTime() {
+    public Date getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(Date reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public String getReservationTime() {
         return reservationTime;
     }
 
-    public void setReservationTime(Time reservationTime) {
+    public void setReservationTime(String reservationTime) {
         this.reservationTime = reservationTime;
     }
 
@@ -49,12 +68,20 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-    public int getStaffId() {
-        return staffId;
+    public int getNumberTickets() {
+        return numberTickets;
     }
 
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
+    public void setNumberTickets(int numberTickets) {
+        this.numberTickets = numberTickets;
+    }
+
+    public Double getReservationAmount() {
+        return reservationAmount;
+    }
+
+    public void setReservationAmount(Double reservationAmount) {
+        this.reservationAmount = reservationAmount;
     }
 
     public int getDeskId() {
@@ -65,19 +92,27 @@ public class Reservation {
         this.deskId = deskId;
     }
 
-    public int getNumberOfPeople() {
-        return numberOfPeople;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setNumberOfPeople(int numberOfPeople) {
-        this.numberOfPeople = numberOfPeople;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
-    public int getDiscountCode() {
-        return discountCode;
+    public int getDiscountId() {
+        return discountId;
     }
 
-    public void setDiscountCode(int discountCode) {
-        this.discountCode = discountCode;
+    public void setDiscountId(int discountId) {
+        this.discountId = discountId;
+    }
+
+    public int getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
     }
 }

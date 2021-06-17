@@ -1,5 +1,6 @@
 package com.example.buffetrestaurent.Model;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.HomePageStaff;
 import com.example.buffetrestaurent.MainActivity;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.Apis;
@@ -95,6 +97,10 @@ public class signInFragment extends Fragment {
                             if(check==9){
                                 Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
                                 txtError.setText("");
+                                //intent : transfer to insert_teacher_actitvity
+                                Intent intent = new Intent(v.getContext() , HomePageStaff.class );
+                                intent.putExtra("emailUser", txtEmail.getText().toString());
+                                startActivity(intent);
                             }
                             else{
                                 txtError.setText("Email or password is incorrect !!");

@@ -1,34 +1,44 @@
 package com.example.projectfinalmobile.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class WeeklyTimeTable {
 
     @Id
-    private int staffId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(length = 1)
     private int shift;
+
     private Date workingDate;
+
+    @Column(length = 1)
     private int attendanceStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "staffId")
+    private Staff staff;
 
     public WeeklyTimeTable() {
     }
 
-    public WeeklyTimeTable(int staffId, int shift, Date workingDate, int attendanceStatus) {
-        this.staffId = staffId;
+    public WeeklyTimeTable(int id, int shift, Date workingDate, int attendanceStatus, Staff staff) {
+        this.id = id;
         this.shift = shift;
         this.workingDate = workingDate;
         this.attendanceStatus = attendanceStatus;
+        this.staff = staff;
     }
 
-    public int getStaffId() {
-        return staffId;
+    public int getId() {
+        return id;
     }
 
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getShift() {
@@ -53,5 +63,13 @@ public class WeeklyTimeTable {
 
     public void setAttendanceStatus(int attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }
