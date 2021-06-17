@@ -2,6 +2,7 @@ package com.example.buffetrestaurent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,11 +24,11 @@ import com.example.buffetrestaurent.Utils.ReservationService;
 
 import org.w3c.dom.Text;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,63 +48,75 @@ public class AddReservation extends AppCompatActivity {
     ReservationService service;
     CalendarView calendarView;
     DecimalFormat vnd = new DecimalFormat("###,###");
-    String date ;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation);
         getSupportActionBar().hide();
-        timepick = findViewById(R.id.AddReservation_txtTimePick);
-        plus = findViewById(R.id.AddReservation_btnIncrease);
-        minus = findViewById(R.id.AddReservation_btnDecrease);
-        add = findViewById(R.id.AddReservation_btnAdd);
-        tickets = findViewById(R.id.AddReservation_txtNumTickets);
-        price = findViewById(R.id.AddReservation_txtPrice);
-        numsOftickets = Integer.parseInt(tickets.getText().toString());
-        name = findViewById(R.id.AddReservation_inputName);
-        phone = findViewById(R.id.AddReservation_inputPhone);
-        calendarView = findViewById(R.id.AddReservation_CalendarView);
-
+        timepick = findViewById(R.id.AddReservation_txtTimePick);           //Text to show time
+        plus = findViewById(R.id.AddReservation_btnIncrease);               //Plus button to increase number of tickets
+        minus = findViewById(R.id.AddReservation_btnDecrease);              //Minus button to increase number of tickets
+        add = findViewById(R.id.AddReservation_btnAdd);                     //Add button to add new reservation
+        tickets = findViewById(R.id.AddReservation_txtNumTickets);          //Tickets textview to show number of tickets
+        price = findViewById(R.id.AddReservation_txtPrice);                 //Price textview to show total balance that user must pay
+        numsOftickets = Integer.parseInt(tickets.getText().toString());     //Variable to save data of number of tickets
+        name = findViewById(R.id.AddReservation_inputName);                 //Input text field phone
+        phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
+        calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date curdate =  Calendar.getInstance().getTime();
+        date = sdf.format(curdate);
+        /*
+        Set Event on Date Change on Calendar View
+         */
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange( CalendarView view, int year, int month, int dayOfMonth) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                date = year+"-"+month+"-"+dayOfMonth;
-                System.out.println("===========================>"+date);
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                date = year + "-" + month+1 + "-" + dayOfMonth;
             }
         });
         name.setHint("Enter your name");
         phone.setHint("Enter your phone number");
         price.setText(vnd.format(numsOftickets * 200000) + " VND");
+        /*
+        Set Event on Click on Button Add
+         */
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int deskid=0;
+                int deskid = 0;
                 int numogticket = Integer.parseInt(tickets.getText().toString());
-                Double amount  = new Double(numsOftickets * 200000);
-                System.out.println("....................."+date);
-                int  status = 0;
+                Double amount = new Double(numsOftickets * 200000);
+                int status = 0;
                 String time = timepick.getText().toString();
                 int cusid = 1;
                 int discountid = 1;
                 int staffid = 0;
-                Reservation reservation =  new Reservation(null,time,status,numogticket,amount,deskid,cusid,discountid,staffid);
-                service = Apis.getReservationService();
-                Call<Reservation> call = service.addReservation(reservation,date);
-                System.out.println("..............."+reservation.getReservationDate());
-                call.enqueue(new Callback<Reservation>() {
-                    @Override
-                    public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(v.getContext(),"Add successful !",Toast.LENGTH_LONG).show();
+                /*
+                If Customer does not pick time
+                 */
+                if (timepick.getText().toString().equals("Touch Here To Pick Time")) {
+                    new AlertDialog.Builder(AddReservation.this).setTitle("Pick Time").setMessage("Please pick a time").show();
+                } 
+                else {
+                    Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
+                    service = Apis.getReservationService();
+                    Call<Reservation> call = service.addReservation(reservation, date);
+                    call.enqueue(new Callback<Reservation>() {
+                        @Override
+                        public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(v.getContext(), "Add successful !", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                    @Override
-                    public void onFailure(Call<Reservation> call, Throwable t) {
-                        Log.e("Error:",t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<Reservation> call, Throwable t) {
+                            Log.e("Error:", t.getMessage());
+                        }
+                    });
+                }
             }
         });
         /*
@@ -143,7 +156,7 @@ public class AddReservation extends AppCompatActivity {
                 TimePickerDialog timepicker = new TimePickerDialog(AddReservation.this, android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        timepick.setText(hourOfDay + ":" + minute);
+                        timepick.setText(String.format("%02d:%02d",hourOfDay,minute));
                     }
                 }, hour, minute, false);
                 timepicker.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
