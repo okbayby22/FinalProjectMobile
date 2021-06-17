@@ -7,7 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.text.DateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,14 +17,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.ReservationService;
 
-import org.w3c.dom.Text;
-
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,7 +29,6 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Body;
 
 public class AddReservation extends AppCompatActivity {
     int numsOftickets;
@@ -56,16 +50,16 @@ public class AddReservation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation);
         getSupportActionBar().hide();
-        timepick = findViewById(R.id.AddReservation_txtTimePick);           //Text to show time
-        plus = findViewById(R.id.AddReservation_btnIncrease);               //Plus button to increase number of tickets
-        minus = findViewById(R.id.AddReservation_btnDecrease);              //Minus button to increase number of tickets
-        add = findViewById(R.id.AddReservation_btnAdd);                     //Add button to add new reservation
-        tickets = findViewById(R.id.AddReservation_txtNumTickets);          //Tickets textview to show number of tickets
-        price = findViewById(R.id.AddReservation_txtPrice);                 //Price textview to show total balance that user must pay
+        timepick = findViewById(R.id.UpdateReservation_txtTimePick);           //Text to show time
+        plus = findViewById(R.id.UpdateReservation_btnIncrease);               //Plus button to increase number of tickets
+        minus = findViewById(R.id.UpdateReservation_btnDecrease);              //Minus button to increase number of tickets
+        add = findViewById(R.id.UpdateReservation_btnUpdate);                     //Add button to add new reservation
+        tickets = findViewById(R.id.UpdateReservation_txtNumTickets);          //Tickets textview to show number of tickets
+        price = findViewById(R.id.UpdateReservation_txtPrice);                 //Price textview to show total balance that user must pay
         numsOftickets = Integer.parseInt(tickets.getText().toString());     //Variable to save data of number of tickets
-        name = findViewById(R.id.AddReservation_inputName);                 //Input text field phone
-        phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
-        calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
+        name = findViewById(R.id.UpdateReservation_inputName);                 //Input text field phone
+        phone = findViewById(R.id.UpdateReservation_inputPhone);               //Input text field name
+        calendarView = findViewById(R.id.UpdateReservation_CalendarView);      //Calendar view
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date curdate =  Calendar.getInstance().getTime();
         name.setFocusable(false);
@@ -108,7 +102,7 @@ public class AddReservation extends AppCompatActivity {
                     new AlertDialog.Builder(AddReservation.this).setTitle("Pick Time").setMessage("Please pick a time").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            
+
                         }
                     }).show();
                 } 
