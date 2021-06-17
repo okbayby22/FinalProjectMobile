@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btnSignUp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Model.signUpFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/signUp_txtEmail"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="@+id/signUp_lblEmail"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_lblEmail" />
+
+        <TextView
+            android:id="@+id/signUp_lblEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/strAccount"
+            app:layout_constraintBottom_toTopOf="@+id/signUp_txtEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.227"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/signUp_lblPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/strPass"
+            app:layout_constraintStart_toStartOf="@+id/signUp_lblEmail"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtEmail" />
+
+        <EditText
+            android:id="@+id/signUp_txtPass"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintStart_toStartOf="@+id/signUp_lblPass"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_lblPass" />
+
+        <TextView
+            android:id="@+id/signUp_lblRePass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/strRePass"
+            app:layout_constraintStart_toStartOf="@+id/signUp_lblEmail"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtPass" />
+
+        <EditText
+            android:id="@+id/signUp_txtRePass"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintStart_toStartOf="@+id/signUp_lblPass"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_lblRePass" />
+
+        <Button
+            android:id="@+id/btnsignUp"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_shape"
+            android:text="@string/strSignUp"
+            app:backgroundTint="@color/Theme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.453"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtRePass" />
+
+        <TextView
+            android:id="@+id/signUp_EmailError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/Red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtEmail" />
+
+        <TextView
+            android:id="@+id/signUp_txtErrorRePass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/Red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtRePass" />
+
+        <TextView
+            android:id="@+id/signUp_PassError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/Red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_txtPass" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
