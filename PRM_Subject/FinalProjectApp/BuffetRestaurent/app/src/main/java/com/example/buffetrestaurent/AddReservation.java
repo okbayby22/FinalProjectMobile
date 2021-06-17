@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.DateFormat;
@@ -67,6 +68,12 @@ public class AddReservation extends AppCompatActivity {
         calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date curdate =  Calendar.getInstance().getTime();
+        name.setFocusable(false);
+        name.setFocusableInTouchMode(false);
+        name.setClickable(false);
+        phone.setFocusable(false);
+        phone.setFocusableInTouchMode(false);
+        phone.setClickable(false);
         date = sdf.format(curdate);
         /*
         Set Event on Date Change on Calendar View
@@ -98,7 +105,12 @@ public class AddReservation extends AppCompatActivity {
                 If Customer does not pick time
                  */
                 if (timepick.getText().toString().equals("Touch Here To Pick Time")) {
-                    new AlertDialog.Builder(AddReservation.this).setTitle("Pick Time").setMessage("Please pick a time").show();
+                    new AlertDialog.Builder(AddReservation.this).setTitle("Pick Time").setMessage("Please pick a time").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            
+                        }
+                    }).show();
                 } 
                 else {
                     Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
