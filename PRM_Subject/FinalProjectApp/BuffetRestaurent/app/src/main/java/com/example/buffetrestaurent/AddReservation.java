@@ -50,16 +50,16 @@ public class AddReservation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation);
         getSupportActionBar().hide();
-        timepick = findViewById(R.id.UpdateReservation_txtTimePick);           //Text to show time
-        plus = findViewById(R.id.UpdateReservation_btnIncrease);               //Plus button to increase number of tickets
-        minus = findViewById(R.id.UpdateReservation_btnDecrease);              //Minus button to increase number of tickets
-        add = findViewById(R.id.UpdateReservation_btnUpdate);                     //Add button to add new reservation
-        tickets = findViewById(R.id.UpdateReservation_txtNumTickets);          //Tickets textview to show number of tickets
-        price = findViewById(R.id.UpdateReservation_txtPrice);                 //Price textview to show total balance that user must pay
+        timepick = findViewById(R.id.AddReservation_txtTimePick);           //Text to show time
+        plus = findViewById(R.id.AddReservation_btnIncrease);               //Plus button to increase number of tickets
+        minus = findViewById(R.id.AddReservation_btnDecrease);              //Minus button to increase number of tickets
+        add = findViewById(R.id.AddReservation_btnAdd);                     //Add button to add new reservation
+        tickets = findViewById(R.id.AddReservation_txtNumTickets);          //Tickets textview to show number of tickets
+        price = findViewById(R.id.AddReservation_txtPrice);                 //Price textview to show total balance that user must pay
         numsOftickets = Integer.parseInt(tickets.getText().toString());     //Variable to save data of number of tickets
-        name = findViewById(R.id.UpdateReservation_inputName);                 //Input text field phone
-        phone = findViewById(R.id.UpdateReservation_inputPhone);               //Input text field name
-        calendarView = findViewById(R.id.UpdateReservation_CalendarView);      //Calendar view
+        name = findViewById(R.id.AddReservation_inputName);                 //Input text field phone
+        phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
+        calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date curdate =  Calendar.getInstance().getTime();
         name.setFocusable(false);
@@ -95,6 +95,7 @@ public class AddReservation extends AppCompatActivity {
                 int cusid = 1;
                 int discountid = 1;
                 int staffid = 0;
+                System.out.println(".................."+numogticket);
                 /*
                 If Customer does not pick time
                  */
@@ -105,7 +106,7 @@ public class AddReservation extends AppCompatActivity {
 
                         }
                     }).show();
-                } 
+                }
                 else {
                     Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
                     service = Apis.getReservationService();
