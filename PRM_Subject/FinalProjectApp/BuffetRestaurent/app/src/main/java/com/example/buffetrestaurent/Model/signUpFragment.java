@@ -16,6 +16,9 @@ import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.CustomerService;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,6 +38,8 @@ public class signUpFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+    private static final String VALID_EMAIL_ADDRESS_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,7 +84,7 @@ public class signUpFragment extends Fragment {
         btnSignUp= rootView.findViewById(R.id.btnsignUp);
         txtEmail= rootView.findViewById(R.id.signUp_txtEmail);
         txtPass= rootView.findViewById(R.id.signUp_txtPass);
-        txtRePass= rootView.findViewById(R.id.signUp_lblRePass);
+        txtRePass= rootView.findViewById(R.id.signUp_txtRePass);
         txtEmailError= rootView.findViewById(R.id.signUp_EmailError);
         txtRePassError= rootView.findViewById(R.id.signUp_txtErrorRePass);
         txtPassError= rootView.findViewById(R.id.signUp_PassError);
@@ -90,16 +95,28 @@ public class signUpFragment extends Fragment {
                 boolean emailStatus=true;
                 boolean passStatus=true;
                 boolean rePassStatus=true;
+                Pattern pattern = Pattern.compile(VALID_EMAIL_ADDRESS_REGEX);
+                Matcher matcher = pattern.matcher(txtEmail.getText().toString());
                 if(txtEmail.getText().toString().isEmpty()){
                     txtEmailError.setText("Email can not empty !!!");
+                    emailStatus=false;
+                }
+                else if(!matcher.matches()){
+                    txtEmailError.setText("Wrong email format !!!");
                     emailStatus=false;
                 }
                 else{
                     txtEmailError.setText("");
                     emailStatus=true;
                 }
+                pattern = Pattern.compile(PASSWORD_PATTERN);
+                matcher = pattern.matcher(txtPass.getText().toString());
                 if(txtPass.getText().toString().isEmpty()){
                     txtPassError.setText("Password can not empty !!!");
+                    passStatus=false;
+                }
+                else if(!matcher.matches()){
+                    txtPassError.setText("Password must have 8 to 20 character and contain at least 1 digit, lowercase character, uppercase character, special character");
                     passStatus=false;
                 }
                 else{
@@ -114,14 +131,10 @@ public class signUpFragment extends Fragment {
                     txtRePassError.setText("");
                     rePassStatus=true;
                 }
+
                 if(emailStatus && passStatus && rePassStatus) {
-                    AddNewCus(v);
-                    txtEmail.setText("");
-                    txtEmailError.setText("");
-                    txtPass.setText("");
-                    txtRePass.setText("");
+                    checkDuplicaEmail(v);
                 }
-                checkDuplicaEmail(v);
             }
         });
         return rootView;
@@ -135,6 +148,16 @@ public class signUpFragment extends Fragment {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()){
                     Boolean check =response.body();
+                    if(check == true){
+                        txtEmailError.setText("Email has already exist !!!");
+                    }
+                    else{
+                        AddNewCus(v);
+                        txtEmail.setText("");
+                        txtEmailError.setText("");
+                        txtPass.setText("");
+                        txtRePass.setText("");
+                    }
                 }
             }
             @Override
