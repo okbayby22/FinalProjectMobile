@@ -55,4 +55,5 @@ public class ReservationServiceImpl implements ReservationService{
     public List<Reservation> findByReservationStatus(int status){
         return reserRepo.findByReservationStatus(status);
     }
+
 }
