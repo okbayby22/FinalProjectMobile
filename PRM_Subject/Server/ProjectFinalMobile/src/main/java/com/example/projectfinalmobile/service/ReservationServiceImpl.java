@@ -26,9 +26,11 @@ public class ReservationServiceImpl implements ReservationService{
         return reserRepo.save(reservation);
     }
 
-    public Reservation editReservationForCustomer(int id, Reservation reservationUpdate){
+    public Reservation editReservationForCustomer(int id, String date, Reservation reservationUpdate){
+        System.out.println("service"+date);
+        Date newdate = Date.valueOf(date);
         Reservation newreservation = reserRepo.getById(id);
-        newreservation.setReservationDate(reservationUpdate.getReservationDate());
+        newreservation.setReservationDate(newdate);
         newreservation.setReservationTime(reservationUpdate.getReservationTime());
         newreservation.setNumberOfTickets(reservationUpdate.getNumberOfTickets());
         newreservation.setReservationAmount(reservationUpdate.getReservationAmount());
