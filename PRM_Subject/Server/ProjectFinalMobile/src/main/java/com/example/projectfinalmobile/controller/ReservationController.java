@@ -26,9 +26,10 @@ public class ReservationController {
         return service.addReservation(reservation, date);
     }
 
-    @PutMapping("/{id}/updatecustomer")
-    public Reservation editReservationForCustomer(@PathVariable ("id") int id,@RequestBody Reservation reservationUpdate){
-        return service.editReservationForCustomer(id,reservationUpdate);
+    @PutMapping("/{id}/{date}/updatecustomer")
+    public Reservation editReservationForCustomer(@PathVariable ("id") int id ,@PathVariable("date")String date,@RequestBody Reservation reservationUpdate){
+        System.out.println("controller"+date);
+        return service.editReservationForCustomer(id, date,reservationUpdate);
     }
 
     @PutMapping("/{id}/{status}/updatestatus")
