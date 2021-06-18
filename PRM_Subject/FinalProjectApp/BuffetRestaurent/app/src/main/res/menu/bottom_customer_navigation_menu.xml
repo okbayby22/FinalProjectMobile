@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homepage_menu"
+        android:enabled="true"
+        android:icon="@drawable/home_icon"
+        android:title="Home"/>
+    <item
+        android:id="@+id/discount_menu"
+        android:enabled="true"
+        android:icon="@drawable/discount_icon"
+        android:title="Discount"/>
+    <item
+        android:id="@+id/add_menu"
+        android:enabled="true"
+        android:icon="@drawable/plus_icon"
+        android:title="Reservation"/>
+    <item
+        android:id="@+id/userInfor_menu"
+        android:enabled="true"
+        android:icon="@drawable/cusinfor_icon"
+        android:title="Infor"/>
+    <item
+        android:id="@+id/history_menu"
+        android:enabled="true"
+        android:icon="@drawable/history_icon"
+        android:title="History"/>
+</menu>

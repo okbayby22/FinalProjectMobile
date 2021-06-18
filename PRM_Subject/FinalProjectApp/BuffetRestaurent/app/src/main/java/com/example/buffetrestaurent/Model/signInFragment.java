@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Controler.HomePage;
 import com.example.buffetrestaurent.HomePageStaff;
 import com.example.buffetrestaurent.MainActivity;
 import com.example.buffetrestaurent.R;
@@ -98,8 +99,8 @@ public class signInFragment extends Fragment {
                                 Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
                                 txtError.setText("");
                                 //intent : transfer to insert_teacher_actitvity
-                                Intent intent = new Intent(v.getContext() , HomePageStaff.class );
-                                intent.putExtra("emailUser", txtEmail.getText().toString());
+                                Intent intent = new Intent(v.getContext() , HomePage.class );
+                                //intent.putExtra("emailUser", txtEmail.getText().toString());
                                 startActivity(intent);
                             }
                             else{

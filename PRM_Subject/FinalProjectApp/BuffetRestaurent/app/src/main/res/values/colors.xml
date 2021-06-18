@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="Theme">#FA4A0C</color>
     <color name="Red">#FF0000</color>
+    <color name="ThemeBackground">#F2F2F2</color>
+    <color name="onPrimary">#ADADAF</color>
 </resources>
