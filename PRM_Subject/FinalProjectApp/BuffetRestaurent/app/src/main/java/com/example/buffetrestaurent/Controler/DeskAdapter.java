@@ -1,99 +1,47 @@
 package com.example.buffetrestaurent.Controler;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buffetrestaurent.Model.Desk;
+import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
-public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.ViewHolder> {
+public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.MyViewHolder> {
 
-    ArrayList<Desk> desksList;
-
-
-    Context context;
-
-    /**
-     * Constructor method Teacher adapter
-     *
-     * @param listTeacher: stores the teacher list
-     * @param context      : stores the context
-     */
-    public DeskAdapter(ArrayList desksList, Context context) {
-        this.desksList = desksList;
-        this.context = context;
+    private List<Desk> desklist;
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView txtFoodName;
+        MyViewHolder(View view) {
+            super(view);
+            txtFoodName = view.findViewById(R.id.listfood_txtFoodName);
+        }
     }
-
-
-    /**
-     * Method onCreateViewHolder : create ViewHolder object and store the view for showing data
-     *
-     * @param parent    : stores the parent group containing all views inside
-     * @param viewType: stores the type of view
-     * @return the new ViewHolder after inflating a new view based on xml file
-     */
+    public DeskAdapter(List<Desk> deskList) {
+        this.desklist = deskList;
+    }
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View teacherView = inflater.inflate(R.layout.item_layout, parent, false);
-        return new ViewHolder(teacherView);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_layout, parent, false);
+        return new MyViewHolder(itemView);
     }
-
-    /**
-     * Method onBindViewHolder : move the data into the ViewHolder
-     *
-     * @param holder   :stores the ViewHolder
-     * @param position :stores the position of the object when binding data into the view
-     */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-//        Teacher teacher = listTeacher.get(position);
-//        holder.teacherName.setText(teacher.getName());
-//        new ImageURL(holder.itemView.findViewById(R.id.imageView2)).execute(teacher.getUrlImage());
+    public void onBindViewHolder(FoodsAdapter.MyViewHolder holder, int position) {
+        Desk desk = desklist.get(position);
+        holder.txtFoodName.setText(desk.getDeskId());
     }
-
-
-    /**
-     * Method getItemCounts:  get the size of the list
-     *
-     * @return the size of the list
-     */
     @Override
     public int getItemCount() {
-        return 1;
-    }
-
-    /**
-     * Create class ViewHolder to keep the View structure
-     */
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        // Store the teacher's image
-        public ImageView teacherImage;
-
-        //Store the teacher's name
-        public TextView teacherName;
-
-        /**
-         * Create constructor method ViewHolder
-         *
-         * @param itemView : stores the view of the activity
-         */
-        public ViewHolder(View itemView) {
-            super(itemView);
-            teacherImage = itemView.findViewById(R.id.imageView2);
-            teacherName = itemView.findViewById(R.id.textView);
-        }
+        return desklist.size();
     }
 }
