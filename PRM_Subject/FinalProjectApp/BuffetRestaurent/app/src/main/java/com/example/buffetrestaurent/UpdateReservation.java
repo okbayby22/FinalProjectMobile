@@ -51,16 +51,16 @@ public class UpdateReservation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_reservation);
         getSupportActionBar().hide();
-        timepick = findViewById(R.id.AddReservation_txtTimePick);           //Text to show time
-        plus = findViewById(R.id.AddReservation_btnIncrease);               //Plus button to increase number of tickets
-        minus = findViewById(R.id.AddReservation_btnDecrease);              //Minus button to increase number of tickets
+        timepick = findViewById(R.id.UpdateReservation_txtTimePick);           //Text to show time
+        plus = findViewById(R.id.UpdateReservation_btnIncrease);               //Plus button to increase number of tickets
+        minus = findViewById(R.id.UpdateReservation_btnDecrease);              //Minus button to increase number of tickets
         update = findViewById(R.id.UpdateReservation_btnUpdate);            //Add button to add new reservation
-        tickets = findViewById(R.id.AddReservation_txtNumTickets);          //Tickets textview to show number of tickets
-        price = findViewById(R.id.AddReservation_txtPrice);                 //Price textview to show total balance that user must pay
+        tickets = findViewById(R.id.UpdateReservation_txtNumTickets);          //Tickets textview to show number of tickets
+        price = findViewById(R.id.UpdateReservation_txtPrice);                 //Price textview to show total balance that user must pay
         numsOftickets = Integer.parseInt(tickets.getText().toString());     //Variable to save data of number of tickets
-        name = findViewById(R.id.AddReservation_inputName);                 //Input text field phone
-        phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
-        calendarView = findViewById(R.id.AddReservation_CalendarView);
+        name = findViewById(R.id.UpdateReservation_inputName);                 //Input text field phone
+        phone = findViewById(R.id.UpdateReservation_inputPhone);               //Input text field name
+        calendarView = findViewById(R.id.UpdateReservation_CalendarView);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date curdate =  Calendar.getInstance().getTime();
         name.setFocusable(false);
