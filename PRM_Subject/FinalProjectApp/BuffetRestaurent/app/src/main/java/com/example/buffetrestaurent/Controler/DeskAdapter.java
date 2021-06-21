@@ -36,7 +36,7 @@ public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.MyViewHolder> 
         return new MyViewHolder(itemView);
     }
     @Override
-    public void onBindViewHolder(FoodsAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(DeskAdapter.MyViewHolder holder, int position) {
         Desk desk = desklist.get(position);
         holder.txtFoodName.setText(desk.getDeskId());
     }

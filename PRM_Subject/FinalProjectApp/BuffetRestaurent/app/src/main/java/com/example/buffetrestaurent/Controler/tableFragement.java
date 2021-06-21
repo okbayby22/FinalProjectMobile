@@ -74,13 +74,18 @@ public class tableFragement extends Fragment {
         View rootView= inflater.inflate(R.layout.fragment_table_fragement, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.homepage_listFoodList);
         desksList.add(new Desk(1,1,1));
-        deskAdapter = new DeskAdapter(desksList,);
+        deskAdapter = new DeskAdapter(desksList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(rootView.getContext());
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(fAdapter);
-        prepareFoodData();
+        recyclerView.setAdapter(deskAdapter);
+        addTable();
         return rootView;
+    }
+    public void addTable(){
+        Desk desk = new Desk(1,1,1);
+        desksList.add(desk);
+        deskAdapter.notifyDataSetChanged();
     }
 }
