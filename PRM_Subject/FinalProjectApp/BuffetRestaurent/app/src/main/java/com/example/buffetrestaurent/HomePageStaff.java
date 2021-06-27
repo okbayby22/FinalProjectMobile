@@ -23,7 +23,7 @@ public class HomePageStaff extends AppCompatActivity {
         homepagetabTabLayout = findViewById(R.id.tabLayout);
         homepageViewPager = findViewById(R.id.viewPage);
         userName = findViewById(R.id.userName);
-        userName.setText(getIntent().getStringExtra("emailUser"));
+        //userName.setText(getIntent().getStringExtra("emailUser"));
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(this);
         homepageViewPager.setAdapter(viewPageAdapter);
 
