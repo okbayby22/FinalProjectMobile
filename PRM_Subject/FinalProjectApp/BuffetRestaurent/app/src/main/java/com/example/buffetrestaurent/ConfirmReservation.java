@@ -1,6 +1,8 @@
 package com.example.buffetrestaurent;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,16 +25,24 @@ public class ConfirmReservation extends AppCompatActivity {
 
     ReservationAdapter reserAdap;
 
+    public static ArrayList<Reservation> listAll;
     public static ArrayList<Reservation> list;
 
     int AllPosition;
 
     private ArrayList<Reservation> loadReservation() {
+        listAll = new ArrayList<>();
+        listAll.add(new Reservation(Date.valueOf("2021-06-17"),"15:00",0,3,600000.00,1,1,1,1));
+        listAll.add(new Reservation(Date.valueOf("2021-06-18"),"15:00",0,3,700000.00,1,2,1,1));
+        listAll.add(new Reservation(Date.valueOf("2021-06-19"),"14:00",0,3,700000.00,1,2,1,1));
+        listAll.add(new Reservation(Date.valueOf("2021-06-20"),"15:00",0,3,700000.00,1,1,1,1));
+
         list = new ArrayList<>();
-        list.add(new Reservation(Date.valueOf("2021-06-17"),"15:00",0,3,600000.00,1,1,1,1));
-        list.add(new Reservation(Date.valueOf("2021-06-18"),"15:00",0,3,700000.00,1,2,1,1));
-        list.add(new Reservation(Date.valueOf("2021-06-19"),"14:00",0,3,700000.00,1,2,1,1));
-        list.add(new Reservation(Date.valueOf("2021-06-20"),"15:00",0,3,700000.00,1,1,1,1));
+        for (Reservation item:listAll){
+            if(item.getReservationStatus() == 0){
+                list.add(item);
+            }
+        }
         return list;
     }
 
@@ -80,6 +90,33 @@ public class ConfirmReservation extends AppCompatActivity {
         list = loadReservation(); //Call method to load Lecturer Information to list
         showData();
         getSupportActionBar().hide();
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove( RecyclerView recyclerView,  RecyclerView.ViewHolder viewHolder,  RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped( RecyclerView.ViewHolder viewHolder, int direction) {
+                switch(direction){
+                    case ItemTouchHelper.LEFT:
+                        //list.get(viewHolder.getAdapterPosition()).setReservationStatus(2);
+                        list.remove(viewHolder.getAdapterPosition());
+                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Delete Status").setMessage("Delete Successfully").show();
+                        reserAdap.notifyDataSetChanged();
+                        break;
+                    case ItemTouchHelper.RIGHT:
+                        list.get(viewHolder.getAdapterPosition()).setReservationStatus(1);
+                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice").setMessage("Confirm Reservation Successfully").show();
+                        reserAdap.notifyDataSetChanged();
+                }
+
+
+            }
+        }).attachToRecyclerView(recyclerView);
+        
+
+
     }
 }
 
