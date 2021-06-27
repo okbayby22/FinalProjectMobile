@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder>{
 
-    private final ArrayList<Reservation> list;
+    private ArrayList<Reservation> list;
     private final Context context;
 
     public ReservationAdapter(ArrayList<Reservation> list, Context context) {
@@ -66,5 +66,10 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             price = itemView.findViewById(R.id.CancelReservation_Price);
 
         }
+    }
+
+    public void ArrayFilter(ArrayList<Reservation> newlist){
+        this.list = newlist;
+        notifyDataSetChanged();
     }
 }

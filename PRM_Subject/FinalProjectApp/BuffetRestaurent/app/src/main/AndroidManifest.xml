@@ -13,26 +13,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".Controler.UserProfile"
-            android:parentActivityName=".Controler.HomePage"
-            ></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity
+            android:name=".Controler.UserProfile"
+            android:parentActivityName=".Controler.HomePage" />
         <activity android:name=".HomePageStaff" />
         <activity android:name=".AddReservation" />
         <activity
             android:name=".Controler.HomePage"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity android:name=".UpdateReservation" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ConfirmReservation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CancelReservation"></activity>
+        <activity android:name=".CancelReservation" />
     </application>
 
 </manifest>
