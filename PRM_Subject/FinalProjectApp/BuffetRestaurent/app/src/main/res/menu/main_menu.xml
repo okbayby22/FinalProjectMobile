@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/mainmenu_btnprofile"
+            android:title="@string/strProfile"
+            android:icon="@drawable/profile_icon"
+            />
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/mainmenu_btnReserHis"
+            android:title="@string/strReserHis"
+            android:icon="@drawable/reservation_icon"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/mainmenu_btnMyDiscount"
+            android:title="@string/strDiscountHis"
+            android:icon="@drawable/discount_menu_icon"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/mainmenu_btnChangePass"
+            android:title="@string/strChangePass"
+            android:icon="@drawable/changepass_icon"/>
+    </group>
+
+
+
+
+</menu>

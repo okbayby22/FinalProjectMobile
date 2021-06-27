@@ -7,7 +7,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface CustomerService {
@@ -19,4 +21,10 @@ public interface CustomerService {
 
     @GET("{email}/email")
     Call<Boolean> checkDuplicateEmail(@Path("email") String email);
+
+    @GET("{email}/userinfor")
+    Call<Customer> getUserInfor(@Path("email") String email);
+
+    @PUT("updateInfor")
+    Call<Customer> updateCusInfor(@Body Customer customer);
 }
