@@ -41,6 +41,10 @@ public class CustomerServiceImpl implements CustomerServices {
         return false;
     }
 
+    public Customer getUserInfor(String email){
+        return cusRepo.findByCustomerEmail(email);
+    }
+
     public boolean checkDuplicatePhone(String phone){
         if(cusRepo.findByCustomerPhone(phone)!=null){
             return true;
@@ -60,5 +64,13 @@ public class CustomerServiceImpl implements CustomerServices {
         String myHash = DatatypeConverter.printHexBinary(digest).toLowerCase();
         customer.setCustomerPassword(myHash);
         return cusRepo.save(customer);
+    }
+
+    public Customer updateCusInfor(Customer customer){
+        Customer updateInfor= cusRepo.findByCustomerEmail(customer.getCustomerEmail());
+        updateInfor.setCustomerName(customer.getCustomerName());
+        updateInfor.setCustomerPhone(customer.getCustomerPhone());
+        updateInfor.setCustomerAddress(customer.getCustomerAddress());
+        return cusRepo.save(updateInfor);
     }
 }

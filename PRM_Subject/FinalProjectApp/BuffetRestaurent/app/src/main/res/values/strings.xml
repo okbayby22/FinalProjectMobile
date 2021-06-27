@@ -14,4 +14,14 @@
     <string name="strFood">Food</string>
     <string name="strDrink">Drink</string>
     <string name="strDessert">Dessert</string>
+    <string name="strProfile">Profile</string>
+    <string name="strDiscountHis">My Discount</string>
+    <string name="strChangePass">Change Password</string>
+    <string name="strReserHis">Reservation History</string>
+    <string name="strOpenMenu">Open</string>
+    <string name="strCloseMenu">Close</string>
+    <string name="strName">Name</string>
+    <string name="strPhone">Phone</string>
+    <string name="strAddress">Address</string>
+
 </resources>

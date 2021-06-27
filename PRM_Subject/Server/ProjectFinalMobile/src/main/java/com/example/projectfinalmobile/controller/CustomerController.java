@@ -26,6 +26,11 @@ public class CustomerController {
         return service.checkDuplicateEmail(email);
     }
 
+    @GetMapping("/{email}/userinfor")
+    public Customer getUserInfor(@PathVariable("email") String email){
+        return service.getUserInfor(email);
+    }
+
     @GetMapping("/{phone}/phone")
     public boolean checkDuplicatePhone(@PathVariable("phone") String phone){
         return service.checkDuplicatePhone(phone);
@@ -34,5 +39,10 @@ public class CustomerController {
     @PostMapping("/insert")
     public Customer insertCustomer(@RequestBody Customer customer){
         return service.insertCustomer(customer);
+    }
+
+    @PutMapping("/updateInfor")
+    public Customer updateCusInfor(@RequestBody Customer customer){
+        return service.updateCusInfor(customer);
     }
 }

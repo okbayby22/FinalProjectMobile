@@ -99,8 +99,11 @@ public class signInFragment extends Fragment {
                                 Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
                                 txtError.setText("");
                                 //intent : transfer to insert_teacher_actitvity
+                                String userEmail=txtEmail.getText().toString();
+                                txtEmail.setText("");
+                                txtPass.setText("");
                                 Intent intent = new Intent(v.getContext() , HomePage.class );
-                                //intent.putExtra("emailUser", txtEmail.getText().toString());
+                                intent.putExtra("USER_EMAIL", userEmail);
                                 startActivity(intent);
                             }
                             else{
