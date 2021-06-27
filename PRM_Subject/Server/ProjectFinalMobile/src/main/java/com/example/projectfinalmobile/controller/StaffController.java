@@ -1,6 +1,7 @@
 package com.example.projectfinalmobile.controller;
 
 import com.example.projectfinalmobile.service.StaffService;
+import com.example.projectfinalmobile.service.StaffServiceIpml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 public class StaffController {
 
     @Autowired
-    private StaffService service;
+    private StaffServiceIpml service;
 
     @GetMapping("/{email}/{password}/login")
     public int login(@PathVariable("email")String email, @PathVariable("password")String password){

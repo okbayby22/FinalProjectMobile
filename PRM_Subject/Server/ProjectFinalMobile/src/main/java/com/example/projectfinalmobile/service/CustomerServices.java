@@ -10,4 +10,6 @@ public interface CustomerServices {
     boolean checkDuplicateEmail(String email);
     boolean checkDuplicatePhone(String phone);
     Customer insertCustomer(Customer customer);
+    boolean checkPassword(String password,String email);
+    boolean updateCusPassword(String password,String email);
 }

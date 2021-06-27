@@ -123,7 +123,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull @org.jetbrains.annotations.NotNull MenuItem item) {
+    public boolean onNavigationItemSelected( MenuItem item) {
         switch (item.getItemId()){
             case R.id.mainmenu_btnprofile:
                 Intent intent=new Intent(this,UserProfile.class);
@@ -135,6 +135,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.mainmenu_btnMyDiscount:
                 break;
             case R.id.mainmenu_btnChangePass:
+                intent=new Intent(this,UserChangePassword.class);
+                intent.putExtra("USER_EMAIL", userEmail);
+                startActivity(intent);
                 break;
         }
         homepageDrawer.closeDrawer(GravityCompat.START);

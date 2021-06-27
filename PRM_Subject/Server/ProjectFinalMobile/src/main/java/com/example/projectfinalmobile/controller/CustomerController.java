@@ -45,4 +45,13 @@ public class CustomerController {
     public Customer updateCusInfor(@RequestBody Customer customer){
         return service.updateCusInfor(customer);
     }
+
+    @PutMapping("/{password}/{email}/updateCusPassword")
+    public boolean updateCusPassword(@PathVariable("password")String password,@PathVariable("email")String email){
+        return service.updateCusPassword(password,email);
+    }
+    @GetMapping("/{password}/{email}/checkPassword")
+    public boolean checkPassword(@PathVariable("password")String password,@PathVariable("email")String email){
+        return service.checkPassword(password,email);
+    }
 }

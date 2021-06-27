@@ -1,31 +1,20 @@
 package com.example.buffetrestaurent.Controler;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.CustomerService;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

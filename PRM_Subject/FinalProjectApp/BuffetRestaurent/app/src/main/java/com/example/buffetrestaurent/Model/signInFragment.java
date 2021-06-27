@@ -99,8 +99,15 @@ public class signInFragment extends Fragment {
                                 Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
                                 txtError.setText("");
                                 //intent : transfer to insert_teacher_actitvity
+                                Intent intent = new Intent(v.getContext() , HomePage.class );
+                                intent.putExtra("USER_EMAIL", txtEmail.getText().toString());
+                                startActivity(intent);
+                            }else if(check == 1){
+                                Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
+                                txtError.setText("");
+                                //intent : transfer to insert_teacher_actitvity
                                 Intent intent = new Intent(v.getContext() , HomePageStaff.class );
-                                //intent.putExtra("emailUser", txtEmail.getText().toString());
+                                intent.putExtra("USER_EMAIL", txtEmail.getText().toString());
                                 startActivity(intent);
                             }
                             else{
