@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -17,8 +19,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Controler.HomePage;
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.Utils.Apis;
+import com.example.buffetrestaurent.Utils.CustomerService;
 import com.example.buffetrestaurent.Utils.ReservationService;
 
 import java.text.DecimalFormat;
@@ -44,12 +49,18 @@ public class AddReservation extends AppCompatActivity {
     CalendarView calendarView;
     DecimalFormat vnd = new DecimalFormat("###,###");
     String date;
+    CustomerService customerService;
+    String userEmail;
+    Customer customerInfor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Add reservation");
+
         timepick = findViewById(R.id.AddReservation_txtTimePick);           //Text to show time
         plus = findViewById(R.id.AddReservation_btnIncrease);               //Plus button to increase number of tickets
         minus = findViewById(R.id.AddReservation_btnDecrease);              //Minus button to increase number of tickets
@@ -69,18 +80,16 @@ public class AddReservation extends AppCompatActivity {
         phone.setFocusableInTouchMode(false);
         phone.setClickable(false);
         date = sdf.format(curdate);
-        /*
-        Set Event on Date Change on Calendar View
-         */
+
+        userEmail= getIntent().getStringExtra("USER_EMAIL");
+        customerInfor=new Customer();
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 date = year + "-" + month+1 + "-" + dayOfMonth;
             }
         });
-        name.setHint("Enter your name");
-        phone.setHint("Enter your phone number");
-        price.setText(vnd.format(numsOftickets * 200000) + " VND");
         /*
         Set Event on Click on Button Add
          */
@@ -171,6 +180,40 @@ public class AddReservation extends AppCompatActivity {
                 timepicker.show();
             }
         });
+        loadData();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePage.class );
+                intent.putExtra("USER_EMAIL", userEmail);
+                startActivity(intent);
+                return true;
+        }
+        return true;
+    }
+
+    public void loadData(){
+        customerService = Apis.getCustomerService();
+        Call<Customer> call=customerService.getUserInfor(userEmail);
+        call.enqueue(new Callback<Customer>() {
+            @Override
+            public void onResponse(Call<Customer> call, Response<Customer> response) {
+                if(response.isSuccessful()) {
+                    customerInfor = response.body();
+
+                    name.setText(customerInfor.getCustomerName());
+                    phone.setText(customerInfor.getCustomerPhone());
+                    price.setText(vnd.format(numsOftickets * 200000) + " VND");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Customer> call, Throwable t) {
+                Log.e("Error:",t.getMessage());
+            }
+        });
+    }
 }

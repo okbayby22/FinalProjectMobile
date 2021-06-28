@@ -61,7 +61,7 @@ public class UserChangePassword extends AppCompatActivity {
             txtPassError.setText("Password can not empty !!!");
             check = false;
         }else if(!matcher.matches()) {
-            txtPassError.setText("Password are not match strong");
+            txtPassError.setText("Password must have 8 to 20 character and contain at least 1 digit, lowercase character, uppercase character, special character");
             check = false;
         }
         else{
@@ -114,6 +114,9 @@ public class UserChangePassword extends AppCompatActivity {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
                     Toast.makeText(UserChangePassword.this,"Update successful !",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(UserChangePassword.this , HomePage.class );
+                    intent.putExtra("USER_EMAIL", userEmail);
+                    startActivity(intent);
                 }
             }
 

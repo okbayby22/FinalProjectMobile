@@ -35,16 +35,21 @@ public class tableFragement extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     RecyclerView recyclerView;
-    List <Desk> desksList ;
+    List <Desk> desksList,deskListOnStatus;
     DeskAdapter deskAdapter;
     DeskService deskService;
+    int deskStatus;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public tableFragement() {
+    public tableFragement(int deskStatus) {
         // Required empty public constructor
+        this.deskStatus=deskStatus;
+    }
+
+    public tableFragement() {
     }
 
     /**
@@ -92,7 +97,13 @@ public class tableFragement extends Fragment {
             @Override
             public void onResponse(Call<List<Desk>> call, Response<List<Desk>> response) {
                 desksList = response.body();
-                deskAdapter = new DeskAdapter(getContext(),desksList);
+                deskListOnStatus=new ArrayList<>();
+                for(Desk i:desksList){
+                    if(i.getDeskStatus()==deskStatus){
+                        deskListOnStatus.add(i);
+                    }
+                }
+                deskAdapter = new DeskAdapter(getContext(),deskListOnStatus);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                 mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(mLayoutManager);
