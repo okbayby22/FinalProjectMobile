@@ -27,4 +27,10 @@ public interface CustomerService {
 
     @PUT("updateInfor")
     Call<Customer> updateCusInfor(@Body Customer customer);
+
+    @PUT("{password}/{email}/updateCusPassword")
+    Call<Boolean> updateCusPassword(@Path("password")String password,@Path("email")String email);
+
+    @GET("{password}/{email}/checkPassword")
+    Call<Boolean> checkPassword(@Path("password")String password,@Path("email")String email);
 }
