@@ -61,7 +61,7 @@ public class UserChangePassword extends AppCompatActivity {
             txtPassError.setText("Password can not empty !!!");
             check = false;
         }else if(!matcher.matches()) {
-            txtPassError.setText("Password must have 8 to 20 character and contain at least 1 digit, lowercase character, uppercase character, special character");
+            txtPassError.setText("Password must have 8 to 20 characters,at least 1 digit,lowercase character,uppercase character,special character");
             check = false;
         }
         else{
