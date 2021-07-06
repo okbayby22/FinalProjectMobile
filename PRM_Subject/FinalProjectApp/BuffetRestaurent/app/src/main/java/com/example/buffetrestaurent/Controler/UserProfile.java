@@ -69,7 +69,7 @@ public class UserProfile extends AppCompatActivity {
             public void onResponse(Call<Customer> call, Response<Customer> response) {
                 if(response.isSuccessful()) {
                     customerInfor = response.body();
-                    txtName.setText(customerInfor.getCustomerEmail());
+                    txtName.setText(customerInfor.getCustomerName());
                     txtAddress.setText(customerInfor.getCustomerAddress());
                     txtPhone.setText(customerInfor.getCustomerPhone());
                     txtEmail.setText(customerInfor.getCustomerEmail());
