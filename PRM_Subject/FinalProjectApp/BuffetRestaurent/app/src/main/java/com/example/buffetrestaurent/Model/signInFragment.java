@@ -137,27 +137,25 @@ public class signInFragment extends Fragment {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 auth.signInWithEmailAndPassword(txtEmail.getText().toString(), md5(txtPass.getText().toString())).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        if(response.isSuccessful()){
-                            Integer check=response.body();
-                            if(check==9){
-                                Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
-                                txtError.setText("");
-                                //intent : transfer to insert_teacher_actitvity
-                                Intent intent = new Intent(v.getContext() , HomePage.class );
-                                intent.putExtra("USER_EMAIL", txtEmail.getText().toString());
-                                startActivity(intent);
-                            }else if(check == 1){
-                                Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
-                                txtError.setText("");
-                                //intent : transfer to insert_teacher_actitvity
-                                Intent intent = new Intent(v.getContext() , HomePageStaff.class );
-                                intent.putExtra("USER_EMAIL", txtEmail.getText().toString());
-                                startActivity(intent);
-                            }
-                            else{
-                                txtError.setText("Email or password is incorrect !!");
-                            }
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("customers")
+                                .whereEqualTo("customerName",txtEmail.getText().toString())
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                String userEmail = txtEmail.getText().toString();
+                                                txtEmail.setText("");
+                                                txtPass.setText("");
+                                                Intent intent = new Intent(v.getContext(), HomePage.class);
+                                                intent.putExtra("USER_EMAIL", userEmail);
+                                                startActivity(intent);
+                                            }
+                                        } else {
 
                                         }
                                     }
@@ -190,7 +188,6 @@ public class signInFragment extends Fragment {
         });
         return rootView;
     }
-
 
     private String md5(String pass) {
         try {
