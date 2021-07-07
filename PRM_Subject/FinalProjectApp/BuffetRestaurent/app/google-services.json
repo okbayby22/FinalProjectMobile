@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "525740418676",
+    "firebase_url": "https://buffetrestaurant-e631f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "buffetrestaurant-e631f",
+    "storage_bucket": "buffetrestaurant-e631f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525740418676:android:b5042eab92fc6057531321",
+        "android_client_info": {
+          "package_name": "com.example.buffetrestaurent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525740418676-f6ko3vod2sn98qiie442ao19b146iu1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC-5e1xBMzDk2YNOi8aug_smn8Gd-fKVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525740418676-f6ko3vod2sn98qiie442ao19b146iu1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
