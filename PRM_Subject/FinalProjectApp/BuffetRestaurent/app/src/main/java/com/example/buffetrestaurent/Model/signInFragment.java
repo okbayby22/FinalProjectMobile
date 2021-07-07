@@ -3,6 +3,7 @@ package com.example.buffetrestaurent.Model;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -19,6 +20,21 @@ import com.example.buffetrestaurent.MainActivity;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.CustomerService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +49,8 @@ public class signInFragment extends Fragment {
 
     Button btnSignIn;
     CustomerService service;
-    TextView txtEmail,txtPass,txtError;
+    TextView txtEmail, txtPass, txtError;
+    private FirebaseAuth mAuth;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,17 +97,45 @@ public class signInFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        btnSignIn= rootView.findViewById(R.id.btnSignIn);
-        txtEmail= rootView.findViewById(R.id.signIn_txtEmail);
-        txtPass= rootView.findViewById(R.id.signIn_txtPass);
-        txtError= rootView.findViewById(R.id.signIn_txtError);
+        btnSignIn = rootView.findViewById(R.id.btnSignIn);
+        txtEmail = rootView.findViewById(R.id.signIn_txtEmail);
+        txtPass = rootView.findViewById(R.id.signIn_txtPass);
+        txtError = rootView.findViewById(R.id.signIn_txtError);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                service= Apis.getCustomerService();
-                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
-                call.enqueue(new Callback<Integer>() {
+//                service= Apis.getCustomerService();
+//                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
+//                call.enqueue(new Callback<Integer>() {
+//                    @Override
+//                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+//                        if(response.isSuccessful()){
+//                            Integer check=response.body();
+//                            if(check==9){
+//                                Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
+//                                txtError.setText("");
+//                                //intent : transfer to insert_teacher_actitvity
+//                                String userEmail=txtEmail.getText().toString();
+//                                txtEmail.setText("");
+//                                txtPass.setText("");
+//                                Intent intent = new Intent(v.getContext() , HomePage.class );
+//                                intent.putExtra("USER_EMAIL", userEmail);
+//                                startActivity(intent);
+//                            }
+//                            else{
+//                                txtError.setText("Email or password is incorrect !!");
+//                            }
+//
+//                        }
+//                    }
+//                    @Override
+//                    public void onFailure(Call<Integer> call, Throwable t) {
+//                        Log.e("Error:",t.getMessage());
+//                    }
+//                });
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                auth.signInWithEmailAndPassword(txtEmail.getText().toString(), md5(txtPass.getText().toString())).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
                         if(response.isSuccessful()){
@@ -114,15 +159,63 @@ public class signInFragment extends Fragment {
                                 txtError.setText("Email or password is incorrect !!");
                             }
 
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<Integer> call, Throwable t) {
-                        Log.e("Error:",t.getMessage());
+                                        }
+                                    }
+                                });
+                        db.collection("staffs")
+                                .whereEqualTo("StaffEmail",txtEmail.getText().toString())
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                String userEmail = txtEmail.getText().toString();
+                                                txtEmail.setText("");
+                                                txtPass.setText("");
+                                                Intent intent = new Intent(v.getContext(), HomePageStaff.class);
+                                                intent.putExtra("USER_EMAIL", userEmail);
+                                                startActivity(intent);
+                                            }
+                                        } else {
+
+                                        }
+                                    }
+                                });
                     }
                 });
+
+
             }
         });
         return rootView;
+    }
+
+
+    private String md5(String pass) {
+        try {
+
+            // Static getInstance method is called with hashing MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // digest() method is called to calculate message digest
+            //  of an input digest() return array of byte
+            byte[] messageDigest = md.digest(pass.getBytes());
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
