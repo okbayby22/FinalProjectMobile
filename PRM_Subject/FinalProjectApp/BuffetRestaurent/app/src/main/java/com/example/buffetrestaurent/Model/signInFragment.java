@@ -167,14 +167,12 @@ public class signInFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
                                                 String userEmail = txtEmail.getText().toString();
                                                 txtEmail.setText("");
                                                 txtPass.setText("");
                                                 Intent intent = new Intent(v.getContext(), HomePageStaff.class);
                                                 intent.putExtra("USER_EMAIL", userEmail);
                                                 startActivity(intent);
-                                            }
                                         } else {
 
                                         }
