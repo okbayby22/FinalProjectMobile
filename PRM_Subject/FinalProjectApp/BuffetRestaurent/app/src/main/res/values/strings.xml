@@ -23,5 +23,6 @@
     <string name="strName">Name</string>
     <string name="strPhone">Phone</string>
     <string name="strAddress">Address</string>
+    <string name="strMenu">Menu</string>
 
 </resources>

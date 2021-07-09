@@ -18,7 +18,8 @@
         <activity
             android:name=".Controler.UserProfile"
             android:parentActivityName=".Controler.HomePage" />
-        <activity android:name=".HomePageStaff" />
+        <activity android:name=".HomePageStaff"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".AddReservation" />
         <activity
             android:name=".Controler.HomePage"
