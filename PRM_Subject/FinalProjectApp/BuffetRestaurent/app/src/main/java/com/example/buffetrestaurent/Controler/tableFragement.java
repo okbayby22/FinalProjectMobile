@@ -73,6 +73,7 @@ public class tableFragement extends Fragment {
         // Inflate the layout for this fragment
         View rootView= inflater.inflate(R.layout.fragment_table_fragement, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.homepage_listFoodList);
+        desksList = new ArrayList<>();
         desksList.add(new Desk(1,1,1));
         deskAdapter = new DeskAdapter(desksList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(rootView.getContext());

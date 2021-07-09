@@ -1,10 +1,12 @@
 package com.example.buffetrestaurent;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,11 +22,18 @@ import android.widget.Toast;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.ReservationService;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +84,9 @@ public class AddReservation extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                date = year + "-" + month+1 + "-" + dayOfMonth;
+                System.out.println(dayOfMonth);
+                date = (month+1) + "/" + dayOfMonth + "/" + year;
+                System.out.println(date);
             }
         });
         name.setHint("Enter your name");
@@ -108,21 +119,38 @@ public class AddReservation extends AppCompatActivity {
                     }).show();
                 }
                 else {
-                    Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
-                    service = Apis.getReservationService();
-                    Call<Reservation> call = service.addReservation(reservation, date);
-                    call.enqueue(new Callback<Reservation>() {
-                        @Override
-                        public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(v.getContext(), "Add successful !", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Reservation> call, Throwable t) {
-                            Log.e("Error:", t.getMessage());
-                        }
-                    });
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("reservationId", 4);
+                    try {
+                        user.put("reservationDate", new SimpleDateFormat("MM/dd/yyyy").parse(date));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    user.put("reservationTime", timepick.getText().toString());
+                    user.put("reservationStatus", status);
+                    user.put("numberTickets", numogticket);
+                    user.put("reservationAmount", amount);
+                    user.put("deskId", 0);
+                    user.put("customerId", 1);
+                    user.put("discountId", 1);
+                    user.put("staffId", 1);
+
+                    db.collection("reservations")
+                            .add(user)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Intent intent = new Intent(v.getContext(),CancelReservation.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("AC", "Error adding document", e);
+                                }
+                            });
                 }
             }
         });

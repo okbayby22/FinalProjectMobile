@@ -141,45 +141,42 @@ public class signInFragment extends Fragment {
                         Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("customers")
-                                .whereEqualTo("customerName",txtEmail.getText().toString())
+                                .whereEqualTo("customerName", txtEmail.getText().toString())
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                String userEmail = txtEmail.getText().toString();
-                                                txtEmail.setText("");
-                                                txtPass.setText("");
-                                                Intent intent = new Intent(v.getContext(), HomePage.class);
-                                                intent.putExtra("USER_EMAIL", userEmail);
-                                                startActivity(intent);
-                                            }
+                                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> Toi day");
+                                            String userEmail = txtEmail.getText().toString();
+                                            Intent intent = new Intent(v.getContext(), HomePage.class);
+                                            intent.putExtra("USER_EMAIL", userEmail);
+                                            startActivity(intent);
+                                            txtEmail.setText("");
+                                            txtPass.setText("");
                                         } else {
+                                            db.collection("staffs")
+                                                    .whereEqualTo("StaffEmail", txtEmail.getText().toString())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                String userEmail = txtEmail.getText().toString();
+                                                                Intent intent = new Intent(v.getContext(), HomePageStaff.class);
+                                                                intent.putExtra("USER_EMAIL", userEmail);
+                                                                startActivity(intent);
+                                                                txtEmail.setText("");
+                                                                txtPass.setText("");
+                                                            } else {
 
+                                                            }
+                                                        }
+                                                    });
                                         }
                                     }
                                 });
-                        db.collection("staffs")
-                                .whereEqualTo("StaffEmail",txtEmail.getText().toString())
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                String userEmail = txtEmail.getText().toString();
-                                                txtEmail.setText("");
-                                                txtPass.setText("");
-                                                Intent intent = new Intent(v.getContext(), HomePageStaff.class);
-                                                intent.putExtra("USER_EMAIL", userEmail);
-                                                startActivity(intent);
-                                            }
-                                        } else {
 
-                                        }
-                                    }
-                                });
                     }
                 });
 

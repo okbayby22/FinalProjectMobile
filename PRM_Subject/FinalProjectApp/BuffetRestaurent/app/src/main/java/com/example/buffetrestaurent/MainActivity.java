@@ -24,6 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,18 +45,26 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> user = new HashMap<>();
-        user.put("StaffId", 2);
-        user.put("StaffName", "Jakizer");
-        user.put("StaffEmail", "jakizer@gmail.com");
-        user.put("StaffAddress", "Can Tho");
-        user.put("StaffPhone", "0332444424");
-        user.put("StaffPassword", md5("123456"));
-        user.put("StaffGender", 1);
-        user.put("StaffRole", 1);
-        user.put("StaffStatus", 1);
-        user.put("StaffAvatar", "1");
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        Map<String, Object> user = new HashMap<>();
+//        user.put("reservationId", 2);
+//        try {
+//            user.put("reservationDate", new SimpleDateFormat("MM/dd/yyyy").parse("30/11/2021"));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        user.put("reservationTime", "22:00");
+//        user.put("reservationStatus", 0);
+//        user.put("numberTickets", 4);
+//        user.put("reservationAmount", 4*200000);
+//        user.put("deskId", 2);
+//        user.put("customerId", 2);
+//        user.put("discountId", 1);
+//        user.put("staffId", 1);
+
+
+
+
 
 //
 //        FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -66,20 +77,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        db.collection("staffs")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("AC", "Error adding document", e);
-                    }
-                });
+//        db.collection("reservations")
+//                .add(user)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("AC", "Error adding document", e);
+//                    }
+//                });
 
         pagerAdapter = new PagerAdapter(this
         );

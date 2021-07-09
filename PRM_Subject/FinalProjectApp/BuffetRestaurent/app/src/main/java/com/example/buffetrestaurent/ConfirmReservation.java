@@ -1,5 +1,6 @@
 package com.example.buffetrestaurent;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -11,13 +12,26 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.ReservationAdapter;
 import com.example.buffetrestaurent.Model.Reservation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfirmReservation extends AppCompatActivity {
 
@@ -26,38 +40,76 @@ public class ConfirmReservation extends AppCompatActivity {
     ReservationAdapter reserAdap;
 
     public static ArrayList<Reservation> listAll;
-    public static ArrayList<Reservation> list;
+
+
+    CollectionReference colRef;
 
     int AllPosition;
 
-    private ArrayList<Reservation> loadReservation() {
+    private void loadReservation() {
         listAll = new ArrayList<>();
-        listAll.add(new Reservation(Date.valueOf("2021-06-17"),"15:00",0,3,600000.00,1,1,1,1));
-        listAll.add(new Reservation(Date.valueOf("2021-06-18"),"15:00",0,3,700000.00,1,2,1,1));
-        listAll.add(new Reservation(Date.valueOf("2021-06-19"),"14:00",0,3,700000.00,1,2,1,1));
-        listAll.add(new Reservation(Date.valueOf("2021-06-20"),"15:00",0,3,700000.00,1,1,1,1));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("reservations")
+                .whereEqualTo("reservationStatus",0)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                Reservation res = document.toObject(Reservation.class);
+                                listAll.add(res);
+                            }
+                            reserAdap = new ReservationAdapter(listAll, ConfirmReservation.this); //Call LecturerAdapter to set data set and show data
+                            LinearLayoutManager manager = new LinearLayoutManager(ConfirmReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
+                            recyclerView.setAdapter(reserAdap);
+                            recyclerView.setLayoutManager(manager);
+                        } else{
 
-        list = new ArrayList<>();
-        for (Reservation item:listAll){
-            if(item.getReservationStatus() == 0){
-                list.add(item);
-            }
-        }
-        return list;
+                        }
+                    }
+                });
+    }
+
+//    private void readData(FireStoreCallBack fireStoreCallBack) {
+//
+//        colRef.whereEqualTo("reservationStatus",0).get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                System.out.println(">>>>>>>>>>>>> Toi day");
+//                                Reservation res = document.toObject(Reservation.class);
+//                                listAll.add(res);
+//                            }
+//                            fireStoreCallBack.onCallback(listAll);
+//                        } else {
+//                            Log.d("TAG", "Error getting documents: ", task.getException());
+//                        }
+//
+//                    }
+//                });
+//    }
+
+
+
+    private interface FireStoreCallBack {
+        void onCallback(ArrayList<Reservation> list);
     }
 
     public void showData() {
-        reserAdap = new ReservationAdapter(list, ConfirmReservation.this); //Call LecturerAdapter to set data set and show data
+        reserAdap = new ReservationAdapter(listAll, ConfirmReservation.this); //Call LecturerAdapter to set data set and show data
         LinearLayoutManager manager = new LinearLayoutManager(ConfirmReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
         recyclerView.setAdapter(reserAdap);
         recyclerView.setLayoutManager(manager);
     }
 
-    private void filter(String s){
+    private void filter(String s) {
         ArrayList<Reservation> newlist = new ArrayList<>();
 
-        for (Reservation item : list){
-            if(String.valueOf(item.getCustomerId()).toLowerCase().contains(s.toLowerCase())){
+        for (Reservation item : listAll) {
+            if (String.valueOf(item.getCustomerId()).toLowerCase().contains(s.toLowerCase())) {
                 newlist.add(item);
             }
         }
@@ -87,26 +139,48 @@ public class ConfirmReservation extends AppCompatActivity {
             }
         });
         recyclerView = findViewById(R.id.ConfirmReservation_recycler); //Get the recycler View by ID
-        list = loadReservation(); //Call method to load Lecturer Information to list
-        showData();
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>Here");
         getSupportActionBar().hide();
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        loadReservation();
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
-            public boolean onMove( RecyclerView recyclerView,  RecyclerView.ViewHolder viewHolder,  RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
-            public void onSwiped( RecyclerView.ViewHolder viewHolder, int direction) {
-                switch(direction){
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                switch (direction) {
                     case ItemTouchHelper.LEFT:
-                        //list.get(viewHolder.getAdapterPosition()).setReservationStatus(2);
-                        list.remove(viewHolder.getAdapterPosition());
-                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Delete Status").setMessage("Delete Successfully").show();
-                        reserAdap.notifyDataSetChanged();
+                        Map<String,Object> updateData = new HashMap<>();
+                        updateData.put("reservationStatus",2);
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("reservations")
+                                .whereEqualTo("reservationId",listAll.get(viewHolder.getAdapterPosition()).getReservationId())
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful() && !task.getResult().isEmpty()){
+                                    DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                    String docID = doc.getId();
+                                    db.collection("reservations")
+                                            .document(docID)
+                                            .update(updateData)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                    listAll.remove(viewHolder.getAdapterPosition());
+                                                    new AlertDialog.Builder(ConfirmReservation.this).setTitle("Delete Reservation Notice").setMessage("Delete Reservation Successfully").show();
+                                                    reserAdap.notifyDataSetChanged();
+                                                }
+                                            });
+                                }
+                            }
+                        });
                         break;
                     case ItemTouchHelper.RIGHT:
-                        list.get(viewHolder.getAdapterPosition()).setReservationStatus(1);
+                        listAll.get(viewHolder.getAdapterPosition()).setReservationStatus(1);
                         new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice").setMessage("Confirm Reservation Successfully").show();
                         reserAdap.notifyDataSetChanged();
                 }
@@ -114,7 +188,6 @@ public class ConfirmReservation extends AppCompatActivity {
 
             }
         }).attachToRecyclerView(recyclerView);
-        
 
 
     }
