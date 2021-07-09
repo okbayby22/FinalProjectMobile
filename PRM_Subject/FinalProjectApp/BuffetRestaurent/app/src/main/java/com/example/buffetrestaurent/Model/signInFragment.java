@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -149,7 +150,8 @@ public class signInFragment extends Fragment {
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
+                                        QuerySnapshot query = task.getResult();
+                                        if (!query.isEmpty()) {
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 String userEmail = txtEmail.getText().toString();
                                                 txtEmail.setText("");
@@ -159,25 +161,24 @@ public class signInFragment extends Fragment {
                                                 startActivity(intent);
                                             }
                                         } else {
+                                            db.collection("staffs")
+                                                    .whereEqualTo("StaffEmail",txtEmail.getText().toString())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                String userEmail = txtEmail.getText().toString();
+                                                                txtEmail.setText("");
+                                                                txtPass.setText("");
+                                                                Intent intent = new Intent(v.getContext(), HomePageStaff.class);
+                                                                intent.putExtra("USER_EMAIL", userEmail);
+                                                                startActivity(intent);
+                                                            } else {
 
-                                        }
-                                    }
-                                });
-                        db.collection("staffs")
-                                .whereEqualTo("StaffEmail",txtEmail.getText().toString())
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                                String userEmail = txtEmail.getText().toString();
-                                                txtEmail.setText("");
-                                                txtPass.setText("");
-                                                Intent intent = new Intent(v.getContext(), HomePageStaff.class);
-                                                intent.putExtra("USER_EMAIL", userEmail);
-                                                startActivity(intent);
-                                        } else {
-
+                                                            }
+                                                        }
+                                                    });
                                         }
                                     }
                                 });

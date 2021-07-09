@@ -34,17 +34,6 @@
             android:name=".Controler.HomePage"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".UpdateReservation" />
-<<<<<<<<< Temporary merge branch 1
-        <activity android:name=".ConfirmReservation">
-=========
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
->>>>>>>>> Temporary merge branch 2
-        </activity>
         <activity android:name=".CancelReservation" />
     </application>
 

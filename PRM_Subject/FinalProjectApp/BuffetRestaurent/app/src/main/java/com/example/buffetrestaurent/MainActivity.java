@@ -62,17 +62,17 @@ public class MainActivity extends AppCompatActivity {
 // Create a reference from an HTTPS URL
 // Note that in the URL, characters are URL escaped!
         //StorageReference httpsReference = imagesRef.getReferenceFromUrl("https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg");
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("StaffId", 2);
-//        user.put("StaffName", "Jakizer");
-//        user.put("StaffEmail", "jakizer@gmail.com");
-//        user.put("StaffAddress", "Can Tho");
-//        user.put("StaffPhone", "0332444424");
-//        user.put("StaffPassword", md5("123456"));
-//        user.put("StaffGender", 1);
-//        user.put("StaffRole", 1);
-//        user.put("StaffStatus", 1);
-//        user.put("StaffAvatar", "1");
+// Map<String, Object> user = new HashMap<>();
+// user.put("staffId", 2);
+// user.put("staffName", "Jakizer");
+// user.put("staffEmail", "jakizer@gmail.com");
+// user.put("staffAddress", "Can Tho");
+// user.put("staffPhone", "0332444424");
+// user.put("staffPassword", md5("123456"));
+// user.put("staffGender", 1);
+// user.put("staffRole", 1);
+// user.put("staffStatus", 1);
+// user.put("staffAvatar", "1");
 
 //
 //        FirebaseAuth auth = FirebaseAuth.getInstance();

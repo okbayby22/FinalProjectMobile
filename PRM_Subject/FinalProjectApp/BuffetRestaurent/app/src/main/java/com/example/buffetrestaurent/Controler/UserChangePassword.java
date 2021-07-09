@@ -1,5 +1,6 @@
 package com.example.buffetrestaurent.Controler;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,11 +11,30 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.HomePageStaff;
 import com.example.buffetrestaurent.Model.Customer;
+import com.example.buffetrestaurent.Model.Desk;
+import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.CustomerService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,35 +44,41 @@ import retrofit2.Response;
 
 public class UserChangePassword extends AppCompatActivity {
 
-    String userEmail;
-    CustomerService customerService;
+    String staffEmail,userRole;
+    Staff staff;
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_change_password);
-        userEmail= getIntent().getStringExtra("USER_EMAIL");
+        staffEmail= getIntent().getStringExtra("USER_EMAIL");
+        userRole= getIntent().getStringExtra("USER_ROLE");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strChangePass);
         txtPassword = findViewById(R.id.changePassword_txtPassword);
         txtConfirmPass = findViewById(R.id.changePassword_txtConfirmPassword);
         txtPassError = findViewById(R.id.changePassword_txtPasswordError);
         txtCPassError = findViewById(R.id.changePassword_txtConfirmPasswordError);
+        getStaff();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this , HomePage.class );
-                intent.putExtra("USER_EMAIL", userEmail);
+                Intent intent;
+                if(userRole.equals("staff")){
+                    intent= new Intent(this , HomePageStaff.class );
+                }else{
+                    intent= new Intent(this , HomePage.class );
+                }
+                intent.putExtra("USER_EMAIL", staffEmail);
                 startActivity(intent);
                 return true;
         }
         return true;
     }
-
     public void update_Click(View view) {
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
         Matcher matcher = pattern.matcher(txtPassword.getText().toString());
@@ -76,55 +102,91 @@ public class UserChangePassword extends AppCompatActivity {
             checkPassword();
             txtCPassError.setText("");
         }
-        else {
-            txtCPassError.setText("");
 
-        }
 
+    }
+    public void getStaff(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("staffs")
+                .whereEqualTo("staffEmail",staffEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            staff = document.toObject(Staff.class);
+                        }
+                    }
+                })
+        ;
     }
     public void checkPassword(){
-    customerService = Apis.getCustomerService();
-    Call<Boolean> call=customerService.checkPassword(txtPassword.getText().toString(),userEmail);
-    call.enqueue(new Callback<Boolean>() {
-        @Override
-        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-            if(response.isSuccessful()) {
-               boolean check = response.body();
-               if(check){
-                   updateToDB();
-               }else{
-                   txtPassError.setText("Password is alredady exist");
-               }
-            }
-
-        }
-
-        @Override
-        public void onFailure(Call<Boolean> call, Throwable t) {
-            Log.e("Error:",t.getMessage());
-            Toast.makeText(UserChangePassword.this,"Error !!!!",Toast.LENGTH_LONG).show();
-        }
-    });
+        String password = txtPassword.getText().toString();
+       if(staff.getStaffPassword().equals(md5(password))){
+           txtPassError.setText("Password has been existed");
+       }else{
+           updateToDB();
+       }
     }
-    public void updateToDB(){
-        customerService = Apis.getCustomerService();
-        Call<Boolean> call=customerService.updateCusPassword(txtPassword.getText().toString(),userEmail);
-        call.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if(response.isSuccessful()) {
-                    Toast.makeText(UserChangePassword.this,"Update successful !",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(UserChangePassword.this , HomePage.class );
-                    intent.putExtra("USER_EMAIL", userEmail);
-                    startActivity(intent);
-                }
-            }
 
+
+    public void updateToDB(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("staffPassword", md5(txtPassword.getText().toString()));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("staffs").document(staff.getStaffId())
+                .update(data)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.e("Error:",t.getMessage());
-                Toast.makeText(UserChangePassword.this,"Error !!!!",Toast.LENGTH_LONG).show();
+            public void onSuccess(Void unused) {
+                Toast.makeText(UserChangePassword.this,"Update successful !",Toast.LENGTH_LONG).show();
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+               // auth.updateCurrentUser(user);
+                user.updatePassword(md5(txtPassword.getText().toString())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            txtPassword.setText("");
+                            txtConfirmPass.setText("");
+                        }
+                    }
+                });
             }
-        });
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@androidx.annotation.NonNull @NotNull Exception e) {
+                        Log.e("Error:",e.getMessage());
+                        Toast.makeText(UserChangePassword.this,"Error !!!!",Toast.LENGTH_LONG).show();
+                    }
+                });;
+    }
+
+    private String md5(String pass) {
+        try {
+
+            // Static getInstance method is called with hashing MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // digest() method is called to calculate message digest
+            //  of an input digest() return array of byte
+            byte[] messageDigest = md.digest(pass.getBytes());
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

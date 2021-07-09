@@ -57,6 +57,7 @@ public class HomePageStaff extends AppCompatActivity {
                     case R.id.staffmenu_btnprofile:
                         intent=new Intent(HomePageStaff.this, UserProfile.class);
                         intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
                         startActivity(intent);
                         break;
                     case R.id.staffmenu_btnReserHis:
@@ -66,11 +67,13 @@ public class HomePageStaff extends AppCompatActivity {
                     case R.id.staffmenu_btnChangePass:
                         intent=new Intent(HomePageStaff.this, UserChangePassword.class);
                         intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
                         startActivity(intent);
                         break;
                     case R.id.staffmenu_btnMenu:
                         intent=new Intent(HomePageStaff.this, MenuMangeForStaff.class);
                         intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
                         startActivity(intent);
                         break;
                 }

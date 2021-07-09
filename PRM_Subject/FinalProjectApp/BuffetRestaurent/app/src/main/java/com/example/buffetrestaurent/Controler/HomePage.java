@@ -42,7 +42,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         tabView=findViewById(R.id.homepage_ViewPage);
         bottomNavigationView=findViewById(R.id.bottom_navigation);
         homepageDrawer=findViewById(R.id.homepage_drawView);
-        homepageNavigationView=findViewById(R.id.homepagestaff_navView);
+        homepageNavigationView=findViewById(R.id.homepage_navView);
         homepageToolBar=findViewById(R.id.toolbar);
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
