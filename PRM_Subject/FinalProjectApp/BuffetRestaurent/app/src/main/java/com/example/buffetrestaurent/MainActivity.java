@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -43,7 +45,24 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> user = new HashMap<>();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference imagesRef = storageRef.child("ba-chi-heo.jpg");
+
+// Create a reference with an initial file path and name
+        //StorageReference pathReference = storageRef.child("images/stars.jpg");
+
+// Create a reference to a file from a Google Cloud Storage URI
+       // StorageReference gsReference = storage.getReferenceFromUrl("gs://bucket/images/stars.jpg");
+
+// Create a reference from an HTTPS URL
+// Note that in the URL, characters are URL escaped!
+        //StorageReference httpsReference = imagesRef.getReferenceFromUrl("https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg");
+//        Map<String, Object> user = new HashMap<>();
 //        user.put("StaffId", 2);
 //        user.put("StaffName", "Jakizer");
 //        user.put("StaffEmail", "jakizer@gmail.com");

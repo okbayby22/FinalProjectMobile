@@ -49,7 +49,7 @@ public class signInFragment extends Fragment {
 
     Button btnSignIn;
     CustomerService service;
-    TextView txtEmail, txtPass, txtError;
+    TextView txtEmail,txtPass,txtError;
     private FirebaseAuth mAuth;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -97,14 +97,17 @@ public class signInFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        btnSignIn = rootView.findViewById(R.id.btnSignIn);
-        txtEmail = rootView.findViewById(R.id.signIn_txtEmail);
-        txtPass = rootView.findViewById(R.id.signIn_txtPass);
-        txtError = rootView.findViewById(R.id.signIn_txtError);
+        btnSignIn= rootView.findViewById(R.id.btnSignIn);
+        txtEmail= rootView.findViewById(R.id.signIn_txtEmail);
+        txtPass= rootView.findViewById(R.id.signIn_txtPass);
+        txtError= rootView.findViewById(R.id.signIn_txtError);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                service= Apis.getCustomerService();
+//                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
+//                call.enqueue(new Callback<Integer>() {
 //                service= Apis.getCustomerService();
 //                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
 //                call.enqueue(new Callback<Integer>() {
@@ -141,7 +144,7 @@ public class signInFragment extends Fragment {
                         Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("customers")
-                                .whereEqualTo("customerName",txtEmail.getText().toString())
+                                .whereEqualTo("customerEmail",txtEmail.getText().toString())
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override

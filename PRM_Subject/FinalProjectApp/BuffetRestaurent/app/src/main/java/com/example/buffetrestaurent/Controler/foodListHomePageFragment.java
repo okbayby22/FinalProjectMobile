@@ -7,12 +7,18 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +83,7 @@ public class foodListHomePageFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_food_list_home_page, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.homepage_listFoodList);
-        fAdapter = new FoodsAdapter(foodList);
+        fAdapter = new FoodsAdapter(foodList,rootView.getContext());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(rootView.getContext());
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -88,29 +94,26 @@ public class foodListHomePageFragment extends Fragment {
     }
 
     private void prepareFoodData() {
-        Food food = new Food();
-        food.setFoodName("a");
-        foodList.add(food);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("food")
+                .whereEqualTo("foodType", foodType)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Food popularFood=new Food();
+                                popularFood.setFoodName(document.getString("foodName"));
+                                popularFood.setFoodImage(document.getString("foodImage"));
+                                foodList.add(popularFood);
+                            }
+                            fAdapter.notifyDataSetChanged();
+                        } else {
 
-        food = new Food();
-        food.setFoodName("b");
-        foodList.add(food);
+                        }
+                    }
+                });
 
-        food = new Food();
-        food.setFoodName("c");
-        foodList.add(food);
-
-        food = new Food();
-        food.setFoodName("d");
-        foodList.add(food);
-
-        food = new Food();
-        food.setFoodName("e");
-        foodList.add(food);
-
-        food = new Food();
-        food.setFoodName("f");
-        foodList.add(food);
-        fAdapter.notifyDataSetChanged();
     }
 }

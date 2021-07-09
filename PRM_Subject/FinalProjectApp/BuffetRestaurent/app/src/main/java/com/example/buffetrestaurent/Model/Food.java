@@ -7,6 +7,15 @@ public class Food {
     private String foodName;
     private String foodDescription;
     private String foodImage;
+    private int foodType;
+
+    public void setFoodType(int foodType) {
+        this.foodType = foodType;
+    }
+
+    public int getFoodType() {
+        return foodType;
+    }
 
     public Food() {
     }
