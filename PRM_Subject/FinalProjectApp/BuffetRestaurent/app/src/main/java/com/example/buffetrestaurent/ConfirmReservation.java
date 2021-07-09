@@ -50,21 +50,22 @@ public class ConfirmReservation extends AppCompatActivity {
         listAll = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("reservations")
-                .whereEqualTo("reservationStatus",0)
+                .whereEqualTo("reservationStatus", 0)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()){
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 Reservation res = document.toObject(Reservation.class);
+                                res.setReservationId(document.getId());
                                 listAll.add(res);
                             }
                             reserAdap = new ReservationAdapter(listAll, ConfirmReservation.this); //Call LecturerAdapter to set data set and show data
                             LinearLayoutManager manager = new LinearLayoutManager(ConfirmReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
                             recyclerView.setAdapter(reserAdap);
                             recyclerView.setLayoutManager(manager);
-                        } else{
+                        } else {
 
                         }
                     }
@@ -91,7 +92,6 @@ public class ConfirmReservation extends AppCompatActivity {
 //                    }
 //                });
 //    }
-
 
 
     private interface FireStoreCallBack {
@@ -153,36 +153,36 @@ public class ConfirmReservation extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 switch (direction) {
                     case ItemTouchHelper.LEFT:
-                        Map<String,Object> updateData = new HashMap<>();
-                        updateData.put("reservationStatus",2);
+                        Map<String, Object> updateData = new HashMap<>();
+                        updateData.put("reservationStatus", 2);
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("reservations")
-                                .whereEqualTo("reservationId",listAll.get(viewHolder.getAdapterPosition()).getReservationId())
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                                if(task.isSuccessful() && !task.getResult().isEmpty()){
-                                    DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                                    String docID = doc.getId();
-                                    db.collection("reservations")
-                                            .document(docID)
-                                            .update(updateData)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                    listAll.remove(viewHolder.getAdapterPosition());
-                                                    new AlertDialog.Builder(ConfirmReservation.this).setTitle("Delete Reservation Notice").setMessage("Delete Reservation Successfully").show();
-                                                    reserAdap.notifyDataSetChanged();
-                                                }
-                                            });
-                                }
-                            }
-                        });
+                                .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
+                                .update(updateData)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                        listAll.remove(viewHolder.getAdapterPosition());
+                                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Delete Reservation Notice").setMessage("Delete Reservation Successfully").show();
+                                        reserAdap.notifyDataSetChanged();
+                                    }
+                                });
                         break;
                     case ItemTouchHelper.RIGHT:
-                        listAll.get(viewHolder.getAdapterPosition()).setReservationStatus(1);
-                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice").setMessage("Confirm Reservation Successfully").show();
-                        reserAdap.notifyDataSetChanged();
+                        Map<String, Object> confirm = new HashMap<>();
+                        confirm.put("reservationStatus", 1);
+                        FirebaseFirestore fb = FirebaseFirestore.getInstance();
+                        fb.collection("reservations")
+                                .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
+                                .update(confirm)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                        listAll.remove(viewHolder.getAdapterPosition());
+                                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice").setMessage("Confirm Reservation Successfully").show();
+                                        reserAdap.notifyDataSetChanged();
+                                    }
+                                });
                 }
 
 

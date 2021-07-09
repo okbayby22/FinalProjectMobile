@@ -10,7 +10,7 @@ public class Reservation {
 
     @SerializedName("id")
     @Expose
-    private int reservationId;
+    private String reservationId;
     private Date reservationDate;
     private String reservationTime;
     private int reservationStatus;
@@ -36,11 +36,11 @@ public class Reservation {
         this.staffId = staffId;
     }
 
-    public int getReservationId() {
+    public String getReservationId() {
         return reservationId;
     }
 
-    public void setReservationId(int reservationId) {
+    public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
     }
 
