@@ -6,40 +6,140 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.buffetrestaurent.Controler.PagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     TabLayout mainTabLayout;
     ViewPager2 tabView;
     PagerAdapter pagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainTabLayout=findViewById(R.id.tabBar);
-        tabView=findViewById(R.id.viewPage);
+        mainTabLayout = findViewById(R.id.tabBar);
+        tabView = findViewById(R.id.viewPage);
 
         getSupportActionBar().hide();
 
-        pagerAdapter=new PagerAdapter(this
-                );
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference imagesRef = storageRef.child("ba-chi-heo.jpg");
+
+// Create a reference with an initial file path and name
+        //StorageReference pathReference = storageRef.child("images/stars.jpg");
+
+// Create a reference to a file from a Google Cloud Storage URI
+       // StorageReference gsReference = storage.getReferenceFromUrl("gs://bucket/images/stars.jpg");
+
+// Create a reference from an HTTPS URL
+// Note that in the URL, characters are URL escaped!
+        //StorageReference httpsReference = imagesRef.getReferenceFromUrl("https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg");
+//        Map<String, Object> user = new HashMap<>();
+//        user.put("StaffId", 2);
+//        user.put("StaffName", "Jakizer");
+//        user.put("StaffEmail", "jakizer@gmail.com");
+//        user.put("StaffAddress", "Can Tho");
+//        user.put("StaffPhone", "0332444424");
+//        user.put("StaffPassword", md5("123456"));
+//        user.put("StaffGender", 1);
+//        user.put("StaffRole", 1);
+//        user.put("StaffStatus", 1);
+//        user.put("StaffAvatar", "1");
+
+//
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//        auth.createUserWithEmailAndPassword("jakizer@gmail.com", md5("123456")).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//            }
+//        });
+
+
+
+//        db.collection("staffs")
+//                .add(user)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("AC", "Error adding document", e);
+//                    }
+//                });
+
+        pagerAdapter = new PagerAdapter(this
+        );
         tabView.setAdapter(pagerAdapter);
 
         new TabLayoutMediator(mainTabLayout, tabView, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                if(position==0){
+                if (position == 0) {
                     tab.setText(R.string.strSignIn);
-                }
-                else{
+                } else {
                     tab.setText(R.string.strSignUp);
                 }
             }
         }).attach();
+    }
+
+    private String md5(String pass) {
+        try {
+
+            // Static getInstance method is called with hashing MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // digest() method is called to calculate message digest
+            //  of an input digest() return array of byte
+            byte[] messageDigest = md.digest(pass.getBytes());
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        }
+
+        // For specifying wrong message digest algorithms
+        catch ( NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
