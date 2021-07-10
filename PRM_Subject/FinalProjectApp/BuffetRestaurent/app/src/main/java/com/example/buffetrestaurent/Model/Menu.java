@@ -4,50 +4,40 @@ import java.util.Date;
 
 public class Menu {
 
-    private int menuId;
-    private Date menuDate;
-    private String menuName;
-    private int staffId;
+    private String menuId;
+    private String menuDate;
+    private String staffId;
 
     public Menu() {
     }
 
-    public Menu(int menuId, Date menuDate, String menuName, int staffId) {
+    public Menu(String menuId, String menuDate, String staffId) {
         this.menuId = menuId;
         this.menuDate = menuDate;
-        this.menuName = menuName;
         this.staffId = staffId;
     }
 
-    public int getMenuId() {
+    public String getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(int menuId) {
+    public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
 
-    public Date getMenuDate() {
+    public String getMenuDate() {
         return menuDate;
     }
 
-    public void setMenuDate(Date menuDate) {
+    public void setMenuDate(String menuDate) {
         this.menuDate = menuDate;
     }
 
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public int getStaffId() {
+    public String getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(int staffId) {
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
 }

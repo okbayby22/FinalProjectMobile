@@ -3,7 +3,7 @@ package com.example.buffetrestaurent.Model;
 
 public class Customer {
 
-    private int customerId;
+    private String customerId;
     private String customerName;
     private String customerEmail;
     private String customerAddress;
@@ -31,11 +31,11 @@ public class Customer {
         this.customerAvatar = customerAvatar;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

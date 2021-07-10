@@ -73,6 +73,7 @@ public class UserProfile extends AppCompatActivity {
                 Intent intent = new Intent(this , HomePage.class );
                 intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
+                this.finish();
                 return true;
         }
         return true;
