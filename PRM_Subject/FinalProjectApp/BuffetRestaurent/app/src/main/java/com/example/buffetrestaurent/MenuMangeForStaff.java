@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Controler.AddMenuActivity;
 import com.example.buffetrestaurent.Controler.HomePage;
+import com.example.buffetrestaurent.Controler.UserProfile;
 import com.example.buffetrestaurent.Controler.customerMenuContent;
 import com.example.buffetrestaurent.Controler.staffMenuContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -52,7 +54,14 @@ public class MenuMangeForStaff extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Add Successful", Toast.LENGTH_SHORT).show();
+                Day day = collapsibleCalendar.getSelectedDay();
+                Log.i(getClass().getName(), "Selected Day: "
+                        + day.getYear() + "/" + (day.getMonth()+1) + "/" + day.getDay());
+                String date= day.getYear() + "/" + (day.getMonth()+1) + "/" + day.getDay();
+                Intent intent=new Intent(v.getContext(), AddMenuActivity.class);
+                intent.putExtra("SELECTED_DATE", date);
+                startActivity(intent);
+                finish();
             }
         });
 
