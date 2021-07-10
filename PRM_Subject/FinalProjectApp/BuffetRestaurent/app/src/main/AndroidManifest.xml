@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CancelReservation"></activity>
+        <activity android:name=".Controler.StaffProfile"></activity>
+        <activity android:name=".CancelReservation" />
         <activity
             android:name=".Controler.UserProfile"
             android:parentActivityName=".Controler.HomePage" />
@@ -21,7 +22,7 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".Controler.HomePage"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".UpdateReservation" />
         <activity android:name=".ConfirmReservation">
             <intent-filter>
