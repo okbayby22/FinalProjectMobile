@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -19,13 +20,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Controler.HomePage;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.ReservationService;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -53,12 +61,14 @@ public class AddReservation extends AppCompatActivity {
     CalendarView calendarView;
     DecimalFormat vnd = new DecimalFormat("###,###");
     String date;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation);
-        getSupportActionBar().hide();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.strAddRes);
         timepick = findViewById(R.id.AddReservation_txtTimePick);           //Text to show time
         plus = findViewById(R.id.AddReservation_btnIncrease);               //Plus button to increase number of tickets
         minus = findViewById(R.id.AddReservation_btnDecrease);              //Minus button to increase number of tickets
@@ -70,7 +80,7 @@ public class AddReservation extends AppCompatActivity {
         phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
         calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date curdate =  Calendar.getInstance().getTime();
+        Date curdate = Calendar.getInstance().getTime();
         name.setFocusable(false);
         name.setFocusableInTouchMode(false);
         name.setClickable(false);
@@ -78,6 +88,7 @@ public class AddReservation extends AppCompatActivity {
         phone.setFocusableInTouchMode(false);
         phone.setClickable(false);
         date = sdf.format(curdate);
+        email = getIntent().getStringExtra("USER_EMAIL");
         /*
         Set Event on Date Change on Calendar View
          */
@@ -85,7 +96,7 @@ public class AddReservation extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 System.out.println(dayOfMonth);
-                date = (month+1) + "/" + dayOfMonth + "/" + year;
+                date = (month + 1) + "/" + dayOfMonth + "/" + year;
                 System.out.println(date);
             }
         });
@@ -98,6 +109,7 @@ public class AddReservation extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println(">>>>>>>>>>>>>>> Start click");
                 int deskid = 0;
                 int numogticket = Integer.parseInt(tickets.getText().toString());
                 Double amount = new Double(numsOftickets * 200000);
@@ -106,7 +118,6 @@ public class AddReservation extends AppCompatActivity {
                 int cusid = 1;
                 int discountid = 1;
                 int staffid = 0;
-                System.out.println(".................."+numogticket);
                 /*
                 If Customer does not pick time
                  */
@@ -117,40 +128,51 @@ public class AddReservation extends AppCompatActivity {
 
                         }
                     }).show();
-                }
-                else {
+                } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("reservationId", 4);
-                    try {
-                        user.put("reservationDate", new SimpleDateFormat("MM/dd/yyyy").parse(date));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    user.put("reservationTime", timepick.getText().toString());
-                    user.put("reservationStatus", status);
-                    user.put("numberTickets", numogticket);
-                    user.put("reservationAmount", amount);
-                    user.put("deskId", 0);
-                    user.put("customerId", 1);
-                    user.put("discountId", 1);
-                    user.put("staffId", 1);
+                    db.collection("customers")
+                            .whereEqualTo("customerEmail", "c7n@gmail.com")
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                        System.out.println(">>>>>>>>>>>>>>>>>>>Toi phan check customers");
+                                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                        String docID = doc.getId();
+                                        Map<String, Object> user = new HashMap<>();
+                                        user.put("reservationId", "");
+                                        user.put("reservationDate", date);
+                                        user.put("reservationTime", timepick.getText().toString());
+                                        user.put("reservationStatus", status);
+                                        user.put("numberTickets", numogticket);
+                                        user.put("reservationAmount", amount);
+                                        user.put("deskId", 0);
+                                        user.put("customerId", docID);
+                                        user.put("discountId", 1);
+                                        user.put("staffId", 1);
+                                        db.collection("reservations")
+                                                .add(user)
+                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentReference documentReference) {
+                                                        Toast.makeText(AddReservation.this, "Make Reservation Success", Toast.LENGTH_SHORT).show();
 
-                    db.collection("reservations")
-                            .add(user)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Intent intent = new Intent(v.getContext(),CancelReservation.class);
-                                    startActivity(intent);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("AC", "Error adding document", e);
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        System.out.println("Adddddddddddd failed");
+                                                    }
+                                                });
+                                    }
                                 }
                             });
+                    Intent intent = new Intent(v.getContext(), HomePage.class);
+                    intent.putExtra("USER_EMAIL", email);
+                    System.out.println(">>>>>>>>>>>>> Nhay intent");
+                    startActivity(intent);
                 }
             }
         });
@@ -191,7 +213,7 @@ public class AddReservation extends AppCompatActivity {
                 TimePickerDialog timepicker = new TimePickerDialog(AddReservation.this, android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        timepick.setText(String.format("%02d:%02d",hourOfDay,minute));
+                        timepick.setText(String.format("%02d:%02d", hourOfDay, minute));
                     }
                 }, hour, minute, false);
                 timepicker.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -199,6 +221,18 @@ public class AddReservation extends AppCompatActivity {
                 timepicker.show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePage.class );
+                intent.putExtra("USER_EMAIL", email);
+                startActivity(intent);
+                return true;
+        }
+        return true;
     }
 
 }

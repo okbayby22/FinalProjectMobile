@@ -19,19 +19,19 @@
             android:name=".Controler.UserProfile"
             android:parentActivityName=".Controler.HomePage" />
         <activity android:name=".HomePageStaff" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".AddReservation" />
         <activity
             android:name=".Controler.HomePage"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".UpdateReservation" />
-        <activity android:name=".ConfirmReservation">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddReservation" />
+        <activity android:name=".ConfirmReservation" />
     </application>
 
 </manifest>

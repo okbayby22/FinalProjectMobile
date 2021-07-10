@@ -19,6 +19,7 @@ import android.view.Window;
 
 
 import com.example.buffetrestaurent.AddReservation;
+import com.example.buffetrestaurent.CancelReservation;
 import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -97,13 +98,17 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                         return true;
                     case R.id.add_menu:
                         Intent intent = new Intent(HomePage.this,AddReservation.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
                         startActivity(intent);
                         return true;
                     case R.id.userInfor_menu:
 
                         return true;
                     case R.id.history_menu:
-
+                        intent=new Intent(HomePage.this, CancelReservation.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        startActivity(intent);
+                        finish();
                         return true;
                 }
                 return false;

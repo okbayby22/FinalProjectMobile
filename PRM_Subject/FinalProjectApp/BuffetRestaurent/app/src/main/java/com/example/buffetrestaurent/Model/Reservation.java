@@ -11,20 +11,20 @@ public class Reservation {
     @SerializedName("id")
     @Expose
     private String reservationId;
-    private Date reservationDate;
+    private String reservationDate;
     private String reservationTime;
     private int reservationStatus;
     private int numberTickets;
     private Double reservationAmount;
     private int deskId;
-    private int customerId;
+    private String customerId;
     private int discountId;
     private int staffId;
 
     public Reservation() {
     }
 
-    public Reservation(Date reservationDate, String reservationTime, int reservationStatus, int numberTickets, Double reservationAmount, int deskId, int customerId, int discountId, int staffId) {
+    public Reservation(String reservationDate, String reservationTime, int reservationStatus, int numberTickets, Double reservationAmount, int deskId, String customerId, int discountId, int staffId) {
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.reservationStatus = reservationStatus;
@@ -44,11 +44,11 @@ public class Reservation {
         this.reservationId = reservationId;
     }
 
-    public Date getReservationDate() {
+    public String getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(Date reservationDate) {
+    public void setReservationDate(String reservationDate) {
         this.reservationDate = reservationDate;
     }
 
@@ -92,11 +92,11 @@ public class Reservation {
         this.deskId = deskId;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
