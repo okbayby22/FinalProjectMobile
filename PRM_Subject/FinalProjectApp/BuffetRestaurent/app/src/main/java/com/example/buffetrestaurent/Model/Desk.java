@@ -3,25 +3,25 @@ package com.example.buffetrestaurent.Model;
 
 public class Desk {
 
-    private int deskId;
+    private int desk_id;
     private int seat;
-    private int deskStatus;
+    private int desk_status;
 
     public Desk() {
     }
 
     public Desk(int deskId, int seat, int deskStatus) {
-        this.deskId = deskId;
+        this.desk_id = deskId;
         this.seat = seat;
-        this.deskStatus = deskStatus;
+        this.desk_status = deskStatus;
     }
 
-    public int getDeskId() {
-        return deskId;
+    public int getDesk_id() {
+        return desk_id;
     }
 
-    public void setDeskId(int deskId) {
-        this.deskId = deskId;
+    public void setDesk_id(int desk_id) {
+        this.desk_id = desk_id;
     }
 
     public int getSeat() {
@@ -32,11 +32,11 @@ public class Desk {
         this.seat = seat;
     }
 
-    public int getDeskStatus() {
-        return deskStatus;
+    public int getDesk_status() {
+        return desk_status;
     }
 
-    public void setDeskStatus(int deskStatus) {
-        this.deskStatus = deskStatus;
+    public void setDesk_status(int desk_status) {
+        this.desk_status = desk_status;
     }
 }

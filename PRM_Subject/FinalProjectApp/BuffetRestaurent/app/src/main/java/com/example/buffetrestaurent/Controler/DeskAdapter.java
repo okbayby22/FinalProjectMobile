@@ -40,7 +40,7 @@ public class DeskAdapter extends RecyclerView.Adapter<DeskAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(DeskAdapter.MyViewHolder holder, int position) {
         Desk desk = desklist.get(position);
-        holder.txtTablename.setText("Table "+String.valueOf(desk.getDeskId()));
+        holder.txtTablename.setText("Table "+String.valueOf(desk.getDesk_id()));
     }
     @Override
     public int getItemCount() {

@@ -14,5 +14,7 @@
     <style name="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+
     </style>
 </resources>

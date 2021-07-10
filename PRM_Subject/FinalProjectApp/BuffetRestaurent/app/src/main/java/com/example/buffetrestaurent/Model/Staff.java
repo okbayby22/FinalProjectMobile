@@ -2,7 +2,7 @@ package com.example.buffetrestaurent.Model;
 
 public class Staff {
 
-    private int staffId;
+    private String staffId;
     private String staffName;
     private String staffEmail;
     private String staffAddress;
@@ -16,7 +16,7 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(int staffId, String staffName, String staffEmail, String staffAddress, String staffPhone, String staffPassword, int staffGender, int staffRole, int staffStatus, String staffImage) {
+    public Staff(String staffId, String staffName, String staffEmail, String staffAddress, String staffPhone, String staffPassword, int staffGender, int staffRole, int staffStatus, String staffImage) {
         this.staffId = staffId;
         this.staffName = staffName;
         this.staffEmail = staffEmail;
@@ -29,11 +29,11 @@ public class Staff {
         this.staffImage = staffImage;
     }
 
-    public int getStaffId() {
+    public String getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(int staffId) {
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
 

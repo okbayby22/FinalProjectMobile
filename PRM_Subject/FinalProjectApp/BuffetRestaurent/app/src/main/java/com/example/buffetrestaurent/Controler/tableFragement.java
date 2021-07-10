@@ -2,11 +2,13 @@ package com.example.buffetrestaurent.Controler;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,21 @@ import com.example.buffetrestaurent.Model.Desk;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.DeskService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.perfmark.Tag;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,30 +104,67 @@ public class tableFragement extends Fragment {
         return rootView;
     }
     public void loadData(){
-        deskService = Apis.getDeskService();
-        Call<List<Desk>> call = deskService.loaddeskList();
-        call.enqueue(new Callback<List<Desk>>() {
-            @Override
-            public void onResponse(Call<List<Desk>> call, Response<List<Desk>> response) {
-                desksList = response.body();
-                deskListOnStatus=new ArrayList<>();
-                for(Desk i:desksList){
-                    if(i.getDeskStatus()==deskStatus){
-                        deskListOnStatus.add(i);
-                    }
-                }
-                deskAdapter = new DeskAdapter(getContext(),deskListOnStatus);
-                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(mLayoutManager);
-                //recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(deskAdapter);
-            }
+//        deskService = Apis.getDeskService();
+//        Call<List<Desk>> call = deskService.loaddeskList();
+//        call.enqueue(new Callback<List<Desk>>() {
+//            @Override
+//            public void onResponse(Call<List<Desk>> call, Response<List<Desk>> response) {
+//                desksList = response.body();
+//                deskListOnStatus=new ArrayList<>();
+//                for(Desk i:desksList){
+//                    if(i.getDeskStatus()==deskStatus){
+//                        deskListOnStatus.add(i);
+//                    }
+//                }
+//                deskAdapter = new DeskAdapter(getContext(),deskListOnStatus);
+//                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+//                mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//                recyclerView.setLayoutManager(mLayoutManager);
+//                //recyclerView.setItemAnimator(new DefaultItemAnimator());
+//                recyclerView.setAdapter(deskAdapter);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Desk>> call, Throwable t) {
+//                desksList = null;
+//            }
+//        });
 
-            @Override
-            public void onFailure(Call<List<Desk>> call, Throwable t) {
-                desksList = null;
-            }
-        });
+         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("desk")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            deskListOnStatus=new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                              Desk desk = new Desk();
+                              desk = document.toObject(Desk.class);
+                              if(desk.getDesk_status()==deskStatus){
+                                  deskListOnStatus.add(desk);
+                              }
+                            }
+
+                            deskAdapter = new DeskAdapter(getContext(),deskListOnStatus);
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            //recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.setAdapter(deskAdapter);
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+//        DocumentReference docRef = db.collection("desk").document("BJ");
+//        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                Desk city = documentSnapshot.toObject(Desk.class);
+//            }
+//        });
+
     }
 }
