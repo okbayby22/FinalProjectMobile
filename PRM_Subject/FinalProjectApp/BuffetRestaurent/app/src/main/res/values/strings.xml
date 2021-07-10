@@ -15,7 +15,6 @@
     <string name="strDrink">Drink</string>
     <string name="strDessert">Dessert</string>
     <string name="strProfile">Profile</string>
-    <string name="strMenu">Menu</string>
     <string name="strDiscountHis">My Discount</string>
     <string name="strChangePass">Change Password</string>
     <string name="strReserHis">Reservation History</string>
@@ -25,5 +24,6 @@
     <string name="strPhone">Phone</string>
     <string name="strAddress">Address</string>
     <string name="strMenu">Menu</string>
+    <string name="strMenuStaff">Menu Management</string>
 
 </resources>

@@ -21,13 +21,6 @@
             android:title="@string/strChangePass"
             android:icon="@drawable/changepass_icon"/>
     </group>
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/mainmenu_btnMenu"
-            android:title="@string/strChangePass"
-            android:icon="@drawable/changepass_icon"/>
-    </group>
-
-
 
 
 </menu>

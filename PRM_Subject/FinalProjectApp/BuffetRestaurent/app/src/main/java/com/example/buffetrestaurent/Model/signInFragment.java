@@ -175,7 +175,7 @@ public class signInFragment extends Fragment {
                                                                 intent.putExtra("USER_EMAIL", userEmail);
                                                                 startActivity(intent);
                                                             } else {
-
+                                                                txtError.setText("Email or password not correct !!!");
                                                             }
                                                         }
                                                     });
@@ -183,7 +183,14 @@ public class signInFragment extends Fragment {
                                     }
                                 });
                     }
-                });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        txtError.setText("Email or password not correct !!!");
+                    }
+                })
+                ;
 
 
             }
