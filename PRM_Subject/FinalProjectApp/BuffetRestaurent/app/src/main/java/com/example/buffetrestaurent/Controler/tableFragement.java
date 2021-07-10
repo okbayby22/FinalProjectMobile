@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -104,32 +105,6 @@ public class tableFragement extends Fragment {
         return rootView;
     }
     public void loadData(){
-//        deskService = Apis.getDeskService();
-//        Call<List<Desk>> call = deskService.loaddeskList();
-//        call.enqueue(new Callback<List<Desk>>() {
-//            @Override
-//            public void onResponse(Call<List<Desk>> call, Response<List<Desk>> response) {
-//                desksList = response.body();
-//                deskListOnStatus=new ArrayList<>();
-//                for(Desk i:desksList){
-//                    if(i.getDeskStatus()==deskStatus){
-//                        deskListOnStatus.add(i);
-//                    }
-//                }
-//                deskAdapter = new DeskAdapter(getContext(),deskListOnStatus);
-//                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-//                mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//                recyclerView.setLayoutManager(mLayoutManager);
-//                //recyclerView.setItemAnimator(new DefaultItemAnimator());
-//                recyclerView.setAdapter(deskAdapter);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Desk>> call, Throwable t) {
-//                desksList = null;
-//            }
-//        });
-
          FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("desk")
                 .get()
@@ -150,6 +125,8 @@ public class tableFragement extends Fragment {
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                             mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                             recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.HORIZONTAL));
+                            
                             //recyclerView.setItemAnimator(new DefaultItemAnimator());
                             recyclerView.setAdapter(deskAdapter);
                         } else {
@@ -158,13 +135,6 @@ public class tableFragement extends Fragment {
                     }
                 });
 
-//        DocumentReference docRef = db.collection("desk").document("BJ");
-//        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                Desk city = documentSnapshot.toObject(Desk.class);
-//            }
-//        });
 
     }
 }
