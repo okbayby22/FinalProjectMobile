@@ -103,9 +103,9 @@ public class foodListHomePageFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Food popularFood=new Food();
-                                popularFood.setFoodName(document.getString("foodName"));
-                                popularFood.setFoodImage(document.getString("foodImage"));
+                                Food popularFood= document.toObject(Food.class);
+                                //popularFood.setFoodName(document.getString("foodName"));
+                                //popularFood.setFoodImage(document.getString("foodImage"));
                                 foodList.add(popularFood);
                             }
                             fAdapter.notifyDataSetChanged();
