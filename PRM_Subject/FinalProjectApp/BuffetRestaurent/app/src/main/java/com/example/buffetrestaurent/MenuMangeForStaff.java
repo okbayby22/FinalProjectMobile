@@ -9,13 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.buffetrestaurent.Controler.AddMenuActivity;
-import com.example.buffetrestaurent.Controler.HomePage;
-import com.example.buffetrestaurent.Controler.UserProfile;
-import com.example.buffetrestaurent.Controler.customerMenuContent;
 import com.example.buffetrestaurent.Controler.staffMenuContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shrikanthravi.collapsiblecalendarview.data.Day;
@@ -26,7 +20,7 @@ public class MenuMangeForStaff extends AppCompatActivity {
     String userEmail;
     CollapsibleCalendar collapsibleCalendar;
     FloatingActionButton btnAdd;
-
+    String date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,16 +44,17 @@ public class MenuMangeForStaff extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.staff_menu_content, selectedFragment);
         transaction.commit();
-
+        // day = collapsibleCalendar.getSelectedDay();
+        Log.i(getClass().getName(), "Selected Day: "
+                + day.getYear() + "/" + (day.getMonth()) + "/" + day.getDay());
+        date= day.getYear() + "/" + (day.getMonth()) + "/" + day.getDay();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Day day = collapsibleCalendar.getSelectedDay();
-                Log.i(getClass().getName(), "Selected Day: "
-                        + day.getYear() + "/" + (day.getMonth()+1) + "/" + day.getDay());
-                String date= day.getYear() + "/" + (day.getMonth()+1) + "/" + day.getDay();
+
                 Intent intent=new Intent(v.getContext(), AddMenuActivity.class);
                 intent.putExtra("SELECTED_DATE", date);
+                intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
                 finish();
             }
@@ -81,7 +76,7 @@ public class MenuMangeForStaff extends AppCompatActivity {
                 Day day = collapsibleCalendar.getSelectedDay();
                 Log.i(getClass().getName(), "Selected Day: "
                         + day.getYear() + "/" + (day.getMonth()+1) + "/" + day.getDay());
-                String date= day.getYear() + "/" + (day.getMonth()+1) + "/" + day.getDay();
+                date= day.getYear() + "/" + (day.getMonth()+1) + "/" + day.getDay();
                 Fragment selectedFragment = staffMenuContent.newInstance(date);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.staff_menu_content, selectedFragment);
