@@ -8,6 +8,15 @@ public class Food {
     private String foodDescription;
     private String foodImage;
     private int foodType;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public void setFoodType(int foodType) {
         this.foodType = foodType;

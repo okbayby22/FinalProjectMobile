@@ -44,7 +44,7 @@ public class HomePageStaff extends AppCompatActivity {
         homepageNavigationView =findViewById(R.id.homepagestaff_navView);
         homepageToolBar = findViewById(R.id.Homepagestaff_toolbar);
         setSupportActionBar(homepageToolBar);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("Buffet Restaurant");
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,homepageDrawer,homepageToolBar,R.string.strOpenMenu,R.string.strCloseMenu);
         homepageDrawer.addDrawerListener(toggle);
         toggle.syncState();
