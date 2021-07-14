@@ -1,11 +1,10 @@
-package com.example.buffetrestaurent;
+package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -13,14 +12,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.AddFoodToMenuAdapter;
-import com.example.buffetrestaurent.HomePageStaff;
-import com.example.buffetrestaurent.MenuMangeForStaff;
 import com.example.buffetrestaurent.Model.Food;
-import com.example.buffetrestaurent.Model.Menu;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;

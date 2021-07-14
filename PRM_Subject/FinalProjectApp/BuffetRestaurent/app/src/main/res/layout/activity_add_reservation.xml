@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddReservation">
+    tools:context=".Controller.Activity.AddReservation">
 
     <CalendarView
         android:id="@+id/AddReservation_CalendarView"

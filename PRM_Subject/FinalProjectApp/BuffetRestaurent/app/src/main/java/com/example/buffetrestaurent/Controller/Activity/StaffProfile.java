@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

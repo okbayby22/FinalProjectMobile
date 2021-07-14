@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent.Model;
+package com.example.buffetrestaurent.Controller.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.buffetrestaurent.Controler.HomePage;
-import com.example.buffetrestaurent.HomePageStaff;
-import com.example.buffetrestaurent.MainActivity;
+import com.example.buffetrestaurent.Controller.Activity.HomePage;
+import com.example.buffetrestaurent.Controller.Activity.HomePageStaff;
 import com.example.buffetrestaurent.R;
-import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.CustomerService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,8 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,10 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -181,9 +172,6 @@ public class signInFragment extends Fragment {
                                                             }
                                                         }
                                                     });
-                                        }
-                                    }
-                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

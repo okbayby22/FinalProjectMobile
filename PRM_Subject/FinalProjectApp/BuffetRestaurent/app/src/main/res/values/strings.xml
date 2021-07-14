@@ -32,5 +32,7 @@
     <string name="strYes">Yes</string>
     <string name="strNo">No</string>
     <string name="strOK">Ok</string>
-
+    <string name="strMenu">Menu</string>
+    <string name="strMenuStaff">Menu Management</string>
+    <string name="strMenuStaffAddFood">Add food to menu</string>
 </resources>

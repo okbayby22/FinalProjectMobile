@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.BuyDiscountListAdapter;
-import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Discount;
-import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;

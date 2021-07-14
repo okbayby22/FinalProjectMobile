@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Controller.Fragment;
 
 import android.os.Bundle;
 
@@ -11,8 +11,6 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.StaffMenuFoodAdapter;
 import com.example.buffetrestaurent.Model.Food;

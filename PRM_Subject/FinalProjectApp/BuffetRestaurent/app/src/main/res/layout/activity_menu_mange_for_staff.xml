@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuMangeForStaff">
+    tools:context=".Controller.Activity.MenuMangeForStaff">
     <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
         android:id="@+id/staff_menu_calendarView"
         android:layout_width="match_parent"

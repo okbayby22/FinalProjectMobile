@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Controller.Activity;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,10 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.buffetrestaurent.Model.Customer;
-import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
-import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.CustomerService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,7 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,9 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class UserProfile extends AppCompatActivity {
 

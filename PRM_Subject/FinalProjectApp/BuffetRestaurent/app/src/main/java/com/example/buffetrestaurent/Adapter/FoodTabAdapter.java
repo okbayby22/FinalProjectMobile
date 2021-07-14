@@ -1,11 +1,10 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.buffetrestaurent.Model.signInFragment;
-import com.example.buffetrestaurent.Model.signUpFragment;
+import com.example.buffetrestaurent.Controller.Fragment.foodListHomePageFragment;
 
 public class FoodTabAdapter extends FragmentStateAdapter {
     private int numOfTabs;

@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,9 +14,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 
-import com.example.buffetrestaurent.AddReservation;
-import com.example.buffetrestaurent.CancelReservation;
-import com.example.buffetrestaurent.Model.Food;
+import com.example.buffetrestaurent.Adapter.FoodTabAdapter;
 import com.example.buffetrestaurent.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -88,7 +86,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
                         return true;
                     case R.id.discount_menu:
-                        intent=new Intent(HomePage.this,CustomerBuyDiscountActivity.class);
+                        intent=new Intent(HomePage.this, CustomerBuyDiscountActivity.class);
                         intent.putExtra("USER_EMAIL", userEmail);
                         startActivity(intent);
                         finish();
@@ -101,7 +99,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                         finish();
                         return true;
                     case R.id.viewmenu_menu:
-                        intent = new Intent(HomePage.this,CustomerMenu.class);
+                        intent = new Intent(HomePage.this, CustomerMenu.class);
                         intent.putExtra("USER_EMAIL", userEmail);
                         startActivity(intent);
                         finish();
@@ -133,7 +131,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     public boolean onNavigationItemSelected( MenuItem item) {
         switch (item.getItemId()){
             case R.id.mainmenu_btnprofile:
-                Intent intent=new Intent(this,UserProfile.class);
+                Intent intent=new Intent(this, UserProfile.class);
                 intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
                 finish();
@@ -147,7 +145,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 finish();
                 break;
             case R.id.mainmenu_btnChangePass:
-                intent=new Intent(this,UserChangePassword.class);
+                intent=new Intent(this, UserChangePassword.class);
                 intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
                 finish();
