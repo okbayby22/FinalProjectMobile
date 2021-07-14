@@ -88,18 +88,23 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
                         return true;
                     case R.id.discount_menu:
-
+                        intent=new Intent(HomePage.this,CustomerBuyDiscountActivity.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        startActivity(intent);
+                        finish();
                         return true;
                     case R.id.add_menu:
                         intent = new Intent(HomePage.this,AddReservation.class);
                         intent.putExtra("USER_EMAIL", userEmail);
                         intent.putExtra("USER_EMAIL", userEmail);
                         startActivity(intent);
+                        finish();
                         return true;
                     case R.id.viewmenu_menu:
                         intent = new Intent(HomePage.this,CustomerMenu.class);
                         intent.putExtra("USER_EMAIL", userEmail);
                         startActivity(intent);
+                        finish();
                         return true;
                     case R.id.history_menu:
                         intent=new Intent(HomePage.this, CancelReservation.class);
@@ -131,15 +136,21 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 Intent intent=new Intent(this,UserProfile.class);
                 intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.mainmenu_btnReserHis:
                 break;
             case R.id.mainmenu_btnMyDiscount:
+                intent=new Intent(this,CustomerBuyDiscountActivity.class);
+                intent.putExtra("USER_EMAIL", userEmail);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.mainmenu_btnChangePass:
                 intent=new Intent(this,UserChangePassword.class);
                 intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
+                finish();
                 break;
         }
         homepageDrawer.closeDrawer(GravityCompat.START);

@@ -27,5 +27,10 @@
     <string name="strViewRes">Reservations History</string>
     <string name="strAddRes">Reservations</string>
     <string name="strCheckout">Checkout</string>
+    <string name="strCurrentPoint">Your Current Point : </string>
+    <string name="strBuy">Buy</string>
+    <string name="strYes">Yes</string>
+    <string name="strNo">No</string>
+    <string name="strOK">Ok</string>
 
 </resources>

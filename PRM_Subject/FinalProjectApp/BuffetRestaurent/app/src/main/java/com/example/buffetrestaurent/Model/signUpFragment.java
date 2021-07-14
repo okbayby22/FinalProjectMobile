@@ -36,6 +36,8 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -241,6 +243,10 @@ public class signUpFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        Map<String ,Object> data =  new HashMap<>();
+                        data.put("customerId",documentReference.getId());
+                        db.collection("customers").document(documentReference.getId())
+                                .update(data);
                         FirebaseAuth auth = FirebaseAuth.getInstance();
                         auth.createUserWithEmailAndPassword(txtEmail.getText().toString(), md5(txtPass.getText().toString())).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override

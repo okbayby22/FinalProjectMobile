@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/border_layout">
+
+    <ImageView
+        android:id="@+id/customer_discount_list_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/buy_discount_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/customer_discount_list_txtDiscountName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/customer_discount_list_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/customer_discount_list_txtDiscountPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/Theme"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/customer_discount_list_txtDiscountName"
+        app:layout_constraintTop_toBottomOf="@+id/customer_discount_list_txtDiscountName" />
+
+    <TextView
+        android:id="@+id/customer_discount_list_txtDiscountPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/Theme"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/customer_discount_list_txtDiscountName"
+        app:layout_constraintTop_toBottomOf="@+id/customer_discount_list_txtDiscountPercent" />
+
+    <Button
+        android:id="@+id/customer_discount_list_btnBuy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/strBuy"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
