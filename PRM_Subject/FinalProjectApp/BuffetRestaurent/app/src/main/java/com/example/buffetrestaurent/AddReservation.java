@@ -24,6 +24,7 @@ import com.example.buffetrestaurent.Controler.HomePage;
 import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.Utils.Apis;
+import com.example.buffetrestaurent.Utils.CustomerService;
 import com.example.buffetrestaurent.Utils.ReservationService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,7 +63,9 @@ public class AddReservation extends AppCompatActivity {
     CalendarView calendarView;
     DecimalFormat vnd = new DecimalFormat("###,###");
     String date;
-    String email;
+    CustomerService customerService;
+    String userEmail;
+    Customer customerInfor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +104,6 @@ public class AddReservation extends AppCompatActivity {
                 System.out.println(date);
             }
         });
-        name.setHint("Enter your name");
-        phone.setHint("Enter your phone number");
-        price.setText(vnd.format(numsOftickets * 200000) + " VND");
         /*
         Set Event on Click on Button Add
          */
@@ -229,6 +229,7 @@ public class AddReservation extends AppCompatActivity {
                 timepicker.show();
             }
         });
+        loadData();
     }
 
     @Override
@@ -236,11 +237,32 @@ public class AddReservation extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePage.class );
-                intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
                 return true;
         }
         return true;
     }
 
+    public void loadData(){
+        customerService = Apis.getCustomerService();
+        Call<Customer> call=customerService.getUserInfor(userEmail);
+        call.enqueue(new Callback<Customer>() {
+            @Override
+            public void onResponse(Call<Customer> call, Response<Customer> response) {
+                if(response.isSuccessful()) {
+                    customerInfor = response.body();
+
+                    name.setText(customerInfor.getCustomerName());
+                    phone.setText(customerInfor.getCustomerPhone());
+                    price.setText(vnd.format(numsOftickets * 200000) + " VND");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Customer> call, Throwable t) {
+                Log.e("Error:",t.getMessage());
+            }
+        });
+    }
 }

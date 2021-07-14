@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -45,22 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("reservationId", 2);
-//        try {
-//            user.put("reservationDate", new SimpleDateFormat("MM/dd/yyyy").parse("30/11/2021"));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        user.put("reservationTime", "22:00");
-//        user.put("reservationStatus", 0);
-//        user.put("numberTickets", 4);
-//        user.put("reservationAmount", 4*200000);
-//        user.put("deskId", 2);
-//        user.put("customerId", 2);
-//        user.put("discountId", 1);
-//        user.put("staffId", 1);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
 
@@ -77,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        db.collection("reservations")
+//        db.collection("staffs")
 //                .add(user)
 //                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
 //                    @Override

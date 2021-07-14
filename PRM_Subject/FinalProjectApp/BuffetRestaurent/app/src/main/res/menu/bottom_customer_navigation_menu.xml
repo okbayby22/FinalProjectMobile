@@ -16,10 +16,10 @@
         android:icon="@drawable/plus_icon"
         android:title="Reservation"/>
     <item
-        android:id="@+id/userInfor_menu"
+        android:id="@+id/viewmenu_menu"
         android:enabled="true"
-        android:icon="@drawable/cusinfor_icon"
-        android:title="Infor"/>
+        android:icon="@drawable/cus_menu_icon"
+        android:title="Menu"/>
     <item
         android:id="@+id/history_menu"
         android:enabled="true"

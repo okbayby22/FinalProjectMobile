@@ -1,7 +1,9 @@
 package com.example.buffetrestaurent.Model;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,10 +14,28 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Controler.HomePage;
+import com.example.buffetrestaurent.Controler.UserProfile;
+import com.example.buffetrestaurent.HomePageStaff;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.CustomerService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,47 +161,130 @@ public class signUpFragment extends Fragment {
     }
 
     private void checkDuplicaEmail(View v){
-        service = Apis.getCustomerService();
-        Call<Boolean> call=service.checkDuplicateEmail(txtEmail.getText().toString());
-        call.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if(response.isSuccessful()){
-                    Boolean check =response.body();
-                    if(check == true){
-                        txtEmailError.setText("Email has already exist !!!");
+//        service = Apis.getCustomerService();
+//        Call<Boolean> call=service.checkDuplicateEmail(txtEmail.getText().toString());
+//        call.enqueue(new Callback<Boolean>() {
+//            @Override
+//            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+//                if(response.isSuccessful()){
+//                    Boolean check =response.body();
+//                    if(check == true){
+//                        txtEmailError.setText("Email has already exist !!!");
+//                    }
+//                    else{
+//                        AddNewCus(v);
+//                        txtEmail.setText("");
+//                        txtEmailError.setText("");
+//                        txtPass.setText("");
+//                        txtRePass.setText("");
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<Boolean> call, Throwable t) {
+//                Log.e("Error:",t.getMessage());
+//            }
+//        });
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("customers")
+                .whereEqualTo("customerEmail",txtEmail.getText().toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        QuerySnapshot doc= task.getResult();
+                        if (!doc.isEmpty()) {
+                            txtEmailError.setText("Email has already exist !!!");
+                        }
+                        else{
+                            db.collection("staffs")
+                                    .whereEqualTo("StaffEmail",txtEmail.getText().toString())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            QuerySnapshot doc= task.getResult();
+                                            if (!doc.isEmpty()) {
+                                                txtEmailError.setText("Email has already exist !!!");
+                                            }
+                                            else {
+                                                AddNewCus(v);
+                                            }
+                                        }
+                                    });
+                        }
                     }
-                    else{
-                        AddNewCus(v);
-                        txtEmail.setText("");
-                        txtEmailError.setText("");
-                        txtPass.setText("");
-                        txtRePass.setText("");
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.e("Error:",t.getMessage());
-            }
-        });
+                });
     }
 
     private void AddNewCus(View v){
-        Customer newCustomer=new Customer(null,txtEmail.getText().toString(),null,null,txtPass.getText().toString(),1,0,0,1,null);
-        service= Apis.getCustomerService();
-        Call<Customer> call=service.addCustomer(newCustomer);
-        call.enqueue(new Callback<Customer>() {
-            @Override
-            public void onResponse(Call<Customer> call, Response<Customer> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(v.getContext(),"Sign up successful !",Toast.LENGTH_LONG).show();
-                }
+        Customer newCustomer=new Customer("",txtEmail.getText().toString(),"","",md5(txtPass.getText().toString()),1,0,0,1,"");
+//        service= Apis.getCustomerService();
+//        Call<Customer> call=service.addCustomer(newCustomer);
+//        call.enqueue(new Callback<Customer>() {
+//            @Override
+//            public void onResponse(Call<Customer> call, Response<Customer> response) {
+//                if(response.isSuccessful()){
+//                    Toast.makeText(v.getContext(),"Sign up successful !",Toast.LENGTH_LONG).show();
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<Customer> call, Throwable t) {
+//                Log.e("Error:",t.getMessage());
+//            }
+//        });
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("customers")
+                .add(newCustomer)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        auth.createUserWithEmailAndPassword(txtEmail.getText().toString(), md5(txtPass.getText().toString())).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                                Toast.makeText(v.getContext(),"Sign up successful !",Toast.LENGTH_LONG).show();
+                                txtEmail.setText("");
+                                txtEmailError.setText("");
+                                txtPass.setText("");
+                                txtRePass.setText("");
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        Toast.makeText(v.getContext(),"Sign up fail !",Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+    private String md5(String pass) {
+        try {
+
+            // Static getInstance method is called with hashing MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // digest() method is called to calculate message digest
+            //  of an input digest() return array of byte
+            byte[] messageDigest = md.digest(pass.getBytes());
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
             }
-            @Override
-            public void onFailure(Call<Customer> call, Throwable t) {
-                Log.e("Error:",t.getMessage());
-            }
-        });
+            return hashtext;
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

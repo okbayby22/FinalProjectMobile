@@ -13,13 +13,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".Controler.StaffProfile" />
-        <activity android:name=".CancelReservation" />
+        <activity android:name=".AddMenuActivity"
+            android:parentActivityName=".MenuMangeForStaff"
+            ></activity>
+        <activity android:name=".MenuMangeForStaff" />
+        <activity android:name=".Controler.CustomerMenu" />
+        <activity android:name=".ConfirmReservation" />
+        <activity android:name=".Controler.UserChangePassword" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Controler.UserProfile"
             android:parentActivityName=".Controler.HomePage" />
-        <activity android:name=".HomePageStaff" />
+        <activity
+            android:name=".HomePageStaff"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Payment" />
         <activity
             android:name=".Controler.HomePage"

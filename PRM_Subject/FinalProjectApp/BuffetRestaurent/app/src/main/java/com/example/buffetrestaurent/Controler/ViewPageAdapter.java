@@ -18,9 +18,9 @@ public class ViewPageAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                return new tableFragement();
+                return new tableFragement(1);
             case 1:
-                return new tableFragement();
+                return new tableFragement(2);
             default:
                 return null;
         }

@@ -3,26 +3,44 @@ package com.example.buffetrestaurent.Model;
 
 public class Food {
 
-    private int foodId;
+    private String foodId;
     private String foodName;
     private String foodDescription;
     private String foodImage;
+    private int foodType;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public void setFoodType(int foodType) {
+        this.foodType = foodType;
+    }
+
+    public int getFoodType() {
+        return foodType;
+    }
 
     public Food() {
     }
 
-    public Food(int foodId, String foodName, String foodDescription, String foodImage) {
+    public Food(String foodId, String foodName, String foodDescription, String foodImage) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.foodDescription = foodDescription;
         this.foodImage = foodImage;
     }
 
-    public int getFoodId() {
+    public String getFoodId() {
         return foodId;
     }
 
-    public void setFoodId(int foodId) {
+    public void setFoodId(String foodId) {
         this.foodId = foodId;
     }
 

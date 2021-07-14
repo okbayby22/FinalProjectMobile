@@ -42,14 +42,25 @@
             app:layout_constraintStart_toStartOf="@+id/signUp_lblEmail"
             app:layout_constraintTop_toBottomOf="@+id/signUp_txtEmail" />
 
-        <EditText
-            android:id="@+id/signUp_txtPass"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/signUp_InputLayout"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@+id/signUp_lblPass"
-            app:layout_constraintTop_toBottomOf="@+id/signUp_lblPass" />
+            app:layout_constraintTop_toBottomOf="@+id/signUp_lblPass"
+            android:background="@color/white"
+            app:passwordToggleEnabled="true"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/signUp_txtPass"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:background="@color/white"
+                >
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/signUp_lblRePass"
@@ -58,7 +69,7 @@
             android:layout_marginTop="40dp"
             android:text="@string/strRePass"
             app:layout_constraintStart_toStartOf="@+id/signUp_lblEmail"
-            app:layout_constraintTop_toBottomOf="@+id/signUp_txtPass" />
+            app:layout_constraintTop_toBottomOf="@+id/signUp_InputLayout" />
 
         <EditText
             android:id="@+id/signUp_txtRePass"

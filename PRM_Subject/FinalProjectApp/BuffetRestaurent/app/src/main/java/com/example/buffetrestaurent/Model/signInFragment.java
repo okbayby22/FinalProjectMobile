@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -49,7 +50,7 @@ public class signInFragment extends Fragment {
 
     Button btnSignIn;
     CustomerService service;
-    TextView txtEmail, txtPass, txtError;
+    TextView txtEmail,txtPass,txtError;
     private FirebaseAuth mAuth;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -97,14 +98,17 @@ public class signInFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        btnSignIn = rootView.findViewById(R.id.btnSignIn);
-        txtEmail = rootView.findViewById(R.id.signIn_txtEmail);
-        txtPass = rootView.findViewById(R.id.signIn_txtPass);
-        txtError = rootView.findViewById(R.id.signIn_txtError);
+        btnSignIn= rootView.findViewById(R.id.btnSignIn);
+        txtEmail= rootView.findViewById(R.id.signIn_txtEmail);
+        txtPass= rootView.findViewById(R.id.signIn_txtPass);
+        txtError= rootView.findViewById(R.id.signIn_txtError);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                service= Apis.getCustomerService();
+//                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
+//                call.enqueue(new Callback<Integer>() {
 //                service= Apis.getCustomerService();
 //                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
 //                call.enqueue(new Callback<Integer>() {
@@ -141,12 +145,13 @@ public class signInFragment extends Fragment {
                         Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("customers")
-                                .whereEqualTo("customerName", txtEmail.getText().toString())
+                                .whereEqualTo("customerEmail",txtEmail.getText().toString())
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
+                                        QuerySnapshot query = task.getResult();
+                                        if (!query.isEmpty()) {
                                             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> Toi day");
                                             String userEmail = txtEmail.getText().toString();
                                             Intent intent = new Intent(v.getContext(), HomePage.class);
@@ -156,36 +161,44 @@ public class signInFragment extends Fragment {
                                             txtPass.setText("");
                                         } else {
                                             db.collection("staffs")
-                                                    .whereEqualTo("StaffEmail", txtEmail.getText().toString())
+                                                    .whereEqualTo("StaffEmail",txtEmail.getText().toString())
                                                     .get()
                                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                             if (task.isSuccessful()) {
                                                                 String userEmail = txtEmail.getText().toString();
+                                                                txtEmail.setText("");
+                                                                txtPass.setText("");
                                                                 Intent intent = new Intent(v.getContext(), HomePageStaff.class);
                                                                 intent.putExtra("USER_EMAIL", userEmail);
                                                                 startActivity(intent);
-                                                                txtEmail.setText("");
-                                                                txtPass.setText("");
                                                             } else {
-
+                                                                txtError.setText("Email or password not correct !!!");
+                                                            }
+                                                        }
+                                                    });
                                                             }
                                                         }
                                                     });
                                         }
                                     }
                                 });
-
                     }
-                });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        txtError.setText("Email or password not correct !!!");
+                    }
+                })
+                ;
 
 
             }
         });
         return rootView;
     }
-
 
     private String md5(String pass) {
         try {

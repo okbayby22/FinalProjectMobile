@@ -1,29 +1,40 @@
 package com.example.buffetrestaurent.Controler;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.MyViewHolder> {
     private List<Food> foodsList;
+    private Context context;
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView txtFoodName;
+        ImageView imgFoodImage;
         MyViewHolder(View view) {
             super(view);
             txtFoodName = view.findViewById(R.id.listfood_txtFoodName);
+            imgFoodImage = view.findViewById(R.id.listfood_imgFoodImage);
         }
     }
-    public FoodsAdapter(List<Food> foodsList) {
+    public FoodsAdapter(List<Food> foodsList, Context context) {
         this.foodsList = foodsList;
+        this.context= context;
     }
     @NonNull
     @Override
@@ -36,6 +47,8 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Food food = foodsList.get(position);
         holder.txtFoodName.setText(food.getFoodName());
+
+        Picasso.get().load(food.getFoodImage()).into(holder.imgFoodImage);
     }
     @Override
     public int getItemCount() {

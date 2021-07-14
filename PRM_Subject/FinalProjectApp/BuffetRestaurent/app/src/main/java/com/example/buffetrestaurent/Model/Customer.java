@@ -1,12 +1,8 @@
 package com.example.buffetrestaurent.Model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Customer {
 
-    @SerializedName("id")
-    @Expose
     private String customerId;
     private String customerName;
     private String customerEmail;

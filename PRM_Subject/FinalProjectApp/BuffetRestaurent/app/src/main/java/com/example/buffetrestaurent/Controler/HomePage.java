@@ -7,15 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.Window;
 
 
 import com.example.buffetrestaurent.AddReservation;
@@ -26,9 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,6 +82,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment;
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.homepage_menu:
 
@@ -97,12 +91,15 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
                         return true;
                     case R.id.add_menu:
-                        Intent intent = new Intent(HomePage.this,AddReservation.class);
+                        intent = new Intent(HomePage.this,AddReservation.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
                         intent.putExtra("USER_EMAIL", userEmail);
                         startActivity(intent);
                         return true;
-                    case R.id.userInfor_menu:
-
+                    case R.id.viewmenu_menu:
+                        intent = new Intent(HomePage.this,CustomerMenu.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        startActivity(intent);
                         return true;
                     case R.id.history_menu:
                         intent=new Intent(HomePage.this, CancelReservation.class);
@@ -128,7 +125,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull @org.jetbrains.annotations.NotNull MenuItem item) {
+    public boolean onNavigationItemSelected( MenuItem item) {
         switch (item.getItemId()){
             case R.id.mainmenu_btnprofile:
                 Intent intent=new Intent(this,UserProfile.class);
@@ -140,6 +137,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.mainmenu_btnMyDiscount:
                 break;
             case R.id.mainmenu_btnChangePass:
+                intent=new Intent(this,UserChangePassword.class);
+                intent.putExtra("USER_EMAIL", userEmail);
+                startActivity(intent);
                 break;
         }
         homepageDrawer.closeDrawer(GravityCompat.START);
