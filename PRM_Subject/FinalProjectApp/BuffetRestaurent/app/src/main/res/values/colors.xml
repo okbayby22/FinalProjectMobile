@@ -11,4 +11,7 @@
     <color name="Red">#FF0000</color>
     <color name="ThemeBackground">#F2F2F2</color>
     <color name="onPrimary">#ADADAF</color>
+    <color name="orangePrimary">#FA4A0C</color>
+    <color name="success">#23C633</color>
+    <color name="failed">#FB0202</color>
 </resources>

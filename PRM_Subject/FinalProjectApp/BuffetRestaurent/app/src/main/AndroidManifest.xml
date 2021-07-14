@@ -13,14 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddMenuActivity"
-            android:parentActivityName=".MenuMangeForStaff"
-            ></activity>
-        <activity android:name=".MenuMangeForStaff" />
-        <activity android:name=".Controler.CustomerMenu" />
-        <activity android:name=".ConfirmReservation" />
-        <activity android:name=".Controler.UserChangePassword" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity"></activity>
+        <activity
+            android:name=".Controller.Activity.AddMenuActivity"
+            android:parentActivityName=".Controller.Activity.MenuMangeForStaff" />
+        <activity android:name=".Controller.Activity.MenuMangeForStaff" />
+        <activity android:name=".Controller.Activity.CustomerMenu" />
+        <activity android:name=".Controller.Activity.ConfirmReservation" />
+        <activity android:name=".Controller.Activity.UserChangePassword" />
+        <activity android:name=".Controller.Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,17 +29,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controler.UserProfile"
-            android:parentActivityName=".Controler.HomePage" />
+            android:name=".Controller.Activity.UserProfile"
+            android:parentActivityName=".Controller.Activity.HomePage" />
         <activity
-            android:name=".HomePageStaff"
+            android:name=".Controller.Activity.HomePageStaff"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".AddReservation" />
+        <activity android:name=".Controller.Activity.Payment" />
         <activity
-            android:name=".Controler.HomePage"
+            android:name=".Controller.Activity.HomePage"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".UpdateReservation" />
-        <activity android:name=".CancelReservation" />
+        <activity android:name=".Controller.Activity.UpdateReservation" />
+        <activity android:name=".Controller.Activity.AddReservation">
+        </activity>
+        <activity android:name=".Controller.Activity.CancelReservation" />
     </application>
 
 </manifest>

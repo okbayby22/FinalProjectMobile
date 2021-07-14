@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controller.Activity.UserProfile"
-    android:background="@color/ThemeBackground"
-    >
+    tools:context=".Controller.Activity.StaffProfile">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -153,4 +151,5 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

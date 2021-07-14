@@ -1,33 +1,20 @@
-package com.example.buffetrestaurent;
+package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.buffetrestaurent.Controler.PagerAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabItem;
+import com.example.buffetrestaurent.Adapter.PagerAdapter;
+import com.example.buffetrestaurent.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,33 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
 
-        // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
 
-        StorageReference imagesRef = storageRef.child("ba-chi-heo.jpg");
 
-// Create a reference with an initial file path and name
-        //StorageReference pathReference = storageRef.child("images/stars.jpg");
-
-// Create a reference to a file from a Google Cloud Storage URI
-       // StorageReference gsReference = storage.getReferenceFromUrl("gs://bucket/images/stars.jpg");
-
-// Create a reference from an HTTPS URL
-// Note that in the URL, characters are URL escaped!
-        //StorageReference httpsReference = imagesRef.getReferenceFromUrl("https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg");
-// Map<String, Object> user = new HashMap<>();
-// user.put("staffId", 2);
-// user.put("staffName", "Jakizer");
-// user.put("staffEmail", "jakizer@gmail.com");
-// user.put("staffAddress", "Can Tho");
-// user.put("staffPhone", "0332444424");
-// user.put("staffPassword", md5("123456"));
-// user.put("staffGender", 1);
-// user.put("staffRole", 1);
-// user.put("staffStatus", 1);
-// user.put("staffAvatar", "1");
 
 //
 //        FirebaseAuth auth = FirebaseAuth.getInstance();

@@ -1,20 +1,18 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Controller.Fragment;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.buffetrestaurent.Model.Customer;
+import com.example.buffetrestaurent.Adapter.FoodsAdapter;
 import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.Model.Menu;
 import com.example.buffetrestaurent.R;

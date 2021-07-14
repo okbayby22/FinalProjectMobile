@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.buffetrestaurent.Controler.FoodsAdapter;
 import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnFailureListener;

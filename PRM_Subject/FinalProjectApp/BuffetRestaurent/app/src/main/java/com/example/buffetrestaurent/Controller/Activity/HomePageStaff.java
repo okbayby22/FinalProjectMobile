@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent;
+package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,16 +14,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.example.buffetrestaurent.Controler.UserChangePassword;
-import com.example.buffetrestaurent.Controler.UserProfile;
-import com.example.buffetrestaurent.Controler.ViewPageAdapter;
+import com.example.buffetrestaurent.Adapter.ViewPageAdapter;
+import com.example.buffetrestaurent.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 public class HomePageStaff extends AppCompatActivity {
     TabLayout homepagetabTabLayout;

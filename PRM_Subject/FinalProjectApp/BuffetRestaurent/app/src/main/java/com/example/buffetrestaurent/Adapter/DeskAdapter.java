@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent.Controler;
+package com.example.buffetrestaurent.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

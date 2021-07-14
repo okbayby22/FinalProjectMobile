@@ -23,8 +23,16 @@
     <string name="strName">Name</string>
     <string name="strPhone">Phone</string>
     <string name="strAddress">Address</string>
+    <string name="strHome">Home</string>
+    <string name="strViewRes">Reservations History</string>
+    <string name="strAddRes">Reservations</string>
+    <string name="strCheckout">Checkout</string>
+    <string name="strCurrentPoint">Your Current Point : </string>
+    <string name="strBuy">Buy</string>
+    <string name="strYes">Yes</string>
+    <string name="strNo">No</string>
+    <string name="strOK">Ok</string>
     <string name="strMenu">Menu</string>
     <string name="strMenuStaff">Menu Management</string>
     <string name="strMenuStaffAddFood">Add food to menu</string>
-
 </resources>

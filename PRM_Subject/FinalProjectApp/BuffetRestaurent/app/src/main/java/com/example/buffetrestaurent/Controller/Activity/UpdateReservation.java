@@ -1,4 +1,4 @@
-package com.example.buffetrestaurent;
+package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,27 +8,20 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.example.buffetrestaurent.Model.Reservation;
-import com.example.buffetrestaurent.Utils.Apis;
+import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.ReservationService;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class UpdateReservation extends AppCompatActivity {
 
@@ -109,22 +102,22 @@ public class UpdateReservation extends AppCompatActivity {
                     }).show();
                 }
                 else {
-                    Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
-                    service = Apis.getReservationService();
-                    System.out.println("..............."+date);
-                    Call<Reservation> call = service.updateReservation(reservationid, date,reservation);
-                    call.enqueue(new Callback<Reservation>() {
-                        @Override
-                        public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(v.getContext(), "Update successful !", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Reservation> call, Throwable t) {
-                            Log.e("Error:", t.getMessage());
-                        }
-                    });
+//                    Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
+//                    service = Apis.getReservationService();
+//                    System.out.println("..............."+date);
+//                    Call<Reservation> call = service.updateReservation(reservationid, date,reservation);
+//                    call.enqueue(new Callback<Reservation>() {
+//                        @Override
+//                        public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+//                            if (response.isSuccessful()) {
+//                                Toast.makeText(v.getContext(), "Update successful !", Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//                        @Override
+//                        public void onFailure(Call<Reservation> call, Throwable t) {
+//                            Log.e("Error:", t.getMessage());
+//                        }
+//                    });
                 }
             }
         });

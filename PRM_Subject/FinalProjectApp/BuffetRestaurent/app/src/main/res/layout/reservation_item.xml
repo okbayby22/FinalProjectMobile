@@ -3,65 +3,104 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="180dp"
     android:background="@drawable/border_layout"
-    >
-
-    <ImageView
-        android:id="@+id/CancelReservation_Img"
-        android:layout_width="124dp"
-        android:layout_height="129dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/store_icon"
-        />
+    android:layout_marginVertical="15dp"
+    android:layout_marginHorizontal="15dp"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/linear"
-        android:layout_width="247dp"
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/CancelReservation_Img"
+            android:layout_width="124dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/rc_reser_date" />
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="249dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/CancelReservation_Date"
+                android:layout_width="222dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginRight="72dp"
+                android:layout_marginBottom="5dp"
+                android:text="TextView"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/CancelReservation_Time"
+                android:layout_width="222dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginRight="72dp"
+                android:layout_marginBottom="5dp"
+                android:text="TextView"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/CancelReservation_NumOfTicket"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="TextView"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/CancelReservation_Price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:text="TextView"
+                android:textColor="@color/orangePrimary"
+                android:textSize="22dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/darker_gray" />
 
         <TextView
-            android:id="@+id/CancelReservation_Date"
-            android:layout_width="222dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="72dp"
-            android:layout_marginRight="72dp"
-            android:layout_marginBottom="10dp"
-            android:text="TextView"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/CancelReservation_NumOfTicket"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="14dp"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/CancelReservation_Price"
-            android:layout_width="wrap_content"
+            android:id="@+id/CancelReservation_Status"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="1dp"
+            android:gravity="center"
             android:text="TextView"
-            android:textSize="20dp" />
-
+            android:textSize="26dp" />
     </LinearLayout>
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="#FF00FF" />
 </LinearLayout>
