@@ -64,7 +64,7 @@ public class AddReservation extends AppCompatActivity {
     DecimalFormat vnd = new DecimalFormat("###,###");
     String date;
     CustomerService customerService;
-    String userEmail;
+    String email;
     Customer customerInfor;
 
     @Override
@@ -237,7 +237,7 @@ public class AddReservation extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePage.class );
-                intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("USER_EMAIL", email);
                 startActivity(intent);
                 return true;
         }
@@ -246,7 +246,7 @@ public class AddReservation extends AppCompatActivity {
 
     public void loadData(){
         customerService = Apis.getCustomerService();
-        Call<Customer> call=customerService.getUserInfor(userEmail);
+        Call<Customer> call=customerService.getUserInfor(email);
         call.enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(Call<Customer> call, Response<Customer> response) {
