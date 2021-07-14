@@ -156,8 +156,14 @@ public class AddReservation extends AppCompatActivity {
                                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                     @Override
                                                     public void onSuccess(DocumentReference documentReference) {
-                                                        Toast.makeText(AddReservation.this, "Make Reservation Success", Toast.LENGTH_SHORT).show();
-
+                                                        Intent intent = new Intent(v.getContext(), Payment.class);
+                                                        intent.putExtra("USER_EMAIL", email);
+                                                        intent.putExtra("PRICE", numogticket*200000);
+                                                        intent.putExtra("TICKET", numogticket);
+                                                        intent.putExtra("DATE", date);
+                                                        intent.putExtra("TIME", timepick.getText().toString());
+                                                        intent.putExtra("CUSTOMER", docID);
+                                                        startActivity(intent);
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {
@@ -169,10 +175,7 @@ public class AddReservation extends AppCompatActivity {
                                     }
                                 }
                             });
-                    Intent intent = new Intent(v.getContext(), HomePage.class);
-                    intent.putExtra("USER_EMAIL", email);
-                    System.out.println(">>>>>>>>>>>>> Nhay intent");
-                    startActivity(intent);
+
                 }
             }
         });

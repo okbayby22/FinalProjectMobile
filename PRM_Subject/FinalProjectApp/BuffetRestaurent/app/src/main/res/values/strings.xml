@@ -26,5 +26,6 @@
     <string name="strHome">Home</string>
     <string name="strViewRes">Reservations History</string>
     <string name="strAddRes">Reservations</string>
+    <string name="strCheckout">Checkout</string>
 
 </resources>
