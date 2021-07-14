@@ -2,30 +2,30 @@ package com.example.buffetrestaurent.Model;
 
 public class Discount {
 
-    private int discountId;
+    private String discountId;
     private int discountPercent;
     private int discountStatus;
     private int discountPoint;
-    private String discountDescription;
-    private int staffId;
+    private String discountName;
+    private String staffId;
 
     public Discount() {
     }
 
-    public Discount(int discountId, int discountPercent, int discountStatus, int discountPoint, String discountDescription, int staffId) {
+    public Discount(String discountId, int discountPercent, int discountStatus, int discountPoint, String discountName, String staffId) {
         this.discountId = discountId;
         this.discountPercent = discountPercent;
         this.discountStatus = discountStatus;
         this.discountPoint = discountPoint;
-        this.discountDescription = discountDescription;
+        this.discountName = discountName;
         this.staffId = staffId;
     }
 
-    public int getDiscountId() {
+    public String getDiscountId() {
         return discountId;
     }
 
-    public void setDiscountId(int discountId) {
+    public void setDiscountId(String discountId) {
         this.discountId = discountId;
     }
 
@@ -53,19 +53,19 @@ public class Discount {
         this.discountPoint = discountPoint;
     }
 
-    public String getDiscountDescription() {
-        return discountDescription;
+    public String getDiscountName() {
+        return discountName;
     }
 
-    public void setDiscountDescription(String discountDescription) {
-        this.discountDescription = discountDescription;
+    public void setDiscountName(String discountDescription) {
+        this.discountName = discountDescription;
     }
 
-    public int getStaffId() {
+    public String getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(int staffId) {
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
 }
