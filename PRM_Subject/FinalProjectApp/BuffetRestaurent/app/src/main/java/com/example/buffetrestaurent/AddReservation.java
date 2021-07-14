@@ -21,6 +21,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.buffetrestaurent.Controler.HomePage;
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.Utils.Apis;
 import com.example.buffetrestaurent.Utils.ReservationService;
@@ -140,6 +141,10 @@ public class AddReservation extends AppCompatActivity {
                                         System.out.println(">>>>>>>>>>>>>>>>>>>Toi phan check customers");
                                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                         String docID = doc.getId();
+                                        Customer cus = doc.toObject(Customer.class);
+                                        if(cus.getCustomerBalance() < numogticket*200000){
+
+                                        }
                                         Map<String, Object> user = new HashMap<>();
                                         user.put("reservationId", "");
                                         user.put("reservationDate", date);
