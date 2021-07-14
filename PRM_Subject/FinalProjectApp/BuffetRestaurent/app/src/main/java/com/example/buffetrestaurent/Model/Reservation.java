@@ -16,15 +16,15 @@ public class Reservation {
     private int reservationStatus;
     private int numberTickets;
     private Double reservationAmount;
-    private int deskId;
+    private String deskId;
     private String customerId;
-    private int discountId;
-    private int staffId;
+    private String discountId;
+    private String staffId;
 
     public Reservation() {
     }
 
-    public Reservation(String reservationDate, String reservationTime, int reservationStatus, int numberTickets, Double reservationAmount, int deskId, String customerId, int discountId, int staffId) {
+    public Reservation(String reservationDate, String reservationTime, int reservationStatus, int numberTickets, Double reservationAmount, String deskId, String customerId, String discountId, String staffId) {
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.reservationStatus = reservationStatus;
@@ -84,11 +84,11 @@ public class Reservation {
         this.reservationAmount = reservationAmount;
     }
 
-    public int getDeskId() {
+    public String getDeskId() {
         return deskId;
     }
 
-    public void setDeskId(int deskId) {
+    public void setDeskId(String deskId) {
         this.deskId = deskId;
     }
 
@@ -100,19 +100,19 @@ public class Reservation {
         this.customerId = customerId;
     }
 
-    public int getDiscountId() {
+    public String getDiscountId() {
         return discountId;
     }
 
-    public void setDiscountId(int discountId) {
+    public void setDiscountId(String discountId) {
         this.discountId = discountId;
     }
 
-    public int getStaffId() {
+    public String getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(int staffId) {
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
 }
