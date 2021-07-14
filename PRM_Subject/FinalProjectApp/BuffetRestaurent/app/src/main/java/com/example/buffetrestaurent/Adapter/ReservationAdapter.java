@@ -1,6 +1,8 @@
 package com.example.buffetrestaurent.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,12 +37,28 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         return new ViewHolder(lecturerView);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder( ReservationAdapter.ViewHolder holder, int position) {
         Reservation reservation = list.get(position);
-        holder.date.setText(reservation.getReservationDate().toString() +" "+ reservation.getReservationTime());
+        holder.date.setText("Date: "+reservation.getReservationDate().toString());
         holder.ticket.setText("Number of tickets: "+reservation.getNumberTickets()+"");
         holder.price.setText(String.valueOf("Total: "+reservation.getReservationAmount()));
+        holder.time.setText("Time: "+reservation.getReservationTime());
+        if(reservation.getReservationStatus() == 1){
+            holder.status.setText("Success");
+        }else if(reservation.getReservationStatus() == 2){
+            holder.status.setText("Cancel");
+        }else{
+            holder.status.setText("Pending.....");
+        }
+        if(holder.status.getText().equals("Success")){
+            holder.status.setTextColor(Color.GREEN);
+        }else if(holder.status.getText().equals("Cancel")){
+            holder.status.setTextColor(Color.RED);
+        }else if(holder.status.getText().equals("Pending.....")){
+            holder.status.setTextColor(Color.BLACK);
+        }
     }
 
     @Override
@@ -57,6 +75,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         public TextView date;
         public TextView ticket;
         public TextView price;
+        public TextView time;
+        public TextView status;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,6 +84,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             avt = itemView.findViewById(R.id.CancelReservation_Img);
             ticket = itemView.findViewById(R.id.CancelReservation_NumOfTicket);
             price = itemView.findViewById(R.id.CancelReservation_Price);
+            time = itemView.findViewById(R.id.CancelReservation_Time);
+            status = itemView.findViewById(R.id.CancelReservation_Status);
 
         }
     }

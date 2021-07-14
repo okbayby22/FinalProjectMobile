@@ -15,7 +15,7 @@
         android:focusedMonthDateColor="@color/Theme"
         android:selectedDateVerticalBar="@color/Theme"
         android:selectedWeekBackgroundColor="@color/Theme"
-        app:layout_constraintBottom_toTopOf="@+id/UpdateReservation_txtTimePick"
+        app:layout_constraintBottom_toTopOf="@+id/AddReservation_txtTimePick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

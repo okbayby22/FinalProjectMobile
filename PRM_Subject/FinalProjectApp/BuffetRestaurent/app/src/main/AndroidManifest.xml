@@ -34,12 +34,19 @@
         <activity
             android:name=".HomePageStaff"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".AddReservation" />
+        <activity android:name=".Payment" />
         <activity
             android:name=".Controler.HomePage"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".UpdateReservation" />
-        <activity android:name=".CancelReservation" />
+        <activity android:name=".AddReservation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ConfirmReservation" />
     </application>
 
 </manifest>

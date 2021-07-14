@@ -26,6 +26,9 @@ import com.google.firebase.storage.StorageReference;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,33 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
 
-        // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
 
-        StorageReference imagesRef = storageRef.child("ba-chi-heo.jpg");
 
-// Create a reference with an initial file path and name
-        //StorageReference pathReference = storageRef.child("images/stars.jpg");
-
-// Create a reference to a file from a Google Cloud Storage URI
-       // StorageReference gsReference = storage.getReferenceFromUrl("gs://bucket/images/stars.jpg");
-
-// Create a reference from an HTTPS URL
-// Note that in the URL, characters are URL escaped!
-        //StorageReference httpsReference = imagesRef.getReferenceFromUrl("https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg");
-// Map<String, Object> user = new HashMap<>();
-// user.put("staffId", 2);
-// user.put("staffName", "Jakizer");
-// user.put("staffEmail", "jakizer@gmail.com");
-// user.put("staffAddress", "Can Tho");
-// user.put("staffPhone", "0332444424");
-// user.put("staffPassword", md5("123456"));
-// user.put("staffGender", 1);
-// user.put("staffRole", 1);
-// user.put("staffStatus", 1);
-// user.put("staffAvatar", "1");
 
 //
 //        FirebaseAuth auth = FirebaseAuth.getInstance();

@@ -152,14 +152,13 @@ public class signInFragment extends Fragment {
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         QuerySnapshot query = task.getResult();
                                         if (!query.isEmpty()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                String userEmail = txtEmail.getText().toString();
-                                                txtEmail.setText("");
-                                                txtPass.setText("");
-                                                Intent intent = new Intent(v.getContext(), HomePage.class);
-                                                intent.putExtra("USER_EMAIL", userEmail);
-                                                startActivity(intent);
-                                            }
+                                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> Toi day");
+                                            String userEmail = txtEmail.getText().toString();
+                                            Intent intent = new Intent(v.getContext(), HomePage.class);
+                                            intent.putExtra("USER_EMAIL", userEmail);
+                                            startActivity(intent);
+                                            txtEmail.setText("");
+                                            txtPass.setText("");
                                         } else {
                                             db.collection("staffs")
                                                     .whereEqualTo("StaffEmail",txtEmail.getText().toString())
@@ -176,6 +175,9 @@ public class signInFragment extends Fragment {
                                                                 startActivity(intent);
                                                             } else {
                                                                 txtError.setText("Email or password not correct !!!");
+                                                            }
+                                                        }
+                                                    });
                                                             }
                                                         }
                                                     });

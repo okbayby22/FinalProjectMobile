@@ -109,22 +109,22 @@ public class UpdateReservation extends AppCompatActivity {
                     }).show();
                 }
                 else {
-                    Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
-                    service = Apis.getReservationService();
-                    System.out.println("..............."+date);
-                    Call<Reservation> call = service.updateReservation(reservationid, date,reservation);
-                    call.enqueue(new Callback<Reservation>() {
-                        @Override
-                        public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(v.getContext(), "Update successful !", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Reservation> call, Throwable t) {
-                            Log.e("Error:", t.getMessage());
-                        }
-                    });
+//                    Reservation reservation = new Reservation(null, time, status, numogticket, amount, deskid, cusid, discountid, staffid);
+//                    service = Apis.getReservationService();
+//                    System.out.println("..............."+date);
+//                    Call<Reservation> call = service.updateReservation(reservationid, date,reservation);
+//                    call.enqueue(new Callback<Reservation>() {
+//                        @Override
+//                        public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+//                            if (response.isSuccessful()) {
+//                                Toast.makeText(v.getContext(), "Update successful !", Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//                        @Override
+//                        public void onFailure(Call<Reservation> call, Throwable t) {
+//                            Log.e("Error:", t.getMessage());
+//                        }
+//                    });
                 }
             }
         });
