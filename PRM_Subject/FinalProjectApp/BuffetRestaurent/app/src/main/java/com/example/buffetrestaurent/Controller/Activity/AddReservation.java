@@ -147,10 +147,10 @@ public class AddReservation extends AppCompatActivity {
                                         user.put("reservationStatus", status);
                                         user.put("numberTickets", numogticket);
                                         user.put("reservationAmount", amount);
-                                        user.put("deskId", 0);
+                                        user.put("deskId", "");
                                         user.put("customerId", docID);
-                                        user.put("discountId", 1);
-                                        user.put("staffId", 1);
+                                        user.put("discountId", "");
+                                        user.put("staffId", "");
                                         db.collection("reservations")
                                                 .add(user)
                                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

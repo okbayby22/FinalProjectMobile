@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity"></activity>
+        <activity android:name=".Controller.Activity.CustomerDiscountHistoryActivity"></activity>
+        <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity" />
         <activity
             android:name=".Controller.Activity.AddMenuActivity"
             android:parentActivityName=".Controller.Activity.MenuMangeForStaff" />
@@ -39,8 +40,7 @@
             android:name=".Controller.Activity.HomePage"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".Controller.Activity.UpdateReservation" />
-        <activity android:name=".Controller.Activity.AddReservation">
-        </activity>
+        <activity android:name=".Controller.Activity.AddReservation"></activity>
         <activity android:name=".Controller.Activity.CancelReservation" />
     </application>
 

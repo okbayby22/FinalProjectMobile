@@ -35,4 +35,7 @@
     <string name="strMenu">Menu</string>
     <string name="strMenuStaff">Menu Management</string>
     <string name="strMenuStaffAddFood">Add food to menu</string>
+    <string name="strCopy">Copy</string>
+    <string name="strBuyDiscount">Shop Discount</string>
+    <string name="strDiscountHistory">My Discount</string>
 </resources>

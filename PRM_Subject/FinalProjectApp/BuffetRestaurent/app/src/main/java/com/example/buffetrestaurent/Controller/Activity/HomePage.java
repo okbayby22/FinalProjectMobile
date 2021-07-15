@@ -139,7 +139,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.mainmenu_btnReserHis:
                 break;
             case R.id.mainmenu_btnMyDiscount:
-                intent=new Intent(this,CustomerBuyDiscountActivity.class);
+                intent=new Intent(this,CustomerDiscountHistoryActivity.class);
                 intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
                 finish();

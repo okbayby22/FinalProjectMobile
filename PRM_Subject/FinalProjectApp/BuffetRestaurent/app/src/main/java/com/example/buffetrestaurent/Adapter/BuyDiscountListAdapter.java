@@ -73,30 +73,6 @@ public class BuyDiscountListAdapter extends RecyclerView.Adapter<BuyDiscountList
         holder.txtDiscountPercent.setText(String.valueOf(discount.getDiscountPercent())+" %");
         holder.txtDiscountPoint.setText(String.valueOf(discount.getDiscountPoint())+" points");
 
-//        holder.btnBuy.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseFirestore db = FirebaseFirestore.getInstance();
-//                db.collection("menu_detail").document(listMenuDetailId.get(position))
-//                        .delete()
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                Toast.makeText(v.getContext(), "Delete Successful", Toast.LENGTH_SHORT).show();
-////                                foodsList.remove(position);
-////                                notifyItemRemoved(position);
-////                                notifyItemRangeChanged(position, foodsList.size());
-////                                //notifyDataSetChanged();
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Toast.makeText(v.getContext(), "Delete fail", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//            }
-//        });
     }
     @Override
     public int getItemCount() {
