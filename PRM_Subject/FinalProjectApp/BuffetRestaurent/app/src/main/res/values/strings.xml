@@ -35,4 +35,14 @@
     <string name="strMenu">Menu</string>
     <string name="strMenuStaff">Menu Management</string>
     <string name="strMenuStaffAddFood">Add food to menu</string>
+    <string name="strDiscountStaffManagement">Discount Management</string>
+    <string name="strEditDiscountStaffManagement">Edit Discount Management</string>
+    <string name="strAddDiscountStaffManagement">Add Discount</string>
+    <string name="strHeaderDiscountName">Name</string>
+    <string name="strHeaderDiscountPoint">Point</string>
+    <string name="strHeaderDiscountPercent">Percent</string>
+    <string name="strHeaderDiscountStatus">Status</string>
+    <string name="strBack">Back</string>
+    <string name="strEdit">Edit</string>
+    <string name="strCancel">Cancel</string>
 </resources>

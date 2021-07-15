@@ -60,6 +60,10 @@ public class HomePageStaff extends AppCompatActivity {
                     case R.id.staffmenu_btnReserHis:
                         break;
                     case R.id.staffmenu_btnMyDiscount:
+                        intent=new Intent(HomePageStaff.this, StaffDiscountManagement.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
+                        startActivity(intent);
                         break;
                     case R.id.staffmenu_btnChangePass:
                         intent=new Intent(HomePageStaff.this, UserChangePassword.class);
