@@ -33,6 +33,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,10 +77,11 @@ public class AddReservation extends AppCompatActivity {
         tickets = findViewById(R.id.AddReservation_txtNumTickets);          //Tickets textview to show number of tickets
         price = findViewById(R.id.AddReservation_txtPrice);                 //Price textview to show total balance that user must pay
         numsOftickets = Integer.parseInt(tickets.getText().toString());     //Variable to save data of number of tickets
+        price.setText(vnd.format(numsOftickets*200000)+" VND");      //Set value for textview
         name = findViewById(R.id.AddReservation_inputName);                 //Input text field phone
         phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
         calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date curdate = Calendar.getInstance().getTime();
         name.setFocusable(false);
         name.setFocusableInTouchMode(false);
@@ -88,17 +91,33 @@ public class AddReservation extends AppCompatActivity {
         phone.setClickable(false);
         date = sdf.format(curdate);
         email = getIntent().getStringExtra("USER_EMAIL");
+        System.out.println(email);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("customers")
+                .whereEqualTo("customerEmail", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                           @Override
+                                           public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                               if(task.isSuccessful() && !task.getResult().isEmpty()){
+                                                    DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                                    customerInfor = doc.toObject(Customer.class);
+                                                    name.setText(customerInfor.getCustomerName());
+                                                    phone.setText(customerInfor.getCustomerPhone());
+                                               }
+                                           }
+                                       });
         /*
         Set Event on Date Change on Calendar View
          */
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                System.out.println(dayOfMonth);
-                date = (month + 1) + "/" + dayOfMonth + "/" + year;
-                System.out.println(date);
-            }
-        });
+                        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                            @Override
+                            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                                System.out.println(dayOfMonth);
+                                date = (month + 1) + "/" + dayOfMonth + "/" + year;
+                                System.out.println(date);
+                            }
+                        });
         /*
         Set Event on Click on Button Add
          */
@@ -127,55 +146,47 @@ public class AddReservation extends AppCompatActivity {
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("customers")
-                            .whereEqualTo("customerEmail", "c7n@gmail.com")
+                            .whereEqualTo("customerEmail", email)
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                                        System.out.println(">>>>>>>>>>>>>>>>>>>Toi phan check customers");
                                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                         String docID = doc.getId();
                                         Customer cus = doc.toObject(Customer.class);
                                         if(cus.getCustomerBalance() < numogticket*200000){
+                                            new AlertDialog.Builder(AddReservation.this).setTitle("Add Reservation Notice").setMessage("You don't have enought balance")
+                                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
 
+                                                        }
+                                                    }).show();
+                                        }else{
+                                            Map<String, Object> user = new HashMap<>();
+                                            user.put("reservationId", "");
+                                            user.put("reservationDate", date);
+                                            user.put("reservationTime", timepick.getText().toString());
+                                            user.put("reservationStatus", status);
+                                            user.put("numberTickets", numogticket);
+                                            user.put("reservationAmount", amount);
+                                            user.put("deskId", 0);
+                                            user.put("customerId", docID);
+                                            user.put("discountId", 1);
+                                            user.put("staffId", 1);
+                                            Intent intent = new Intent(v.getContext(), Payment.class);
+                                            intent.putExtra("USER_EMAIL", email);
+                                            intent.putExtra("PRICE", numogticket*200000);
+                                            intent.putExtra("TICKET", numogticket);
+                                            intent.putExtra("DATE", date);
+                                            intent.putExtra("TIME", timepick.getText().toString());
+                                            intent.putExtra("CUSTOMER", docID);
+                                            startActivity(intent);
                                         }
-                                        Map<String, Object> user = new HashMap<>();
-                                        user.put("reservationId", "");
-                                        user.put("reservationDate", date);
-                                        user.put("reservationTime", timepick.getText().toString());
-                                        user.put("reservationStatus", status);
-                                        user.put("numberTickets", numogticket);
-                                        user.put("reservationAmount", amount);
-                                        user.put("deskId", "0");
-                                        user.put("customerId", docID);
-                                        user.put("discountId", "1");
-                                        user.put("staffId", "1");
-                                        db.collection("reservations")
-                                                .add(user)
-                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                    @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
-                                                        Intent intent = new Intent(v.getContext(), Payment.class);
-                                                        intent.putExtra("USER_EMAIL", email);
-                                                        intent.putExtra("PRICE", numogticket*200000);
-                                                        intent.putExtra("TICKET", numogticket);
-                                                        intent.putExtra("DATE", date);
-                                                        intent.putExtra("TIME", timepick.getText().toString());
-                                                        intent.putExtra("CUSTOMER", docID);
-                                                        startActivity(intent);
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        System.out.println("Adddddddddddd failed");
-                                                    }
-                                                });
                                     }
                                 }
                             });
-
                 }
             }
         });
