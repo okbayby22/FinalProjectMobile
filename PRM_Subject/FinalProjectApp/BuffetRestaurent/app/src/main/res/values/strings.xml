@@ -35,6 +35,9 @@
     <string name="strMenu">Menu</string>
     <string name="strMenuStaff">Menu Management</string>
     <string name="strMenuStaffAddFood">Add food to menu</string>
+    <string name="strStaffManage">Staff Management</string>
+    <string name="strGender">Gender</string>
+    <string name="strAddBalance">Add Balance</string>
     <string name="strDiscountStaffManagement">Discount Management</string>
     <string name="strEditDiscountStaffManagement">Edit Discount Management</string>
     <string name="strAddDiscountStaffManagement">Add Discount</string>
