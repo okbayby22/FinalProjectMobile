@@ -45,4 +45,7 @@
     <string name="strBack">Back</string>
     <string name="strEdit">Edit</string>
     <string name="strCancel">Cancel</string>
+    <string name="strCopy">Copy</string>
+    <string name="strBuyDiscount">Shop Discount</string>
+    <string name="strDiscountHistory">My Discount</string>
 </resources>

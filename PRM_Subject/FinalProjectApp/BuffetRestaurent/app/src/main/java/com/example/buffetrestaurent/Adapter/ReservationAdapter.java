@@ -1,28 +1,42 @@
 package com.example.buffetrestaurent.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.buffetrestaurent.Controller.Activity.UpdateReservation;
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder>{
 
     private ArrayList<Reservation> list;
     private final Context context;
+    String email;
 
     public ReservationAdapter(ArrayList<Reservation> list, Context context) {
         this.list = list;
@@ -59,6 +73,51 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         }else if(holder.status.getText().equals("Pending.....")){
             holder.status.setTextColor(Color.BLACK);
         }
+        holder.item_Reservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int check = list.get(position).getReservationStatus();
+                if(check==1 || check ==2){
+                    AlertDialog dialog = new AlertDialog.Builder(context)
+                            .setTitle("ERROR")
+                            .setMessage("Cannot update this reservation")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .create();
+                    dialog.show();
+                }else {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("customers")
+                            .whereEqualTo("customerId",list.get(position).getCustomerId() )
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@android.support.annotation.NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Customer customerInfor = document.toObject(Customer.class);
+                                            email = customerInfor.getCustomerEmail();
+                                        }
+                                    } else {
+
+                                    }
+                                }
+                            });
+                    System.out.println("//////////////////"+email);
+                    Intent intent = new Intent(context, UpdateReservation.class);
+                    intent.putExtra("GETID",list.get(position).getReservationId());
+                    Reservation res = list.get(position);
+                    System.out.println(res);
+                    intent.putExtra("GETRESERVATION", res);
+                    intent.putExtra("USER_EMAIL", email);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
@@ -77,6 +136,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         public TextView price;
         public TextView time;
         public TextView status;
+        public LinearLayout item_Reservation;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -86,7 +146,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             price = itemView.findViewById(R.id.CancelReservation_Price);
             time = itemView.findViewById(R.id.CancelReservation_Time);
             status = itemView.findViewById(R.id.CancelReservation_Status);
-
+            item_Reservation = itemView.findViewById(R.id.item_Reservation);
+            email = ((Activity) context).getIntent().getStringExtra("USER_EMAIL");
         }
     }
 

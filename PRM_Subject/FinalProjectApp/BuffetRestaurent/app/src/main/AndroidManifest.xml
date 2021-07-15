@@ -15,6 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Controller.Activity.EditDiscountStaffManage"></activity>
         <activity android:name=".Controller.Activity.StaffDiscountManagement" />
+        <activity android:name=".Controller.Activity.CustomerDiscountHistoryActivity"></activity>
         <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity" />
         <activity
             android:name=".Controller.Activity.AddMenuActivity"
@@ -41,7 +42,8 @@
             android:name=".Controller.Activity.HomePage"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".Controller.Activity.UpdateReservation" />
-        <activity android:name=".Controller.Activity.AddReservation" />
+        <activity android:name=".Controller.Activity.AddReservation">
+        </activity>
         <activity android:name=".Controller.Activity.CancelReservation" />
     </application>
 
