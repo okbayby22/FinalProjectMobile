@@ -22,9 +22,10 @@
             android:icon="@drawable/changepass_icon"/>
     </group>
     <group android:checkableBehavior="single">
-        <item android:id="@+id/staffmenu_btnMenu"
-            android:title="@string/strMenu"
-            android:icon="@drawable/changepass_icon"/>
+        <item
+            android:id="@+id/staffmenu_btnMenu"
+            android:icon="@drawable/group"
+            android:title="@string/strMenu" />
     </group>
 
 
