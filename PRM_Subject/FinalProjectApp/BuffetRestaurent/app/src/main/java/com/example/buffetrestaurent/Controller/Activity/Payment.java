@@ -89,8 +89,10 @@ public class Payment extends AppCompatActivity {
                                     DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                     Customer cus = doc.toObject(Customer.class);
                                     double balance = cus.getCustomerBalance() - payprice;
+                                    int point = cus.getCustomerPoint() + (ticket*20);
                                     Map<String, Object> data = new HashMap<>();
                                     data.put("customerBalance", balance);
+                                    data.put("customerPoint",point);
                                     db.collection("customers")
                                             .document(cusID)
                                             .update(data)

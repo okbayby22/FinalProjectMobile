@@ -14,6 +14,7 @@
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
         <activity android:name=".Controller.Activity.MainActivity"></activity>
+        <activity android:name=".Controller.Activity.StaffManageActivity" />
         <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity" />
         <activity
             android:name=".Controller.Activity.AddMenuActivity"
@@ -22,7 +23,7 @@
         <activity android:name=".Controller.Activity.CustomerMenu" />
         <activity android:name=".Controller.Activity.ConfirmReservation" />
         <activity android:name=".Controller.Activity.UserChangePassword" />
-        <activity android:name=".Controller.Activity.StaffManageActivity">
+        <activity android:name=".Controller.Activity.AddBalanceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +41,7 @@
             android:name=".Controller.Activity.HomePage"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".Controller.Activity.UpdateReservation" />
-        <activity android:name=".Controller.Activity.AddReservation"></activity>
+        <activity android:name=".Controller.Activity.AddReservation" />
         <activity android:name=".Controller.Activity.CancelReservation" />
         <activity android:name=".Controller.Activity.StaffProfile" />
     </application>
