@@ -5,10 +5,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,13 +35,17 @@ public class AddBalanceActivity extends AppCompatActivity {
     EditText email, balance;
     Button submit, add;
     TextView emailError, balanceError;
+    String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_balance);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.strAddBalance);
         email = findViewById(R.id.AddBalance_txtEmail);
         email.setHint("Email");
+        userEmail= getIntent().getStringExtra("USER_EMAIL");
         emailError = findViewById(R.id.AddBalance_txtEmail_Error);
         balanceError = findViewById(R.id.AddBalance_txtAddBalance_Error);
         balance = findViewById(R.id.AddBalance_txtBalance);
@@ -147,5 +153,17 @@ public class AddBalanceActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePageStaff.class );
+                intent.putExtra("USER_EMAIL", userEmail);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
     }
 }
