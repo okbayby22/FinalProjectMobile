@@ -113,7 +113,7 @@ public class UpdateReservation extends AppCompatActivity {
         name = findViewById(R.id.UpdateReservation_inputName);                 //Input text field phone
         phone = findViewById(R.id.UpdateReservation_inputPhone);               //Input text field name
         calendarView = findViewById(R.id.UpdateReservation_CalendarView);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date curdate =  Calendar.getInstance().getTime();
         name.setFocusable(false);
         name.setFocusableInTouchMode(false);
