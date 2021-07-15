@@ -48,4 +48,6 @@
     <string name="strCopy">Copy</string>
     <string name="strBuyDiscount">Shop Discount</string>
     <string name="strDiscountHistory">My Discount</string>
+    <string name="strBalance">Add balance</string>
+    <string name="strStaffManage">Manage staff</string>
 </resources>

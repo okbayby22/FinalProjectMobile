@@ -57,7 +57,11 @@ public class HomePageStaff extends AppCompatActivity {
                         intent.putExtra("USER_ROLE", "staff");
                         startActivity(intent);
                         break;
-                    case R.id.staffmenu_btnReserHis:
+                    case R.id.staffmenu_btnBalance:
+                        intent=new Intent(HomePageStaff.this, UserProfile.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
+                        startActivity(intent);
                         break;
                     case R.id.staffmenu_btnMyDiscount:
                         intent=new Intent(HomePageStaff.this, StaffDiscountManagement.class);
@@ -72,6 +76,12 @@ public class HomePageStaff extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.staffmenu_btnMenu:
+                        intent=new Intent(HomePageStaff.this, MenuMangeForStaff.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
+                        startActivity(intent);
+                        break;
+                    case R.id.staffmenu_btnStaffManage:
                         intent=new Intent(HomePageStaff.this, MenuMangeForStaff.class);
                         intent.putExtra("USER_EMAIL", userEmail);
                         intent.putExtra("USER_ROLE", "staff");

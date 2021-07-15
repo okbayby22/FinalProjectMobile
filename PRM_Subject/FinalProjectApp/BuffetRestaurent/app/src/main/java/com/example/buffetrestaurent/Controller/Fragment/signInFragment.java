@@ -129,6 +129,7 @@ public class signInFragment extends Fragment {
 //                        Log.e("Error:",t.getMessage());
 //                    }
 //                });
+                btnSignIn.setClickable(false);
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 auth.signInWithEmailAndPassword(txtEmail.getText().toString(), md5(txtPass.getText().toString())).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -150,6 +151,7 @@ public class signInFragment extends Fragment {
                                             startActivity(intent);
                                             txtEmail.setText("");
                                             txtPass.setText("");
+                                            btnSignIn.setClickable(true);
                                         } else {
                                             db.collection("staffs")
                                                     .whereEqualTo("StaffEmail",txtEmail.getText().toString())
@@ -164,6 +166,7 @@ public class signInFragment extends Fragment {
                                                                 Intent intent = new Intent(v.getContext(), HomePageStaff.class);
                                                                 intent.putExtra("USER_EMAIL", userEmail);
                                                                 startActivity(intent);
+                                                                btnSignIn.setClickable(true);
                                                             } else {
                                                                 txtError.setText("Email or password not correct !!!");
                                                             }
