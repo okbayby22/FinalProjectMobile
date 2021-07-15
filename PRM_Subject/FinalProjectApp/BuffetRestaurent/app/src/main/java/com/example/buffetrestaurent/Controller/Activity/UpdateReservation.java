@@ -61,7 +61,7 @@ public class UpdateReservation extends AppCompatActivity {
     ReservationAdapter reserAdap;
     String reservationId;
     String email;
-
+    int hour,minute;
     private void loadInformation(){
         email = getIntent().getStringExtra("USER_EMAIL");
         reservationId =getIntent().getStringExtra("GETID");
@@ -93,6 +93,10 @@ public class UpdateReservation extends AppCompatActivity {
         }
         numsOftickets = inforReser.getNumberTickets();
         price.setText(vnd.format(numsOftickets * 200000) + " VND");
+        String timehour[] = inforReser.getReservationTime().split(":");
+        hour = Integer.parseInt(timehour[0]);
+        minute = Integer.parseInt(timehour[1]);
+
     }
 
     @Override
@@ -126,7 +130,7 @@ public class UpdateReservation extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                date = year + "-" + (month+1) + "-" + dayOfMonth;
+                date = (month + 1) + "/" + dayOfMonth + "/" + year;
             }
         });
         name.setHint("Enter your name");
@@ -229,9 +233,6 @@ public class UpdateReservation extends AppCompatActivity {
         timepick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog timepicker = new TimePickerDialog(UpdateReservation.this, android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
