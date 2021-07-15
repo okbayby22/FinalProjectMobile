@@ -97,7 +97,6 @@ public class CancelReservation extends AppCompatActivity {
         loadReservation(); //Call method to load Lecturer Information to list
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strViewRes);
-        String email = getIntent().getStringExtra("USER_EMAIL");
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {

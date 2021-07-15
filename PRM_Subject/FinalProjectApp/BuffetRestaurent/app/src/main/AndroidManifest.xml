@@ -16,6 +16,9 @@
         <activity android:name=".Controller.Activity.MainActivity"></activity>
         <activity android:name=".Controller.Activity.StaffManageActivity" />
         <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity" />
+        <activity android:name=".Controller.Activity.EditDiscountStaffManage"></activity>
+        <activity android:name=".Controller.Activity.StaffDiscountManagement" />
+        <activity android:name=".Controller.Activity.CustomerDiscountHistoryActivity"></activity>
         <activity
             android:name=".Controller.Activity.AddMenuActivity"
             android:parentActivityName=".Controller.Activity.MenuMangeForStaff" />
