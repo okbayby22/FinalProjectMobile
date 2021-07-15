@@ -124,6 +124,7 @@ public class AddBalanceActivity extends AppCompatActivity {
                                                                         .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                                                                             @Override
                                                                             public void onClick(DialogInterface dialog, int which) {
+                                                                                emailError.setTextColor(Color.BLACK);
                                                                                 email.setText("");
                                                                                 email.setAlpha(1);
                                                                                 emailError.setText("");
@@ -137,6 +138,7 @@ public class AddBalanceActivity extends AppCompatActivity {
                                                                         }).setOnCancelListener(new DialogInterface.OnCancelListener() {
                                                                     @Override
                                                                     public void onCancel(DialogInterface dialog) {
+                                                                        emailError.setTextColor(Color.BLACK);
                                                                         email.setText("");
                                                                         email.setAlpha(1);
                                                                         emailError.setText("");
