@@ -10,11 +10,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +32,7 @@ public class Payment extends AppCompatActivity {
     TextView price;
     TextView finalprice;
     TextView discount;
-    int payprice;
+    double payprice;
     int intentprice;
     int discountprice;
     String email;
@@ -45,21 +48,21 @@ public class Payment extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCheckout);
-        intentprice = getIntent().getIntExtra("PRICE",0);
+        intentprice = getIntent().getIntExtra("PRICE", 0);
         discountprice = 0;
         email = getIntent().getStringExtra("USER_EMAIL");
         price = findViewById(R.id.Payment_txtTotal);
         finalprice = findViewById(R.id.Payment_txtFinalPrice);
         discount = findViewById(R.id.Payment_txtDiscount);
         Checkout = findViewById(R.id.Payment_btnCheckout);
-        discount.setText(0+" VND");
-        price.setText(vnd.format(intentprice)+" VND");
+        discount.setText(0 + " VND");
+        price.setText(vnd.format(intentprice) + " VND");
         payprice = intentprice - discountprice;
-        finalprice.setText(vnd.format(payprice)+ " VND");
-        ticket = getIntent().getIntExtra("TICKET",0);
+        finalprice.setText(vnd.format(payprice) + " VND");
+        ticket = getIntent().getIntExtra("TICKET", 0);
         date = getIntent().getStringExtra("DATE");
         time = getIntent().getStringExtra("TIME");
-        cusID= getIntent().getStringExtra("CUSTOMER");
+        cusID = getIntent().getStringExtra("CUSTOMER");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Checkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,19 +74,43 @@ public class Payment extends AppCompatActivity {
                 user.put("reservationStatus", 0);
                 user.put("numberTickets", ticket);
                 user.put("reservationAmount", payprice);
-                user.put("deskId","");
+                user.put("deskId", "");
                 user.put("customerId", cusID);
                 user.put("discountId", "");
                 user.put("staffId", "");
-                db.collection("reservations")
-                        .add(user)
-                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+
+                db.collection("customers")
+                        .whereEqualTo("customerEmail", email)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
-                            public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
-                                Toast.makeText(Payment.this, "Checkout Successfully", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(v.getContext(), HomePage.class);
-                                intent.putExtra("USER_EMAIL", email);
-                                startActivity(intent);
+                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                    DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                    Customer cus = doc.toObject(Customer.class);
+                                    double balance = cus.getCustomerBalance() - payprice;
+                                    Map<String, Object> data = new HashMap<>();
+                                    data.put("customerBalance", balance);
+                                    db.collection("customers")
+                                            .document(cusID)
+                                            .update(data)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                    db.collection("reservations")
+                                                            .add(user)
+                                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
+                                                                    Toast.makeText(Payment.this, "Checkout Successfully", Toast.LENGTH_SHORT).show();
+                                                                    Intent intent = new Intent(v.getContext(), HomePage.class);
+                                                                    intent.putExtra("USER_EMAIL", email);
+                                                                    startActivity(intent);
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }
                             }
                         });
             }

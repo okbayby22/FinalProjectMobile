@@ -148,8 +148,6 @@ public class signInFragment extends Fragment {
                                             Intent intent = new Intent(v.getContext(), HomePage.class);
                                             intent.putExtra("USER_EMAIL", userEmail);
                                             startActivity(intent);
-                                            txtEmail.setText("");
-                                            txtPass.setText("");
                                         } else {
                                             db.collection("staffs")
                                                     .whereEqualTo("StaffEmail",txtEmail.getText().toString())

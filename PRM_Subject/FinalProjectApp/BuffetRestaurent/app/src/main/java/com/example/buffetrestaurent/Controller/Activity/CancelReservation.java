@@ -135,40 +135,6 @@ public class CancelReservation extends AppCompatActivity {
                             reserAdap.notifyDataSetChanged();
                         }
                     }).show();
-//                    Map<String, Object> updateData = new HashMap<>();
-//                    updateData.put("reservationStatus", 2);
-//
-//                    db.collection("reservations")
-//                            .document(list.get(viewHolder.getAdapterPosition()).getReservationId())
-//                            .update(updateData)
-//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-//                                    res.setReservationStatus(2);
-//                                    new AlertDialog.Builder(CancelReservation.this).setTitle("Delete Reservation Notice").setMessage("Delete Reservation Successfully")
-//                                            .setPositiveButton("Undo", new DialogInterface.OnClickListener() {
-//                                                @Override
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    res.setReservationStatus(0);
-//                                                    db.collection("reservations")
-//                                                            .document(list.get(viewHolder.getAdapterPosition()).getReservationId())
-//                                                            .update(updateData)
-//                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                                @Override
-//                                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-//                                                                    reserAdap.notifyDataSetChanged();
-//                                                                }
-//                                                            });
-//
-//                                                }
-//                                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            reserAdap.notifyDataSetChanged();
-//                                        }
-//                                    }).show();
-//                                }
-//                            });
                 }
 
             }
