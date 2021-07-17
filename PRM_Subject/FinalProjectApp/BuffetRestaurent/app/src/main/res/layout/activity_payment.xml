@@ -138,6 +138,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/Payment_txtWrongCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textSize="15dp"
+            android:textColor="@color/Red"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Payment_txtCode" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -159,15 +169,11 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="170dp"
-        android:layout_marginRight="170dp"
         android:layout_marginBottom="21dp"
         android:text="Discount"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintEnd_toStartOf="@+id/Payment_txtDiscount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -224,15 +230,13 @@
         android:id="@+id/Payment_txtDiscount"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="52dp"
         android:layout_marginBottom="29dp"
         android:gravity="right"
         android:text="TextView"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/Payment_txtTotal" />
 
     <TextView
