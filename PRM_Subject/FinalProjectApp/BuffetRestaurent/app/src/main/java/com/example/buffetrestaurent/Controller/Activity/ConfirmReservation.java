@@ -7,17 +7,25 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.ReservationAdapter;
+import com.example.buffetrestaurent.Model.Customer;
+import com.example.buffetrestaurent.Model.Discount;
 import com.example.buffetrestaurent.Model.Reservation;
+import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -40,6 +48,8 @@ public class ConfirmReservation extends AppCompatActivity {
     CollectionReference colRef;
 
     int AllPosition;
+
+    String email;
 
     private void loadReservation() {
         listAll = new ArrayList<>();
@@ -117,6 +127,7 @@ public class ConfirmReservation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_reservation);
         EditText search = findViewById(R.id.ConfirmReservation_txtSearch);
+        email = getIntent().getStringExtra("USER_EMAIL");
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -133,6 +144,7 @@ public class ConfirmReservation extends AppCompatActivity {
                 filter(s.toString());
             }
         });
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.ConfirmReservation_recycler); //Get the recycler View by ID
         System.out.println(">>>>>>>>>>>>>>>>>>>>>Here");
         getSupportActionBar().hide();
@@ -148,36 +160,141 @@ public class ConfirmReservation extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 switch (direction) {
                     case ItemTouchHelper.LEFT:
-                        Map<String, Object> updateData = new HashMap<>();
-                        updateData.put("reservationStatus", 2);
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("reservations")
-                                .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
-                                .update(updateData)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                        listAll.remove(viewHolder.getAdapterPosition());
-                                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Delete Reservation Notice").setMessage("Delete Reservation Successfully").show();
-                                        reserAdap.notifyDataSetChanged();
-                                    }
-                                });
+                        Reservation res = listAll.get(viewHolder.getAdapterPosition());
+                        if (res.getReservationStatus() != 0) {
+                            new AlertDialog.Builder(ConfirmReservation.this).setTitle("Cancel Reservation Notice")
+                                    .setMessage("Can not cancel this reservation")
+                                    .show();
+                            reserAdap.notifyDataSetChanged();
+                        } else {
+                            new AlertDialog.Builder(ConfirmReservation.this)
+                                    .setTitle("Cancel Reservation Notice")
+                                    .setMessage("Do you want to cancel this reservation?")
+                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            db.collection("staffs")
+                                                    .whereEqualTo("staffEmail", email)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                DocumentSnapshot staffDoc = task.getResult().getDocuments().get(0);
+                                                                Staff staff = staffDoc.toObject(Staff.class);
+                                                                Map<String, Object> updateData = new HashMap<>();
+                                                                updateData.put("reservationStatus", 2);
+                                                                updateData.put("staffId", staff.getStaffId());
+                                                                db.collection("reservations")
+                                                                        .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
+                                                                        .update(updateData)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    db.collection("customers")
+                                                                                            .whereEqualTo("customerId", res.getCustomerId())
+                                                                                            .get()
+                                                                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                                                                                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                                                        DocumentSnapshot cusDoc = task.getResult().getDocuments().get(0);
+                                                                                                        Customer cus = cusDoc.toObject(Customer.class);
+                                                                                                        double refund = res.getReservationAmount() + cus.getCustomerBalance();
+                                                                                                        Map<String, Object> Data = new HashMap<>();
+                                                                                                        Data.put("customerBalance", refund);
+                                                                                                        db.collection("customers")
+                                                                                                                .document(cus.getCustomerId())
+                                                                                                                .update(Data)
+                                                                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                                    @Override
+                                                                                                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                                                                                        if (task.isSuccessful()) {
+                                                                                                                            new AlertDialog.Builder(ConfirmReservation.this).setTitle("Refund Notice")
+                                                                                                                                    .setMessage("Cancel Reservation Successful, Your Balance Has Been Refund")
+                                                                                                                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                                                                                                        @Override
+                                                                                                                                        public void onClick(DialogInterface dialog, int which) {
+                                                                                                                                            res.setReservationStatus(2);
+                                                                                                                                            reserAdap.notifyDataSetChanged();
+                                                                                                                                        }
+                                                                                                                                    }).show();
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                });
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    reserAdap.notifyDataSetChanged();
+                                }
+                            }).show();
+                        }
                         break;
                     case ItemTouchHelper.RIGHT:
-                        Map<String, Object> confirm = new HashMap<>();
-                        confirm.put("reservationStatus", 1);
-                        FirebaseFirestore fb = FirebaseFirestore.getInstance();
-                        fb.collection("reservations")
-                                .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
-                                .update(confirm)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                        listAll.remove(viewHolder.getAdapterPosition());
-                                        new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice").setMessage("Confirm Reservation Successfully").show();
-                                        reserAdap.notifyDataSetChanged();
-                                    }
-                                });
+                        res = listAll.get(viewHolder.getAdapterPosition());
+                        if (res.getReservationStatus() != 0) {
+                            new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice")
+                                    .setMessage("Can not confirm this reservation")
+                                    .show();
+                            reserAdap.notifyDataSetChanged();
+                        } else {
+                            new AlertDialog.Builder(ConfirmReservation.this)
+                                    .setTitle("Confirm Reservation Notice")
+                                    .setMessage("Do you want to Confirm this reservation?")
+                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            db.collection("staffs")
+                                                    .whereEqualTo("staffEmail", email)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                System.out.println(">>>>>>>>>>>>>>>>>>>>>Toi Day 1");
+                                                                DocumentSnapshot staffDoc = task.getResult().getDocuments().get(0);
+                                                                Staff staff = staffDoc.toObject(Staff.class);
+                                                                Map<String, Object> updateData = new HashMap<>();
+                                                                updateData.put("reservationStatus", 1);
+                                                                updateData.put("staffId", staff.getStaffId());
+                                                                db.collection("reservations")
+                                                                        .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
+                                                                        .update(updateData)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    res.setReservationStatus(1);
+                                                                                    reserAdap.notifyDataSetChanged();
+                                                                                    new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice")
+                                                                                            .setMessage("Confirm Reservation Successfully").show();
+                                                                                    updatePointCustomer(res.getReservationId());
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    reserAdap.notifyDataSetChanged();
+                                }
+                            }).show();
+                        }
+                        break;
                 }
 
 
@@ -185,6 +302,49 @@ public class ConfirmReservation extends AppCompatActivity {
         }).attachToRecyclerView(recyclerView);
 
 
+    }
+    public void updatePointCustomer(String resId){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("reservations")
+                .whereEqualTo("reservationId", resId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            Reservation res = doc.toObject(Reservation.class);
+                            db.collection("customers")
+                                    .whereEqualTo("customerId", res.getCustomerId())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                                Customer cus = doc.toObject(Customer.class);
+                                                double balance = cus.getCustomerBalance() - res.getReservationAmount();
+                                                int point = cus.getCustomerPoint() + (res.getNumberTickets()*20);
+                                                Map<String, Object> data = new HashMap<>();
+                                                data.put("customerPoint",point);
+                                                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+point);
+                                                db.collection("customers")
+                                                        .document(cus.getCustomerId())
+                                                        .update(data)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+
+                                                            }
+                                                        });
+                                            }
+
+                                        }
+                                    });
+                        }
+
+                    }
+                });
     }
 }
 

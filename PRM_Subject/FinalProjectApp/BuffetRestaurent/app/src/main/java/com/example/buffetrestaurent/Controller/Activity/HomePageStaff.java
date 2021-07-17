@@ -93,6 +93,13 @@ public class HomePageStaff extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                         break;
+                    case R.id.staffmenu_btnConfirmReservation:
+                        intent=new Intent(HomePageStaff.this, ConfirmReservation.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
+                        startActivity(intent);
+                        finish();
+                        break;
                 }
                 homepageDrawer.closeDrawer(GravityCompat.START);
                 return true;

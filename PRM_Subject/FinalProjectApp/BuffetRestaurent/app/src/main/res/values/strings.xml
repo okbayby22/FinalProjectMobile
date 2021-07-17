@@ -10,6 +10,7 @@
     <string name="strSubmit">Submit</string>
     <string name="strSlogan">Delicious food for you</string>
     <string name="strUpdate">Update</string>
+    <string name="strAddStaff">Add Staff</string>
     <string name="strSearch">Search</string>
     <string name="strFood">Food</string>
     <string name="strDrink">Drink</string>
@@ -53,4 +54,7 @@
     <string name="strDiscountHistory">My Discount</string>
     <string name="strBalance">Add balance</string>
     <string name="strStaffManageMenu">Manage staff</string>
+    <string name="strConfirmReservation">Confirm Reservation</string>
+    <string name="strCustomerManage">Customer Manage</string>
+    <string name="strCustomerProfile">Customer Profile</string>
 </resources>
