@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.buffetrestaurent.Adapter.ReservationAdapter;
@@ -125,5 +126,12 @@ public class StaffManageActivity extends AppCompatActivity {
                 return true;
         }
         return true;
+    }
+
+    public void onClickAddStaff(View view){
+        Intent intent = new Intent(this , AddStaffActivity.class );
+        intent.putExtra("USER_EMAIL", email);
+        startActivity(intent);
+        this.finish();
     }
 }

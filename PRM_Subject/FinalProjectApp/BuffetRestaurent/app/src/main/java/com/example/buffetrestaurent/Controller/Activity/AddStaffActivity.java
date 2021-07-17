@@ -1,19 +1,30 @@
 package com.example.buffetrestaurent.Controller.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.buffetrestaurent.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -30,13 +41,15 @@ public class AddStaffActivity extends AppCompatActivity {
     Button addStaff;
     RadioGroup groupGender;
     int gender;
+    String getemail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_staff);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.strProfile);
+        getSupportActionBar().setTitle(R.string.strAddStaff);
+        getemail = getIntent().getStringExtra("USER_EMAIL");
         name = findViewById(R.id.txt_Staff_Name);
         nameError = findViewById(R.id.txt_Staff_Name_Error);
         email = findViewById(R.id.txt_Staff_Email);
@@ -125,34 +138,68 @@ public class AddStaffActivity extends AppCompatActivity {
                     crepass=true;
                 }
                 if(cname == true && caddress == true && cemail == true && cpass == true && crepass == true && cphone == true){
-                    System.out.println("Name"+aname);
-                    System.out.println("Phone"+aphone);
-                    System.out.println("Email"+aemail);
-                    System.out.println("Gender"+gender);
-                    System.out.println("Pass"+apassword);
-                    System.out.println("Repass"+arepassword);
-                    System.out.println("Address"+aaddress);
-                    Map<String ,Object> data =  new HashMap<>();
-                    data.put("staffAddress",aaddress);
-                    data.put("staffEmail",aemail);
-                    data.put("staffGender",gender);
-                    data.put("staffId","");
-                    data.put("staffImage","");
-                    data.put("staffName",aname);
-                    data.put("staffPassword",md5(apassword));
-                    data.put("staffPhone",aphone);
-                    data.put("staffRole",1);
-                    data.put("staffStatus",1);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("staffs")
-                            .add(data)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    db.collection("customers")
+                            .whereEqualTo("customerEmail",aemail)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Map<String ,Object> data =  new HashMap<>();
-                                    data.put("staffId",documentReference.getId());
-                                    db.collection("staffs").document(documentReference.getId())
-                                            .update(data);
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    QuerySnapshot doc= task.getResult();
+                                    if (!doc.isEmpty()) {
+                                        emailError.setText("Email has already exist");
+                                    }
+                                    else{
+                                        db.collection("staffs")
+                                                .whereEqualTo("staffEmail",aemail)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        QuerySnapshot doc= task.getResult();
+                                                        if (!doc.isEmpty()) {
+                                                            emailError.setText("Email has already exist");
+                                                        }
+                                                        else {
+                                                            emailError.setText("");
+                                                            Map<String ,Object> data =  new HashMap<>();
+                                                            data.put("staffAddress",aaddress);
+                                                            data.put("staffEmail",aemail);
+                                                            data.put("staffGender",gender);
+                                                            data.put("staffId","");
+                                                            data.put("staffImage","https://firebasestorage.googleapis.com/v0/b/buffetrestaurant-e631f.appspot.com/o/staff.jpg?alt=media&token=e2ce6ef3-6e3b-42a9-b1c4-7e7242f7cfd8");
+                                                            data.put("staffName",aname);
+                                                            data.put("staffPassword",md5(apassword));
+                                                            data.put("staffPhone",aphone);
+                                                            data.put("staffRole",1);
+                                                            data.put("staffStatus",1);
+                                                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                            db.collection("staffs")
+                                                                    .add(data)
+                                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                        @Override
+                                                                        public void onSuccess(DocumentReference documentReference) {
+                                                                            FirebaseAuth auth = FirebaseAuth.getInstance();
+                                                                            auth.createUserWithEmailAndPassword(aemail, md5(apassword)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+
+                                                                                }
+                                                                            });
+                                                                            Map<String ,Object> data =  new HashMap<>();
+                                                                            data.put("staffId",documentReference.getId());
+                                                                            db.collection("staffs").document(documentReference.getId())
+                                                                                    .update(data);
+                                                                            Intent intent = new Intent(v.getContext(), StaffManageActivity.class);
+                                                                            intent.putExtra("USER_EMAIL", getemail);
+                                                                            startActivity(intent);
+                                                                            finish();
+                                                                        }
+                                                                    });
+                                                        }
+                                                    }
+                                                });
+                                    }
                                 }
                             });
                 }
@@ -185,4 +232,18 @@ public class AddStaffActivity extends AppCompatActivity {
         }
         return newpass;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, StaffManageActivity.class);
+                intent.putExtra("USER_EMAIL", getemail);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
+    }
+
 }

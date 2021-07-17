@@ -74,7 +74,6 @@
                 android:layout_marginStart="15dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -151,7 +150,6 @@
                 android:layout_marginStart="15dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -188,7 +186,6 @@
                 android:layout_marginStart="15dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
@@ -332,7 +329,6 @@
                 android:layout_marginStart="15dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />
 

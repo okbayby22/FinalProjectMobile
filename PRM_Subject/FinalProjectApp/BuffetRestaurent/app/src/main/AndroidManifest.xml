@@ -33,14 +33,8 @@
         <activity android:name=".Controller.Activity.CustomerMenu" />
         <activity android:name=".Controller.Activity.ConfirmReservation" />
         <activity android:name=".Controller.Activity.UserChangePassword" />
-        <activity android:name=".Controller.Activity.StaffManageActivity"/>
         <activity android:name=".Controller.Activity.AddStaffActivity"
-            tools:ignore="DuplicateActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            tools:ignore="DuplicateActivity"/>
         <activity android:name=".Controller.Activity.AddBalanceActivity">
         </activity>
         <activity
