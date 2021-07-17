@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.buffetrestaurent.Adapter.ReservationAdapter;
@@ -110,5 +112,18 @@ public class StaffManageActivity extends AppCompatActivity {
                 filter(search.getText().toString());
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePageStaff.class );
+                intent.putExtra("USER_EMAIL", email);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
     }
 }

@@ -120,7 +120,7 @@
             android:textColor="@color/Red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUp_txtRePass" />
+            app:layout_constraintTop_toBottomOf="@+id/signUp_InputRePassLayout" />
 
         <TextView
             android:id="@+id/signUp_PassError"
@@ -130,7 +130,7 @@
             android:textColor="@color/Red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUp_txtPass" />
+            app:layout_constraintTop_toBottomOf="@+id/signUp_InputLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

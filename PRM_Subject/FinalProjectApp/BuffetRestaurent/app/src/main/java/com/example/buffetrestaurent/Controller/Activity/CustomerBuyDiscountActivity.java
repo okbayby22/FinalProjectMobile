@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ public class CustomerBuyDiscountActivity extends AppCompatActivity implements Bu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_buy_discount);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.strMenu);
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         discountRecyclerView =findViewById(R.id.customer_buy_discount_DiscountListView);
@@ -183,5 +187,18 @@ public class CustomerBuyDiscountActivity extends AppCompatActivity implements Bu
                 })
                 .create();
         alertDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePage.class );
+                intent.putExtra("USER_EMAIL", userEmail);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
     }
 }

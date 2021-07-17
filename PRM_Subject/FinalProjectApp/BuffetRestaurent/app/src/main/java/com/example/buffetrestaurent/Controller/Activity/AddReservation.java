@@ -81,7 +81,7 @@ public class AddReservation extends AppCompatActivity {
         name = findViewById(R.id.AddReservation_inputName);                 //Input text field phone
         phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
         calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date curdate = Calendar.getInstance().getTime();
         name.setFocusable(false);
         name.setFocusableInTouchMode(false);
