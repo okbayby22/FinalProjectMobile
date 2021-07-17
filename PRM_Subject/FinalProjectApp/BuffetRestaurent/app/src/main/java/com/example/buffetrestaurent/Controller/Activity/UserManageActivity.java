@@ -1,29 +1,24 @@
 package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
-import com.example.buffetrestaurent.Adapter.ReservationAdapter;
+import com.example.buffetrestaurent.Adapter.CustomerAdapter;
 import com.example.buffetrestaurent.Adapter.StaffManageAdapter;
-import com.example.buffetrestaurent.Model.Reservation;
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -31,17 +26,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class StaffManageActivity extends AppCompatActivity {
+public class UserManageActivity extends AppCompatActivity {
 
 
     RecyclerView recyclerView;
 
-    StaffManageAdapter staffAdap;
+    CustomerAdapter cusAdapt;
 
-    public static ArrayList<Staff> list;
+    public static ArrayList<Customer> list;
 
     int AllPosition;
 
@@ -49,23 +42,23 @@ public class StaffManageActivity extends AppCompatActivity {
 
     TextView search;
 
-    private void loadStaff() {
+    private void loadCustomer() {
         email = getIntent().getStringExtra("USER_EMAIL");
         list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("staffs")
+        db.collection("customers")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
-                                Staff staff = doc.toObject(Staff.class);
-                                list.add(staff);
+                                Customer cus = doc.toObject(Customer.class);
+                                list.add(cus);
                             }
-                            staffAdap = new StaffManageAdapter(list, StaffManageActivity.this); //Call LecturerAdapter to set data set and show data
-                            LinearLayoutManager manager = new LinearLayoutManager(StaffManageActivity.this); //Linear Layout Manager use to handling layout for each Lecturer
-                            recyclerView.setAdapter(staffAdap);
+                            cusAdapt = new CustomerAdapter(list, UserManageActivity.this); //Call LecturerAdapter to set data set and show data
+                            LinearLayoutManager manager = new LinearLayoutManager(UserManageActivity.this); //Linear Layout Manager use to handling layout for each Lecturer
+                            recyclerView.setAdapter(cusAdapt);
                             recyclerView.setLayoutManager(manager);
                         }
 
@@ -76,27 +69,27 @@ public class StaffManageActivity extends AppCompatActivity {
 
 
     private void filter(String s) {
-        ArrayList<Staff> newlist = new ArrayList<>();
+        ArrayList<Customer> newlist = new ArrayList<>();
 
-        for (Staff item : list) {
-            if (String.valueOf(item.getStaffName()).toLowerCase().contains(s.toLowerCase())) {
+        for (Customer item : list) {
+            if (String.valueOf(item.getCustomerEmail()).toLowerCase().contains(s.toLowerCase())) {
                 newlist.add(item);
             }
         }
         System.out.println(newlist.size());
-        staffAdap.ArrayFilter(newlist);
+        cusAdapt.ArrayFilter(newlist);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_staff_manage);
-        recyclerView = findViewById(R.id.StaffManageActivity_recycler);
-        loadStaff();
+        setContentView(R.layout.activity_user_manage);
+        recyclerView = findViewById(R.id.UserManageActivity_recycler);
+        loadCustomer();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.strStaffManage);
+        getSupportActionBar().setTitle(R.string.strCustomerManage);
         email = getIntent().getStringExtra("USER_EMAIL");
-        search = findViewById(R.id.StaffManageActivity_txtSearch);
+        search = findViewById(R.id.UserManageActivity_txtSearch);
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -126,12 +119,5 @@ public class StaffManageActivity extends AppCompatActivity {
                 return true;
         }
         return true;
-    }
-
-    public void onClickAddStaff(View view){
-        Intent intent = new Intent(this , AddStaffActivity.class );
-        intent.putExtra("USER_EMAIL", email);
-        startActivity(intent);
-        this.finish();
     }
 }

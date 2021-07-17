@@ -34,5 +34,11 @@
             android:title="@string/strStaffManage" />
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnConfirmReservation"
+            android:icon="@drawable/group"
+            android:title="@string/strConfirmReservation" />
+    </group>
 
 </menu>
