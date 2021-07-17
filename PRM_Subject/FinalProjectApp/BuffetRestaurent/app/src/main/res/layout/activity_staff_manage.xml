@@ -14,32 +14,35 @@
         android:layout_margin="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_AddStaff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/StaffManageActivity_recycler"
-        android:layout_width="408dp"
-        android:layout_height="596dp"
+        android:layout_width="410dp"
+        android:layout_height="526dp"
         android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_AddStaff" />
 
     <Button
         android:id="@+id/btn_AddStaff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="301dp"
-        android:layout_marginTop="13dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="13dp"
-        android:text="Add Staff"
         android:onClick="onClickAddStaff"
+        android:text="Add Staff"
         app:layout_constraintBottom_toTopOf="@+id/StaffManageActivity_recycler"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/StaffManageActivity_txtSearch"
         tools:ignore="MissingConstraints,OnClick" />
