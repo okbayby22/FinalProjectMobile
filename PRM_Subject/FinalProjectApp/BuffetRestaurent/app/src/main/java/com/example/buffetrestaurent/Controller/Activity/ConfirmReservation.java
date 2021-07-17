@@ -181,8 +181,8 @@ public class ConfirmReservation extends AppCompatActivity {
                                                                 Map<String, Object> updateData = new HashMap<>();
                                                                 updateData.put("reservationStatus", 2);
                                                                 updateData.put("staffId", staff.getStaffId());
-                                                                db.collection("reservation")
-                                                                        .document(res.getReservationId())
+                                                                db.collection("reservations")
+                                                                        .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
                                                                         .update(updateData)
                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                             @Override
@@ -258,20 +258,23 @@ public class ConfirmReservation extends AppCompatActivity {
                                                         @Override
                                                         public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                                                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                System.out.println(">>>>>>>>>>>>>>>>>>>>>Toi Day 1");
                                                                 DocumentSnapshot staffDoc = task.getResult().getDocuments().get(0);
                                                                 Staff staff = staffDoc.toObject(Staff.class);
                                                                 Map<String, Object> updateData = new HashMap<>();
-                                                                updateData.put("reservationStatus", 2);
+                                                                updateData.put("reservationStatus", 1);
                                                                 updateData.put("staffId", staff.getStaffId());
-                                                                db.collection("reservation")
-                                                                        .document(res.getReservationId())
+                                                                db.collection("reservations")
+                                                                        .document(listAll.get(viewHolder.getAdapterPosition()).getReservationId())
                                                                         .update(updateData)
                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                             @Override
                                                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                                                 if (task.isSuccessful()) {
-                                                                                    res.setReservationStatus(2);
+                                                                                    res.setReservationStatus(1);
                                                                                     reserAdap.notifyDataSetChanged();
+                                                                                    new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice")
+                                                                                            .setMessage("Confirm Reservation Successfully").show();
                                                                                 }
                                                                             }
                                                                         });
