@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Controller.Activity.MainActivity">
+        <activity android:name=".Controller.Activity.CustomerProfile"></activity>
+        <activity android:name=".Controller.Activity.MainActivity" />
+        <activity android:name=".Controller.Activity.UserManageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,9 +25,9 @@
         </activity>
         <activity android:name=".Controller.Activity.StaffManageActivity" />
         <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity" />
-        <activity android:name=".Controller.Activity.EditDiscountStaffManage"></activity>
+        <activity android:name=".Controller.Activity.EditDiscountStaffManage" />
         <activity android:name=".Controller.Activity.StaffDiscountManagement" />
-        <activity android:name=".Controller.Activity.CustomerDiscountHistoryActivity"></activity>
+        <activity android:name=".Controller.Activity.CustomerDiscountHistoryActivity" />
         <activity
             android:name=".Controller.Activity.AddMenuActivity"
             android:parentActivityName=".Controller.Activity.MenuMangeForStaff" />
@@ -33,10 +35,10 @@
         <activity android:name=".Controller.Activity.CustomerMenu" />
         <activity android:name=".Controller.Activity.ConfirmReservation" />
         <activity android:name=".Controller.Activity.UserChangePassword" />
-        <activity android:name=".Controller.Activity.AddStaffActivity"
-            tools:ignore="DuplicateActivity"/>
-        <activity android:name=".Controller.Activity.AddBalanceActivity">
-        </activity>
+        <activity
+            android:name=".Controller.Activity.AddStaffActivity"
+            tools:ignore="DuplicateActivity" />
+        <activity android:name=".Controller.Activity.AddBalanceActivity" />
         <activity
             android:name=".Controller.Activity.UserProfile"
             android:parentActivityName=".Controller.Activity.HomePage" />
