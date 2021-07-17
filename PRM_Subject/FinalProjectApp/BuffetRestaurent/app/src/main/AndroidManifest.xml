@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.buffetrestaurent">
 
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
@@ -32,6 +33,14 @@
         <activity android:name=".Controller.Activity.CustomerMenu" />
         <activity android:name=".Controller.Activity.ConfirmReservation" />
         <activity android:name=".Controller.Activity.UserChangePassword" />
+        <activity android:name=".Controller.Activity.StaffManageActivity"/>
+        <activity android:name=".Controller.Activity.AddStaffActivity"
+            tools:ignore="DuplicateActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         <activity android:name=".Controller.Activity.AddBalanceActivity">
         </activity>
         <activity
