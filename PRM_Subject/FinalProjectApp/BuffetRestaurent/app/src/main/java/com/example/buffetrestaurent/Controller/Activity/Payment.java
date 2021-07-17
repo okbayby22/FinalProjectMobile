@@ -2,6 +2,7 @@ package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,18 +11,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Adapter.StaffManageAdapter;
 import com.example.buffetrestaurent.Model.Customer;
+import com.example.buffetrestaurent.Model.Discount;
+import com.example.buffetrestaurent.Model.DiscountInventory;
+import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +48,8 @@ public class Payment extends AppCompatActivity {
     int ticket;
     String cusID;
     Button Checkout;
+    ArrayList<DiscountInventory> listInventory;
+    ArrayList<Discount> listDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +72,7 @@ public class Payment extends AppCompatActivity {
         date = getIntent().getStringExtra("DATE");
         time = getIntent().getStringExtra("TIME");
         cusID = getIntent().getStringExtra("CUSTOMER");
+        loadDiscount();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Checkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,5 +128,55 @@ public class Payment extends AppCompatActivity {
             }
         });
 
+    }
+    public void loadDiscountInvetory(){
+        listDiscount= new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("customers")
+                .whereEqualTo("customerEmail", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            Customer cus = doc.toObject(Customer.class);
+                            db.collection("discount_inventory")
+                                    .whereEqualTo("customerId", cus.getCustomerId())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                    DiscountInventory dis = doc.toObject(DiscountInventory.class);
+                                                    listInventory.add(dis);
+                                                }
+                                            }
+                                        }
+                                    });
+                        }
+
+                    }
+                });
+    }
+    public void loadDiscount(){
+        loadDiscountInvetory();
+        for (int i=0;i<listInventory.size();i++){
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("discount")
+                    .whereEqualTo("discountId", listInventory.get(i).getDiscountId())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                listDiscount.add(doc.toObject(Discount.class));
+                            }
+
+                        }
+                    });
+        }
     }
 }
