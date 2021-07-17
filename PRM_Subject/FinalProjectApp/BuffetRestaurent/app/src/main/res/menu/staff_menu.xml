@@ -7,8 +7,8 @@
             />
     </group>
     <group android:checkableBehavior="single">
-        <item android:id="@+id/staffmenu_btnReserHis"
-            android:title="@string/strReserHis"
+        <item android:id="@+id/staffmenu_btnBalance"
+            android:title="@string/strBalance"
             android:icon="@drawable/reservation_icon"/>
     </group>
     <group android:checkableBehavior="single">
@@ -26,6 +26,12 @@
             android:id="@+id/staffmenu_btnMenu"
             android:icon="@drawable/group"
             android:title="@string/strMenu" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnStaffManage"
+            android:icon="@drawable/group"
+            android:title="@string/strStaffManage" />
     </group>
 
 

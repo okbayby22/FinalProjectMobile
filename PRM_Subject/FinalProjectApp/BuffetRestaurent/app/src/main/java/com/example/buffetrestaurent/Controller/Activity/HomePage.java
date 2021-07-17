@@ -94,7 +94,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                     case R.id.add_menu:
                         intent = new Intent(HomePage.this,AddReservation.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_EMAIL", userEmail);
                         startActivity(intent);
                         finish();
                         return true;

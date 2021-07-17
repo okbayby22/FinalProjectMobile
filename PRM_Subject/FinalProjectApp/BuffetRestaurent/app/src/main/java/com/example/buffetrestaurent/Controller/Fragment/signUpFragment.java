@@ -191,7 +191,7 @@ public class signUpFragment extends Fragment {
                         }
                         else{
                             db.collection("staffs")
-                                    .whereEqualTo("StaffEmail",txtEmail.getText().toString())
+                                    .whereEqualTo("staffEmail",txtEmail.getText().toString())
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
