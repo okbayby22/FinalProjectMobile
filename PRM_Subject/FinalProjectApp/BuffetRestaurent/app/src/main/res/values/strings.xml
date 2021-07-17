@@ -55,4 +55,6 @@
     <string name="strBalance">Add balance</string>
     <string name="strStaffManageMenu">Manage staff</string>
     <string name="strConfirmReservation">Confirm Reservation</string>
+    <string name="strCustomerManage">Customer Manage</string>
+    <string name="strCustomerProfile">Customer Profile</string>
 </resources>
