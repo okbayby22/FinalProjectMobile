@@ -182,7 +182,9 @@ public class AddReservation extends AppCompatActivity {
                                             intent.putExtra("DATE", date);
                                             intent.putExtra("TIME", timepick.getText().toString());
                                             intent.putExtra("CUSTOMER", docID);
+                                            intent.putExtra("Payment_Intent","From_Add_Reservation");
                                             startActivity(intent);
+                                            finish();
                                         }
                                     }
                                 }
@@ -245,6 +247,7 @@ public class AddReservation extends AppCompatActivity {
                 Intent intent = new Intent(this , HomePage.class );
                 intent.putExtra("USER_EMAIL", email);
                 startActivity(intent);
+                finish();
                 return true;
         }
         return true;

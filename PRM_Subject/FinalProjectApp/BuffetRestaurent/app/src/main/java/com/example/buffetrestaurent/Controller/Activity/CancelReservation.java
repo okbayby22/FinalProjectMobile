@@ -182,6 +182,7 @@ public class CancelReservation extends AppCompatActivity {
                 Intent intent = new Intent(this, HomePage.class);
                 intent.putExtra("USER_EMAIL", email);
                 startActivity(intent);
+                finish();
                 return true;
         }
         return true;

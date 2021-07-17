@@ -35,34 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-//
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//        auth.createUserWithEmailAndPassword("jakizer@gmail.com", md5("123456")).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//            }
-//        });
-
-
-
-//        db.collection("staffs")
-//                .add(user)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w("AC", "Error adding document", e);
-//                    }
-//                });
-
         pagerAdapter = new PagerAdapter(this
         );
         tabView.setAdapter(pagerAdapter);
