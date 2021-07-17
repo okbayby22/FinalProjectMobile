@@ -19,7 +19,10 @@ import com.example.buffetrestaurent.Model.DiscountInventory;
 import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -114,11 +117,30 @@ public class Payment extends AppCompatActivity {
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
+//                                                    db.collection("reservations")
+//                                                            .add(user)
+//                                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//                                                                @Override
+//                                                                public void onComplete(DocumentReference documentReference) {
+//                                                                    if(task.isSuccessful()){
+//                                                                        Map<String ,Object> data =  new HashMap<>();
+//                                                                        data.put("customerId",documentReference.getId());
+//                                                                    }
+//                                                                    Toast.makeText(Payment.this, "Checkout Successfully", Toast.LENGTH_SHORT).show();
+//                                                                    Intent intent = new Intent(v.getContext(), HomePage.class);
+//                                                                    intent.putExtra("USER_EMAIL", email);
+//                                                                    startActivity(intent);
+//                                                                }
+//                                                            });
                                                     db.collection("reservations")
                                                             .add(user)
-                                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                                 @Override
-                                                                public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
+                                                                public void onSuccess(DocumentReference documentReference) {
+                                                                    Map<String ,Object> data =  new HashMap<>();
+                                                                    data.put("reservationId",documentReference.getId());
+                                                                    db.collection("reservations").document(documentReference.getId())
+                                                                            .update(data);
                                                                     Toast.makeText(Payment.this, "Checkout Successfully", Toast.LENGTH_SHORT).show();
                                                                     Intent intent = new Intent(v.getContext(), HomePage.class);
                                                                     intent.putExtra("USER_EMAIL", email);
