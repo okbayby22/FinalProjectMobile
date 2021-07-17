@@ -323,11 +323,9 @@ public class ConfirmReservation extends AppCompatActivity {
                                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
                                                 DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                                 Customer cus = doc.toObject(Customer.class);
-                                                double balance = cus.getCustomerBalance() - res.getReservationAmount();
                                                 int point = cus.getCustomerPoint() + (res.getNumberTickets()*20);
                                                 Map<String, Object> data = new HashMap<>();
                                                 data.put("customerPoint",point);
-                                                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+point);
                                                 db.collection("customers")
                                                         .document(cus.getCustomerId())
                                                         .update(data)
