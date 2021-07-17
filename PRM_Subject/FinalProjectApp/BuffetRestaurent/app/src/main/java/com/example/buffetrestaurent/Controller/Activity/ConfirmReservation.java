@@ -8,19 +8,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.ReservationAdapter;
 import com.example.buffetrestaurent.Model.Customer;
+import com.example.buffetrestaurent.Model.Discount;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -275,6 +279,7 @@ public class ConfirmReservation extends AppCompatActivity {
                                                                                     reserAdap.notifyDataSetChanged();
                                                                                     new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice")
                                                                                             .setMessage("Confirm Reservation Successfully").show();
+                                                                                    updatePointCustomer(res.getReservationId());
                                                                                 }
                                                                             }
                                                                         });
@@ -297,6 +302,47 @@ public class ConfirmReservation extends AppCompatActivity {
         }).attachToRecyclerView(recyclerView);
 
 
+    }
+    public void updatePointCustomer(String resId){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("reservations")
+                .whereEqualTo("reservationId", resId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            Reservation res = doc.toObject(Reservation.class);
+                            db.collection("customers")
+                                    .whereEqualTo("customerId", res.getCustomerId())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                                Customer cus = doc.toObject(Customer.class);
+                                                int point = cus.getCustomerPoint() + (res.getNumberTickets()*20);
+                                                Map<String, Object> data = new HashMap<>();
+                                                data.put("customerPoint",point);
+                                                db.collection("customers")
+                                                        .document(cus.getCustomerId())
+                                                        .update(data)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+
+                                                            }
+                                                        });
+                                            }
+
+                                        }
+                                    });
+                        }
+
+                    }
+                });
     }
 }
 
