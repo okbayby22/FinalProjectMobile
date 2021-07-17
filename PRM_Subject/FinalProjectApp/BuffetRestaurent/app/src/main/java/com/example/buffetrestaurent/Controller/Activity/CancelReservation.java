@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.buffetrestaurent.Adapter.ReservationAdapter;
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -112,7 +113,7 @@ public class CancelReservation extends AppCompatActivity {
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     new AlertDialog.Builder(CancelReservation.this).setTitle("Delete Reservation Notice").setMessage("Confirm Cancel Reservation")
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Map<String, Object> updateData = new HashMap<>();
@@ -123,12 +124,45 @@ public class CancelReservation extends AppCompatActivity {
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                    res.setReservationStatus(2);
-                                                    reserAdap.notifyDataSetChanged();
+                                                    Reservation reservation = list.get(viewHolder.getAdapterPosition());
+                                                    db.collection("customers")
+                                                            .whereEqualTo("customerEmail", email)
+                                                            .get()
+                                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                                                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                                                        Customer cus = doc.toObject(Customer.class);
+                                                                        double refund = reservation.getReservationAmount() + cus.getCustomerBalance();
+                                                                        Map<String, Object> Data = new HashMap<>();
+                                                                        Data.put("customerBalance", refund);
+                                                                        db.collection("customers")
+                                                                                .document(cus.getCustomerId())
+                                                                                .update(Data)
+                                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                                                        if (task.isSuccessful()) {
+                                                                                            new AlertDialog.Builder(CancelReservation.this).setTitle("Refund Notice")
+                                                                                                    .setMessage("Cancel Reservation Successful, Your Balance Has Been Refund")
+                                                                                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                                                                        @Override
+                                                                                                        public void onClick(DialogInterface dialog, int which) {
+                                                                                                            res.setReservationStatus(2);
+                                                                                                            reserAdap.notifyDataSetChanged();
+                                                                                                        }
+                                                                                                    }).show();
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                    }
+                                                                }
+                                                            });
                                                 }
                                             });
                                 }
-                            }).setPositiveButton("Undo", new DialogInterface.OnClickListener() {
+                            }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             reserAdap.notifyDataSetChanged();
