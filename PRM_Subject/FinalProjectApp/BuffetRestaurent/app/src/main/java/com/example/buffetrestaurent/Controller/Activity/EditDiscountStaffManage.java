@@ -56,6 +56,7 @@ public class EditDiscountStaffManage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(v.getContext(), StaffDiscountManagement.class);
                 startActivity(intent);
+                finish();
             }
         });
         btnSubmit.setOnClickListener(new View.OnClickListener() {

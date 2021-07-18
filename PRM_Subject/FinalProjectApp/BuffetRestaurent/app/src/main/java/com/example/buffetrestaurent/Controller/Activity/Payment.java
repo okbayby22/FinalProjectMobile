@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -52,10 +54,14 @@ public class Payment extends AppCompatActivity {
     String time;
     String discoutString;
     int ticket;
+    TextView discountCode;
+    EditText code;
     String cusID;
     Button Checkout,discountSubmit;
     ArrayList<DiscountInventory> listInventory;
     ArrayList<Discount> listDiscount;
+    String intentID;
+    String intentDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +89,35 @@ public class Payment extends AppCompatActivity {
         time = getIntent().getStringExtra("TIME");
         cusID = getIntent().getStringExtra("CUSTOMER");
         loadDiscountInvetory();
+        discountCode = findViewById(R.id.Payment_txtSeeDiscount);
+        code = findViewById(R.id.Payment_txtCode);
+        intentID = getIntent().getStringExtra("Payment_Intent");
+        if(intentID.equals("From_Add_Reservation")){
+            discount.setText("");
+        }else{
+            intentDiscount = getIntent().getStringExtra("Discount_Code");
+            if(!intentDiscount.equals("")){
+                code.setText(intentDiscount);
+            }else{
+                code.setText("");
+            }
+
+        }
+        discountCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CustomerDiscountHistoryActivity.class);
+                intent.putExtra("IntentID","From_Payment");
+                intent.putExtra("Date",date);
+                intent.putExtra("Time",time);
+                intent.putExtra("Tickets",ticket);
+                intent.putExtra("PRICE",intentprice);
+                intent.putExtra("CustomerID",cusID);
+                intent.putExtra("USER_EMAIL",email);
+                startActivity(intent);
+            }
+        });
+//        loadDiscount();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Checkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +180,7 @@ public class Payment extends AppCompatActivity {
                                                                     Intent intent = new Intent(v.getContext(), HomePage.class);
                                                                     intent.putExtra("USER_EMAIL", email);
                                                                     startActivity(intent);
+                                                                    finish();
                                                                 }
                                                             });
                                                 }

@@ -66,6 +66,7 @@ public class UserChangePassword extends AppCompatActivity {
                 }
                 intent.putExtra("USER_EMAIL", staffEmail);
                 startActivity(intent);
+                finish();
                 return true;
         }
         return true;

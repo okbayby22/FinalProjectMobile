@@ -193,6 +193,7 @@ public class UpdateReservation extends AppCompatActivity {
                                                         Intent i = new Intent(UpdateReservation.this, CancelReservation.class);
                                                         i.putExtra("USER_EMAIL", email);
                                                         startActivity(i);
+                                                        finish();
                                                     }
                                                 });
                                     }
