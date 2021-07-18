@@ -43,21 +43,34 @@ public class AddBalanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_balance);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strAddBalance);
-        email = findViewById(R.id.AddBalance_txtEmail);
+
+        /*
+        Mapping view with layout
+         */
+        email = findViewById(R.id.AddBalance_txtEmail); //Input customer email
         email.setHint("Email");
-        userEmail= getIntent().getStringExtra("USER_EMAIL");
-        emailError = findViewById(R.id.AddBalance_txtEmail_Error);
-        balanceError = findViewById(R.id.AddBalance_txtAddBalance_Error);
-        balance = findViewById(R.id.AddBalance_txtBalance);
+        userEmail= getIntent().getStringExtra("USER_EMAIL"); //Get staff email
+        emailError = findViewById(R.id.AddBalance_txtEmail_Error); //Show email error or customer's balance
+        balanceError = findViewById(R.id.AddBalance_txtAddBalance_Error); //Show balance Error or after add balance
+        balance = findViewById(R.id.AddBalance_txtBalance); //Input balance
+        /*
+        Set balance input disable when user doesn't input email or wrong email
+         */
         balance.setFocusable(false);
         balance.setFocusableInTouchMode(false);
         balance.setClickable(false);
         balance.setAlpha((float) 0.3);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        submit = findViewById(R.id.AddBalance_btnAdd);
+        submit = findViewById(R.id.AddBalance_btnAdd); //Button press to check email
+        /*
+        Disable button add balance before user input balance wants to add
+         */
         add = findViewById(R.id.AddBalance_btnAddBalance);
         add.setClickable(false);
         add.setAlpha((float) 0.3);
+        /*
+        Press button submit to check email
+         */
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +81,9 @@ public class AddBalanceActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                    /*
+                                    Enable balance input
+                                     */
                                     balance.setTextColor(Color.BLACK);
                                     balance.setFocusable(true);
                                     balance.setFocusableInTouchMode(true);
@@ -75,13 +91,16 @@ public class AddBalanceActivity extends AppCompatActivity {
                                     balance.setAlpha((float) 1);
                                     DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                     Customer cus = doc.toObject(Customer.class);
-                                    emailError.setText("Your balance: " + cus.getCustomerBalance());
+                                    emailError.setText("Your balance: " + cus.getCustomerBalance()); //Print customer's current balance
                                     balance.addTextChangedListener(new TextWatcher() {
                                         @Override
                                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                                         }
 
+                                        /*
+                                        Show balance of customer after add when text change
+                                         */
                                         @Override
                                         public void onTextChanged(CharSequence s, int start, int before, int count) {
                                             if (!balance.getText().toString().equals("")) {
@@ -104,11 +123,16 @@ public class AddBalanceActivity extends AppCompatActivity {
                                         }
                                     });
 
+                                    /*
+                                    Press add button to add balance for customer
+                                     */
                                     add.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            System.out.println(">>>>>>>>>>>>>>> Toi day");
                                             double newBalance = cus.getCustomerBalance() + Double.parseDouble(balance.getText().toString());
+                                            /*
+                                            Update new balance for customer
+                                             */
                                             Map<String, Object> data = new HashMap<>();
                                             data.put("customerBalance", newBalance);
                                             db.collection("customers")
@@ -117,12 +141,13 @@ public class AddBalanceActivity extends AppCompatActivity {
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                            System.out.println(">>>>>>>>>>>> Vao on complete");
                                                             if (task.isSuccessful()) {
-                                                                System.out.println(">>>>>>>>>> Vo toi vong if trong Complete");
                                                                 new AlertDialog.Builder(AddBalanceActivity.this).setTitle("Add Balance Notice").setMessage("Add Balance")
                                                                         .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                                                                             @Override
+                                                                            /*
+                                                                            If press OK, set form to default
+                                                                             */
                                                                             public void onClick(DialogInterface dialog, int which) {
                                                                                 emailError.setTextColor(Color.BLACK);
                                                                                 email.setText("");
@@ -137,6 +162,9 @@ public class AddBalanceActivity extends AppCompatActivity {
                                                                             }
                                                                         }).setOnCancelListener(new DialogInterface.OnCancelListener() {
                                                                     @Override
+                                                                    /*
+                                                                    Click out side to close dialog
+                                                                     */
                                                                     public void onCancel(DialogInterface dialog) {
                                                                         emailError.setTextColor(Color.BLACK);
                                                                         email.setText("");
@@ -156,6 +184,9 @@ public class AddBalanceActivity extends AppCompatActivity {
                                         }
                                     });
                                 } else {
+                                    /*
+                                    Email invalid
+                                     */
                                     emailError.setTextColor(Color.RED);
                                     emailError.setText("Email is invalid");
                                     balance.setFocusable(false);
@@ -174,6 +205,9 @@ public class AddBalanceActivity extends AppCompatActivity {
         });
     }
     @Override
+    /*
+    Back button on supported bar
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

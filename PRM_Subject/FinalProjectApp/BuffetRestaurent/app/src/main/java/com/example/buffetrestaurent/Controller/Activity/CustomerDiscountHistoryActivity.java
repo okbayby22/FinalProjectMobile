@@ -51,9 +51,9 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         code = "";
         discountHistoryRecyclerView =findViewById(R.id.customer_history_discount_DiscountListView);
-        date = getIntent().getStringExtra("Date");
-        time = getIntent().getStringExtra("Time");
-        ticket = getIntent().getIntExtra("Tickets",0);
+        date = getIntent().getStringExtra("DATE");
+        time = getIntent().getStringExtra("TIME");
+        ticket = getIntent().getIntExtra("TICKET",0);
         payprice = getIntent().getDoubleExtra("PRICE",0);
         cusID = getIntent().getStringExtra("CustomerID");
         dHisAdapter = new HistoryDiscountListAdapter(discountList,this,this);
@@ -136,12 +136,13 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
                     this.finish();
                 }else{
                     Intent intent = new Intent(this , Payment.class );
-                    intent.putExtra("Date",date);
-                    intent.putExtra("Time",time);
-                    intent.putExtra("Tickets",ticket);
+                    intent.putExtra("DATE",date);
+                    intent.putExtra("TIME",time);
+                    intent.putExtra("TICKET",ticket);
                     intent.putExtra("PRICE",ticket*200000);
-                    intent.putExtra("CustomerID",cusID);
+                    intent.putExtra("CUSTOMER",cusID);
                     intent.putExtra("Discount_Code",code);
+                    intent.putExtra("USER_EMAIL", userEmail);
                     intent.putExtra("Payment_Intent","From_Discount");
                     startActivity(intent);
                     this.finish();
