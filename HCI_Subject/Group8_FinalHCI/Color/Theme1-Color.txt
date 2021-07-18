@@ -1,0 +1,23 @@
+*Button&head nav
+#FA4A0C Cam theme1
+
+#48b7a1 xanh tươi 
+
+#64789B xám theme 1
+
+
+*Background
+#EEEEEE background theme1
+
+#DDF1F7 xanh nhạt
+
+#F1F4C9 vàng sáng
+
+*Chữ
+
+#000000 chữ đen
+
+#641D70 chữ tím
+
+#791B20 chữ đỏ đậm 
+

@@ -1,0 +1,18 @@
+*Background: (text color)
+#FFFFFF trắng
+#282C31 đen mờ
+
+
+ 
+*Chữ (background)
+#191919 đen (mobile theme2 background)
+#FFFFFF
+
+
+*Background frame:
+#EFF3F9 
+#212427 đen đậm
+
+
+*Icon theme2:
+#7F7FD5 tím

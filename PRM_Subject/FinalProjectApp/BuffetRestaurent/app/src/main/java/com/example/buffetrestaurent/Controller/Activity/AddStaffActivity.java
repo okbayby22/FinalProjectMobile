@@ -1,21 +1,28 @@
 package com.example.buffetrestaurent.Controller.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.buffetrestaurent.R;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,9 +30,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -38,10 +50,13 @@ public class AddStaffActivity extends AppCompatActivity {
     EditText name,phone,email,address;
     TextView nameError,phoneError,emailError,addressError,passwordError,confirmPasswordError,password,confirmpassword;
     RadioButton gendermale,genderfemale;
-    Button addStaff;
+    Button addStaff,upImage;
     RadioGroup groupGender;
     int gender;
     String getemail;
+    ImageView avatar;
+    Uri imageUri;
+    String getUrlImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +65,8 @@ public class AddStaffActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strAddStaff);
         getemail = getIntent().getStringExtra("USER_EMAIL");
+        upImage = findViewById(R.id.addstaff_btn_Image);
+        avatar = findViewById(R.id.txt_Staff_Image);
         name = findViewById(R.id.txt_Staff_Name);
         nameError = findViewById(R.id.txt_Staff_Name_Error);
         email = findViewById(R.id.txt_Staff_Email);
@@ -67,6 +84,7 @@ public class AddStaffActivity extends AppCompatActivity {
         addStaff = findViewById(R.id.ad_staff_btn);
         groupGender = findViewById(R.id.group_Gender);
         gendermale.setChecked(true);
+        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/buffetrestaurant-e631f.appspot.com/o/staff.jpg?alt=media&token=e2ce6ef3-6e3b-42a9-b1c4-7e7242f7cfd8").into(avatar);
         groupGender.setOnCheckedChangeListener((group, checkedId) -> {
             if(gendermale.isChecked()){
                 gender=0;
@@ -161,41 +179,8 @@ public class AddStaffActivity extends AppCompatActivity {
                                                             emailError.setText("Email has already exist");
                                                         }
                                                         else {
-                                                            emailError.setText("");
-                                                            Map<String ,Object> data =  new HashMap<>();
-                                                            data.put("staffAddress",aaddress);
-                                                            data.put("staffEmail",aemail);
-                                                            data.put("staffGender",gender);
-                                                            data.put("staffId","");
-                                                            data.put("staffImage","https://firebasestorage.googleapis.com/v0/b/buffetrestaurant-e631f.appspot.com/o/staff.jpg?alt=media&token=e2ce6ef3-6e3b-42a9-b1c4-7e7242f7cfd8");
-                                                            data.put("staffName",aname);
-                                                            data.put("staffPassword",md5(apassword));
-                                                            data.put("staffPhone",aphone);
-                                                            data.put("staffRole",1);
-                                                            data.put("staffStatus",1);
-                                                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                                            db.collection("staffs")
-                                                                    .add(data)
-                                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                                        @Override
-                                                                        public void onSuccess(DocumentReference documentReference) {
-                                                                            FirebaseAuth auth = FirebaseAuth.getInstance();
-                                                                            auth.createUserWithEmailAndPassword(aemail, md5(apassword)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                                                            uploadImageFirebase(aname,  aemail, aphone, aaddress, apassword);
 
-                                                                                }
-                                                                            });
-                                                                            Map<String ,Object> data =  new HashMap<>();
-                                                                            data.put("staffId",documentReference.getId());
-                                                                            db.collection("staffs").document(documentReference.getId())
-                                                                                    .update(data);
-                                                                            Intent intent = new Intent(v.getContext(), StaffManageActivity.class);
-                                                                            intent.putExtra("USER_EMAIL", getemail);
-                                                                            startActivity(intent);
-                                                                            finish();
-                                                                        }
-                                                                    });
                                                         }
                                                     }
                                                 });
@@ -203,6 +188,12 @@ public class AddStaffActivity extends AppCompatActivity {
                                 }
                             });
                 }
+            }
+        });
+        upImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFileChoose();
             }
         });
     }
@@ -246,4 +237,99 @@ public class AddStaffActivity extends AppCompatActivity {
         return true;
     }
 
+    public void openFileChoose(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction((Intent.ACTION_GET_CONTENT));
+        startActivityForResult(intent,2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode ==2 && resultCode == RESULT_OK && data !=null){
+            imageUri=data.getData();
+            avatar.setImageURI(imageUri);
+        }
+    }
+
+    public void uploadImageFirebase(String aname, String aemail,String aphone,String aaddress,String apassword){
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://buffetrestaurant-e631f.appspot.com");
+        StorageReference storageRef = storage.getReference();
+
+
+// Create a reference to 'images/mountains.jpg'
+        StorageReference mountainImagesRef = storageRef.child("Avatar/"+aemail+".jpg");
+
+// While the file names are the same, the references point to different files
+        mountainImagesRef.getName().equals(mountainImagesRef.getName());    // true
+        mountainImagesRef.getPath().equals(mountainImagesRef.getPath());    // false
+        // Get the data from an ImageView as bytes
+        avatar.setDrawingCacheEnabled(true);
+        avatar.buildDrawingCache();
+
+        Bitmap bitmap = ((BitmapDrawable) avatar.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return mountainImagesRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    getUrlImage = downloadUri.toString();
+                    emailError.setText("");
+                    Map<String ,Object> data =  new HashMap<>();
+                    data.put("staffAddress",aaddress);
+                    data.put("staffEmail",aemail);
+                    data.put("staffGender",gender);
+                    data.put("staffId","");
+                    data.put("staffImage",getUrlImage);
+                    data.put("staffName",aname);
+                    data.put("staffPassword",md5(apassword));
+                    data.put("staffPhone",aphone);
+                    data.put("staffRole",1);
+                    data.put("staffStatus",1);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("staffs")
+                            .add(data)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                                    auth.createUserWithEmailAndPassword(aemail, md5(apassword)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+
+                                        }
+                                    });
+                                    Map<String ,Object> data =  new HashMap<>();
+                                    data.put("staffId",documentReference.getId());
+                                    db.collection("staffs").document(documentReference.getId())
+                                            .update(data);
+                                    Intent intent = new Intent(AddStaffActivity.this, StaffManageActivity.class);
+                                    intent.putExtra("USER_EMAIL", getemail);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+    }
 }

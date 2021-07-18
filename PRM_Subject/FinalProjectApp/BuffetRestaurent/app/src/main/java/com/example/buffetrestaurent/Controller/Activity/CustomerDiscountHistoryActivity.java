@@ -36,16 +36,26 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
     private List<String> discountIdList = new ArrayList<>();
     private HistoryDiscountListAdapter dHisAdapter;
     String userID;
+    String intentID;
+    String date,time,cusID;
+    String code;
+    int ticket;
+    double payprice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_discount_history);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strMenu);
-
+        intentID = getIntent().getStringExtra("IntentID");
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        code = "";
         discountHistoryRecyclerView =findViewById(R.id.customer_history_discount_DiscountListView);
-
+        date = getIntent().getStringExtra("DATE");
+        time = getIntent().getStringExtra("TIME");
+        ticket = getIntent().getIntExtra("TICKET",0);
+        payprice = getIntent().getDoubleExtra("PRICE",0);
+        cusID = getIntent().getStringExtra("CustomerID");
         dHisAdapter = new HistoryDiscountListAdapter(discountList,this,this);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this,1,GridLayoutManager.VERTICAL,false);
         discountHistoryRecyclerView.setLayoutManager(mLayoutManager);
@@ -119,10 +129,25 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this , HomePage.class );
-                intent.putExtra("USER_EMAIL", userEmail);
-                startActivity(intent);
-                this.finish();
+                if(intentID.equals("From_Home")){
+                    Intent intent = new Intent(this , HomePage.class );
+                    intent.putExtra("USER_EMAIL", userEmail);
+                    startActivity(intent);
+                    this.finish();
+                }else{
+                    Intent intent = new Intent(this , Payment.class );
+                    intent.putExtra("DATE",date);
+                    intent.putExtra("TIME",time);
+                    intent.putExtra("TICKET",ticket);
+                    intent.putExtra("PRICE",ticket*200000);
+                    intent.putExtra("CUSTOMER",cusID);
+                    intent.putExtra("Discount_Code",code);
+                    intent.putExtra("USER_EMAIL", userEmail);
+                    intent.putExtra("Payment_Intent","From_Discount");
+                    startActivity(intent);
+                    this.finish();
+                }
+
                 return true;
         }
         return true;
@@ -133,6 +158,7 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("text", discountList.get(position).getDiscountId());
         clipboard.setPrimaryClip(clip);
+        code = discountList.get(position).getDiscountId();
         Toast.makeText(this, "Discount code copied", Toast.LENGTH_SHORT).show();
     }
 }

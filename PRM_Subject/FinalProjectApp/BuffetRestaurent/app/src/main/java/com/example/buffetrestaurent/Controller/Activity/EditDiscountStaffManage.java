@@ -80,6 +80,7 @@ public class EditDiscountStaffManage extends AppCompatActivity {
                 Intent intent=new Intent(v.getContext(), StaffDiscountManagement.class);
                 intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
+                finish();
             }
         });
         //Create event for submit button
