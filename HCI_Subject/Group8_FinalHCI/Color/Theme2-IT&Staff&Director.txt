@@ -1,0 +1,18 @@
+*Background Frame (Background Theme2)
+#FFF9FE : Hồng nhạt
+1E0338
+
+
+
+*Background (Text Header)
+#FFFFFF
+1E0338
+
+
+*Text:
+#858585
+FFFFFF
+
+*Text Input Black:
+#000000
+#FFFFFF
