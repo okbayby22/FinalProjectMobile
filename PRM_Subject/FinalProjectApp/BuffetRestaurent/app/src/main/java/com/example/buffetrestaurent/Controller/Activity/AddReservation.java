@@ -47,21 +47,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddReservation extends AppCompatActivity {
-    int numsOftickets;
-    Button plus;
-    Button minus;
-    Button add;
-    TextView timepick;
-    TextView tickets;
-    TextView price;
-    EditText name;
-    EditText phone;
-    ReservationService service;
+    int numsOftickets; //number of tickets
+    Button plus; //plus button
+    Button minus; // minus button
+    Button add; // add button
+    TextView timepick; //time picker to pick time of reservation
+    TextView tickets; //show current tickets of reservation
+    TextView price; //current price of reservation
+    EditText name; //show name of customer
+    EditText phone; //show phone of customer
     CalendarView calendarView;
-    DecimalFormat vnd = new DecimalFormat("###,###");
-    String date;
-    CustomerService customerService;
-    String email;
+    DecimalFormat vnd = new DecimalFormat("###,###"); //Format of balance
+    String date; //date of reservation
+    String email; //email of customer
     Customer customerInfor;
 
     @Override
@@ -70,19 +68,19 @@ public class AddReservation extends AppCompatActivity {
         setContentView(R.layout.activity_add_reservation);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strAddRes);
-        timepick = findViewById(R.id.AddReservation_txtTimePick);           //Text to show time
-        plus = findViewById(R.id.AddReservation_btnIncrease);               //Plus button to increase number of tickets
-        minus = findViewById(R.id.AddReservation_btnDecrease);              //Minus button to increase number of tickets
-        add = findViewById(R.id.AddReservation_btnAdd);                     //Add button to add new reservation
-        tickets = findViewById(R.id.AddReservation_txtNumTickets);          //Tickets textview to show number of tickets
-        price = findViewById(R.id.AddReservation_txtPrice);                 //Price textview to show total balance that user must pay
-        numsOftickets = Integer.parseInt(tickets.getText().toString());     //Variable to save data of number of tickets
-        price.setText(vnd.format(numsOftickets*200000)+" VND");      //Set value for textview
-        name = findViewById(R.id.AddReservation_inputName);                 //Input text field phone
-        phone = findViewById(R.id.AddReservation_inputPhone);               //Input text field name
-        calendarView = findViewById(R.id.AddReservation_CalendarView);      //Calendar view
+        timepick = findViewById(R.id.AddReservation_txtTimePick); //Text to show time
+        plus = findViewById(R.id.AddReservation_btnIncrease); //Plus button to increase number of tickets
+        minus = findViewById(R.id.AddReservation_btnDecrease); //Minus button to increase number of tickets
+        add = findViewById(R.id.AddReservation_btnAdd); //Add button to add new reservation
+        tickets = findViewById(R.id.AddReservation_txtNumTickets); //Tickets textview to show number of tickets
+        price = findViewById(R.id.AddReservation_txtPrice); //Price textview to show total balance that user must pay
+        numsOftickets = Integer.parseInt(tickets.getText().toString()); //Variable to save data of number of tickets
+        price.setText(vnd.format(numsOftickets*200000)+" VND"); //Set value for textview
+        name = findViewById(R.id.AddReservation_inputName); //Input text field phone
+        phone = findViewById(R.id.AddReservation_inputPhone); //Input text field name
+        calendarView = findViewById(R.id.AddReservation_CalendarView); //Calendar view
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        Date curdate = Calendar.getInstance().getTime();
+        Date curdate = Calendar.getInstance().getTime(); //Get current day
         name.setFocusable(false);
         name.setFocusableInTouchMode(false);
         name.setClickable(false);
@@ -91,7 +89,6 @@ public class AddReservation extends AppCompatActivity {
         phone.setClickable(false);
         date = sdf.format(curdate);
         email = getIntent().getStringExtra("USER_EMAIL");
-        System.out.println(email);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("customers")
                 .whereEqualTo("customerEmail", email)
@@ -237,7 +234,6 @@ public class AddReservation extends AppCompatActivity {
                 timepicker.show();
             }
         });
-        loadData();
     }
 
     @Override
@@ -251,27 +247,5 @@ public class AddReservation extends AppCompatActivity {
                 return true;
         }
         return true;
-    }
-
-    public void loadData(){
-        customerService = Apis.getCustomerService();
-        Call<Customer> call=customerService.getUserInfor(email);
-        call.enqueue(new Callback<Customer>() {
-            @Override
-            public void onResponse(Call<Customer> call, Response<Customer> response) {
-                if(response.isSuccessful()) {
-                    customerInfor = response.body();
-
-                    name.setText(customerInfor.getCustomerName());
-                    phone.setText(customerInfor.getCustomerPhone());
-                    price.setText(vnd.format(numsOftickets * 200000) + " VND");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Customer> call, Throwable t) {
-                Log.e("Error:",t.getMessage());
-            }
-        });
     }
 }

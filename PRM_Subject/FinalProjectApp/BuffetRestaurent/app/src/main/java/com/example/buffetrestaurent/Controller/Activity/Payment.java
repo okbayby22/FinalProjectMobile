@@ -42,70 +42,74 @@ public class Payment extends AppCompatActivity {
 
 
     DecimalFormat vnd = new DecimalFormat("###,###");
-    TextView price;
-    TextView finalprice;
+    TextView price; //Price of reservation
+    TextView finalprice; //Price that customer pay after checkout
     TextView discount,displayDiscount,wrongCode;
-    double payprice;
-    double intentprice;
-    double discountprice;
-    String email;
-    String date;
-    String time;
-    String discoutString;
-    int ticket;
-    TextView discountCode;
-    EditText code;
-    String cusID;
-    Button Checkout,discountSubmit;
+    double payprice; //Variable to store balance customer must pay after checkout
+    double intentprice; //Variable to store price that get from another activity
+    double discountprice; //Variable to store discount price of reservation
+    String email; //Email of user
+    String date; // Date of reservation
+    String time; //Time of reservation
+    String discoutString; //Discount code
+    int ticket; // Number of tickets of reservation
+    TextView chooseDiscount; //View that press to choose discount
+    EditText txtcode; //Discount code input
+    String cusID; //Customer ID
+    Button Checkout,discountSubmit; //Checkout: button to checkout, discountSubmit: button to apply discount
     ArrayList<DiscountInventory> listInventory;
     ArrayList<Discount> listDiscount;
-    String intentID;
-    String intentDiscount;
+    String intentID; //Throw intentID to another activity to check
+    String intentDiscount; //Discount code get from another activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.strCheckout);
+        getSupportActionBar().setTitle(R.string.strCheckout); //Set title for supported bar
 
 
-        intentprice = Double.valueOf(getIntent().getIntExtra("PRICE", 0));
-        discountprice = 0;
-        email = getIntent().getStringExtra("USER_EMAIL");
-        price = findViewById(R.id.Payment_txtTotal);
-        finalprice = findViewById(R.id.Payment_txtFinalPrice);
-        discount = findViewById(R.id.Payment_txtDiscount);
-        Checkout = findViewById(R.id.Payment_btnCheckout);
-        discountCode = findViewById(R.id.Payment_txtCode);
-        discountSubmit = findViewById(R.id.Payment_btnSubmit);
-        displayDiscount = findViewById(R.id.Payment_txtDiscount);
-        wrongCode = findViewById(R.id.Payment_txtWrongCode);
-        discount.setText(0 + " VND");
-        price.setText(vnd.format(intentprice) + " VND");
-        payprice = intentprice - discountprice;
-        finalprice.setText(vnd.format(payprice) + " VND");
-        ticket = getIntent().getIntExtra("TICKET", 0);
-        date = getIntent().getStringExtra("DATE");
-        time = getIntent().getStringExtra("TIME");
-        cusID = getIntent().getStringExtra("CUSTOMER");
-        loadDiscountInvetory();
-        discountCode = findViewById(R.id.Payment_txtSeeDiscount);
-        code = findViewById(R.id.Payment_txtCode);
-        intentID = getIntent().getStringExtra("Payment_Intent");
-        if(intentID.equals("From_Add_Reservation")){
-            code.setText("");
+        intentprice = Double.valueOf(getIntent().getIntExtra("PRICE", 0)); //get price from another activity
+        discountprice = 0; //Initialize value for discount price
+        email = getIntent().getStringExtra("USER_EMAIL"); //get email of user
+        /*
+        Mapping view with layout
+         */
+        price = findViewById(R.id.Payment_txtTotal); //Show price of reservation
+        finalprice = findViewById(R.id.Payment_txtFinalPrice); //Show final price that customer must pay after checkout
+        discount = findViewById(R.id.Payment_txtDiscount); //Show discount price
+        Checkout = findViewById(R.id.Payment_btnCheckout); //Checkout button
+        discountSubmit = findViewById(R.id.Payment_btnSubmit); //Apply discount button
+        wrongCode = findViewById(R.id.Payment_txtWrongCode); //Notice of wrong discount code
+        discount.setText(0 + " VND"); //Set default text for discount price
+        price.setText(vnd.format(intentprice) + " VND"); //Set text for price of reservation
+        payprice = intentprice - discountprice; //Calculate balance that customer must pay after checkout
+        finalprice.setText(vnd.format(payprice) + " VND"); //Set final price to show to customer
+        /*
+        Get value from another activity
+         */
+        ticket = getIntent().getIntExtra("TICKET", 0); //Number of tickets of reservation
+        date = getIntent().getStringExtra("DATE"); //Date of reservation
+        time = getIntent().getStringExtra("TIME"); //Time of reservation
+        cusID = getIntent().getStringExtra("CUSTOMER"); //Customer ID
+        chooseDiscount = findViewById(R.id.Payment_txtSeeDiscount); //Click to choose discount from discount inventory
+        txtcode = findViewById(R.id.Payment_txtCode); //Discount code input
+        intentID = getIntent().getStringExtra("Payment_Intent"); //Get intent from another activity to check
+        if(intentID.equals("From_Add_Reservation")){ //If payment was intented from Add reservation
+            txtcode.setText("");
         }else{
-            intentDiscount = getIntent().getStringExtra("Discount_Code");
+            intentDiscount = getIntent().getStringExtra("Discount_Code"); //Get discount code from discount inventory (copy to clipboard)
             if(!intentDiscount.equals("")){
-                code.setText(intentDiscount);
+                txtcode.setText(intentDiscount);
             }else{
-                code.setText("");
+                txtcode.setText("");
             }
         }
 
 
-        discountCode.setOnClickListener(new View.OnClickListener() {
+        //Press Your discount to discount inventory to choose discount
+        chooseDiscount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CustomerDiscountHistoryActivity.class);
@@ -121,8 +125,11 @@ public class Payment extends AppCompatActivity {
         });
 
 
-        loadDiscountInvetory();
+        loadDiscountInvetory();//Load list of discount that customer own
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Press checkout button
+         */
         Checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,12 +148,16 @@ public class Payment extends AppCompatActivity {
                         .whereEqualTo("customerEmail", email)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            //Get customer success
                             @Override
                             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
                                     DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                     Customer cus = doc.toObject(Customer.class);
                                     double balance = cus.getCustomerBalance() - payprice;
+                                    /*
+                                    Change balance of customer
+                                     */
                                     Map<String, Object> data = new HashMap<>();
                                     data.put("customerBalance", balance);
                                     db.collection("customers")
@@ -181,10 +192,13 @@ public class Payment extends AppCompatActivity {
         });
 
 
+        /*
+        Apply discount button
+         */
         discountSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getCode = code.getText().toString();
+                String getCode = txtcode.getText().toString();
                 boolean check = false;
                 for(int i =0;i<listDiscount.size();i++){
                     if(listDiscount.get(i).getDiscountId().equals(getCode)){
