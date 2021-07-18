@@ -15,8 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.buffetrestaurent.Controller.Activity.StaffDiscountManagement;
+import com.example.buffetrestaurent.Model.Discount;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,7 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +49,7 @@ public class addDiscountStaffManagement extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    //Contain user email of using user
     String userEmail;
 
 
@@ -82,10 +87,16 @@ public class addDiscountStaffManagement extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    //Edit Text component
     EditText edtAddDiscountName,edtAddDiscountPoint, edtAddDiscountPercent;
+    //Text view component
     TextView txtErrorName,txtErrorPoint,txtErrorPercent;
+    //Button component
     Button btnSubmit,btnCancel;
+    //Contain staff ID
     String staffID;
+    //Load all discount name
+    ArrayList<String> discountName;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,30 +109,70 @@ public class addDiscountStaffManagement extends Fragment {
         txtErrorPercent = view.findViewById(R.id.adddiscount_txtErrorPercent);
         btnSubmit = view.findViewById(R.id.adddiscount_btnSubmit);
         btnCancel = view.findViewById(R.id.adddiscount_btnCancel);
+        //Load staff ID that has same user email
         loadStaffId();
+        //Create object discountName
+        discountName = new ArrayList<>();
+        //Load all discount name and store in discount Name arraylist
+        loadDiscountName();
+        //Create event for button cancle
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Start activity staff discount Management
                 Intent intent=new Intent(v.getContext(), StaffDiscountManagement.class);
+                intent.putExtra("USER_EMAIL", userEmail);
                 startActivity(intent);
             }
         });
+        //Create event click for button Submit
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean checkName = false,checkPoint = false,checkPercent =false;
+                //Check Name
                 if(edtAddDiscountName.getText().toString().equals("")){
                     txtErrorName.setText("Name of discount cannot be empty!!");
                     txtErrorName.setTextColor(Color.RED);
-                }else if(edtAddDiscountPoint.getText().toString().equals("")){
+                }else if(discountName.contains(edtAddDiscountName.getText().toString().toUpperCase())){
+                    txtErrorName.setText("Name of discount has been existed!!");
+                    txtErrorName.setTextColor(Color.RED);
+                }else{
                     txtErrorName.setText("");
+                    checkName = true;
+                }
+                //Check Points
+                if(edtAddDiscountPoint.getText().toString().equals("")){
                     txtErrorPoint.setText("Points cannot be empty!!");
                     txtErrorPoint.setTextColor(Color.RED);
-                }else if(edtAddDiscountPercent.getText().toString().equals("")){
+                }else if(Integer.parseInt(edtAddDiscountPoint.getText().toString()) <=0 ){
+                    txtErrorPoint.setText("Points cannot be less than 0!!");
+                    txtErrorPoint.setTextColor(Color.RED);
+                }else if(Integer.parseInt(edtAddDiscountPoint.getText().toString()) >=1000 ){
+                    txtErrorPoint.setText("Points cannot be more than 1000!!");
+                    txtErrorPoint.setTextColor(Color.RED);
+                }
+                else{
                     txtErrorPoint.setText("");
+                    checkPoint= true;
+                }
+                //Check Percents
+                if(edtAddDiscountPercent.getText().toString().equals("")){
                     txtErrorPercent.setText("Percent cannot be empty!!");
+                    txtErrorPercent.setTextColor(Color.RED);
+                }
+                else if(Integer.parseInt(edtAddDiscountPercent.getText().toString()) <=0 ){
+                    txtErrorPercent.setText("Percent cannot be less than 0!!");
+                    txtErrorPercent.setTextColor(Color.RED);
+                }else if(Integer.parseInt(edtAddDiscountPercent.getText().toString()) >100 ){
+                    txtErrorPercent.setText("Percent cannot be more than 100!!");
                     txtErrorPercent.setTextColor(Color.RED);
                 }else{
                     txtErrorPercent.setText("");
+                    checkPercent = true;
+                }
+                //Add Discount
+                if(checkName && checkPoint && checkPercent){
                     AddDiscount();
                 }
             }
@@ -129,6 +180,35 @@ public class addDiscountStaffManagement extends Fragment {
 
         return view;
     }
+
+    /**
+     * load discount Name that has exist in database
+     */
+    public void loadDiscountName(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("discount")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                     @Override
+                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                            QuerySnapshot query = task.getResult();
+                            if(query.isEmpty()){
+
+                            }else{
+                                for(QueryDocumentSnapshot document: task.getResult()){
+                                    Discount discount = new Discount();
+                                    discount= document.toObject(Discount.class);
+                                    String dName = discount.getDiscountName();
+                                    discountName.add(dName.toUpperCase());
+                                }
+                            }
+                      }
+                });
+    }
+
+    /**
+     * Add discount to database
+     */
     public void AddDiscount(){
         Map<String ,Object> data =  new HashMap<>();
         data.put("discountId","");
@@ -147,12 +227,16 @@ public class addDiscountStaffManagement extends Fragment {
                         data.put("discountId",documentReference.getId());
                         db.collection("discount").document(documentReference.getId())
                                 .update(data);
-                        Intent intent=new Intent(getContext(), StaffDiscountManagement.class);
+                        Intent intent=new Intent(getActivity(), StaffDiscountManagement.class);
                         startActivity(intent);
 
                     }
                 });
     }
+
+    /**
+     * Load staff ID that has same user email
+     */
     public void loadStaffId(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("staffs")

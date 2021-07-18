@@ -41,15 +41,22 @@ public class discountStaffManagement extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    //Contain list of discount
     ArrayList<Discount> discountList;
+    //Create disocunt adapter object
     DiscountAdapter discountAdapter;
+    //Recyler View object
     RecyclerView recyclerView;
+    //Contain user Email data
+    String userEmail;
 
-    public discountStaffManagement() {
+    public discountStaffManagement(String userEmail) {
         // Required empty public constructor
+        this.userEmail = userEmail;
     }
+    public discountStaffManagement(){
 
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -87,6 +94,10 @@ public class discountStaffManagement extends Fragment {
         return view;
     }
 
+    /**
+     * load all discount and store in list
+     * @param context
+     */
     public void loadDiscount(Context context){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("discount")
@@ -97,20 +108,21 @@ public class discountStaffManagement extends Fragment {
                         QuerySnapshot query = task.getResult();
                         discountList = new ArrayList<>();
                         if(query.isEmpty()){
-
                         }else{
+                            //Store discount into discount List
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Discount discount = new Discount();
                                 discount = document.toObject(Discount.class);
                                 discountList.add(discount);
                             }
-                            discountAdapter = new DiscountAdapter(context  ,discountList);
+                            //Call to adapter
+                            discountAdapter = new DiscountAdapter(context  ,discountList,userEmail);
+                            //create layout for adapter
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
                             recyclerView.setLayoutManager(mLayoutManager);
                             recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
-                            recyclerView.setAdapter(discountAdapter);
+                            recyclerView.setAdapter(discountAdapter); //set adapter
                         }
-
                     }
                 });
     }
