@@ -1,0 +1,16 @@
+*Button và nav
+#F7CC2C vàng  
+
+#21409A xanh BIDV
+
+
+
+*Background
+#191919 đen or #402C69 tím TP bank
+
+#FFFFFF trắng
+
+*Chữ 
+#FFFFFF chữ trắng + 0804B1 chữ xanh dương
+
+#ED1248 chữ đỏ
