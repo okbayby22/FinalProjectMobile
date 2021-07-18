@@ -43,7 +43,6 @@ public class Payment extends AppCompatActivity {
 
     DecimalFormat vnd = new DecimalFormat("###,###");
     TextView price;
-    EditText discountCode;
     TextView finalprice;
     TextView discount,displayDiscount,wrongCode;
     double payprice;
@@ -69,6 +68,8 @@ public class Payment extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCheckout);
+
+
         intentprice = Double.valueOf(getIntent().getIntExtra("PRICE", 0));
         discountprice = 0;
         email = getIntent().getStringExtra("USER_EMAIL");
@@ -93,7 +94,7 @@ public class Payment extends AppCompatActivity {
         code = findViewById(R.id.Payment_txtCode);
         intentID = getIntent().getStringExtra("Payment_Intent");
         if(intentID.equals("From_Add_Reservation")){
-            discount.setText("");
+            code.setText("");
         }else{
             intentDiscount = getIntent().getStringExtra("Discount_Code");
             if(!intentDiscount.equals("")){
@@ -101,23 +102,26 @@ public class Payment extends AppCompatActivity {
             }else{
                 code.setText("");
             }
-
         }
+
+
         discountCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CustomerDiscountHistoryActivity.class);
                 intent.putExtra("IntentID","From_Payment");
-                intent.putExtra("Date",date);
-                intent.putExtra("Time",time);
-                intent.putExtra("Tickets",ticket);
+                intent.putExtra("DATE",date);
+                intent.putExtra("TIME",time);
+                intent.putExtra("TICKET",ticket);
                 intent.putExtra("PRICE",intentprice);
                 intent.putExtra("CustomerID",cusID);
                 intent.putExtra("USER_EMAIL",email);
                 startActivity(intent);
             }
         });
-//        loadDiscount();
+
+
+        loadDiscountInvetory();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Checkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +137,6 @@ public class Payment extends AppCompatActivity {
                 user.put("customerId", cusID);
                 user.put("discountId", discoutString);
                 user.put("staffId", "");
-
                 db.collection("customers")
                         .whereEqualTo("customerEmail", email)
                         .get()
@@ -152,21 +155,7 @@ public class Payment extends AppCompatActivity {
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
-//                                                    db.collection("reservations")
-//                                                            .add(user)
-//                                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//                                                                @Override
-//                                                                public void onComplete(DocumentReference documentReference) {
-//                                                                    if(task.isSuccessful()){
-//                                                                        Map<String ,Object> data =  new HashMap<>();
-//                                                                        data.put("customerId",documentReference.getId());
-//                                                                    }
-//                                                                    Toast.makeText(Payment.this, "Checkout Successfully", Toast.LENGTH_SHORT).show();
-//                                                                    Intent intent = new Intent(v.getContext(), HomePage.class);
-//                                                                    intent.putExtra("USER_EMAIL", email);
-//                                                                    startActivity(intent);
-//                                                                }
-//                                                            });
+//
                                                     db.collection("reservations")
                                                             .add(user)
                                                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -190,11 +179,12 @@ public class Payment extends AppCompatActivity {
                         });
             }
         });
+
+
         discountSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Click roi");
-                String getCode = discountCode.getText().toString();
+                String getCode = code.getText().toString();
                 boolean check = false;
                 for(int i =0;i<listDiscount.size();i++){
                     if(listDiscount.get(i).getDiscountId().equals(getCode)){
@@ -208,7 +198,6 @@ public class Payment extends AppCompatActivity {
                     }else{
                         check=false;
                     }
-                    System.out.println("Ahihihihihihihihjih");
                 }
                 if(check==false){
                     discoutString="";
@@ -222,8 +211,9 @@ public class Payment extends AppCompatActivity {
                 }
             }
         });
-
     }
+
+
     public void loadDiscountInvetory(){
         listDiscount= new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -251,10 +241,11 @@ public class Payment extends AppCompatActivity {
                                         }
                                     });
                         }
-
                     }
                 });
     }
+
+
     public void loadDiscount(String id){
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("discount")
