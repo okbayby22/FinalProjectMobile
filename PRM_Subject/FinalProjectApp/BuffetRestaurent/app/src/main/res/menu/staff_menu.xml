@@ -50,6 +50,13 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/staffmenu_btnCustomerManage"
+            android:icon="@drawable/ic_menumanage_staff"
+            android:title="@string/strCustomerManage" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
             android:id="@+id/staffmenu_btnSignOut"
             android:icon="@drawable/ic_baseline_login_24"
             android:title="@string/strSignOut" />

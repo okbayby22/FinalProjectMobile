@@ -1,13 +1,21 @@
 package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +25,7 @@ import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.CustomerService;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,10 +33,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +56,11 @@ public class CustomerProfile extends AppCompatActivity {
     EditText txtName,txtEmail,txtPhone,txtAddress;
     TextView txtNameError,txtPhoneError;
     ImageView avt;
+    Button uploadImage;
+    Uri imageUri;
+    Drawable oldimage;
+    String getImageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +76,18 @@ public class CustomerProfile extends AppCompatActivity {
         txtNameError = findViewById(R.id.CustomerProfile_txtName_error);
         txtPhoneError = findViewById(R.id.CustomerProfile_txtPhone_error);
         avt = findViewById(R.id.CustomerProfile_imgAVT);
+        uploadImage = findViewById(R.id.CustomerProfile_imgAVTbtn);
         txtEmail.setFocusable(false);
         txtEmail.setFocusableInTouchMode(false);
         txtEmail.setClickable(false);
         txtEmail.setAlpha((float) 0.3);
         loadData();
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFileChoose();
+            }
+        });
     }
 
     public void loadData(){
@@ -84,10 +109,41 @@ public class CustomerProfile extends AppCompatActivity {
                             imgshape.setShape(GradientDrawable.OVAL);
                             imgshape.setStroke(3, Color.BLACK);
                             imgshape.setCornerRadius(100);
+                            Picasso.get().load(cus.getCustomerAvatar()).into(avt);
+                            oldimage=avt.getDrawable();
                             avt.setBackgroundDrawable(imgshape);
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , UserManageActivity.class );
+                intent.putExtra("USER_EMAIL", email);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
+    }
+
+    public void openFileChoose(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction((Intent.ACTION_GET_CONTENT));
+        startActivityForResult(intent,2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode ==2 && resultCode == RESULT_OK && data !=null){
+            imageUri=data.getData();
+            avt.setImageURI(imageUri);
+        }
     }
 
     public void update_Click(View view) {
@@ -120,7 +176,11 @@ public class CustomerProfile extends AppCompatActivity {
             cus.setCustomerName(txtName.getText().toString());
             cus.setCustomerPhone(txtPhone.getText().toString());
             cus.setCustomerAddress(txtAddress.getText().toString());
-            updateToDB();
+            if(avt.getDrawable()!=oldimage){
+                uploadImageFirebase();
+            }else{
+                updateToDB();
+            }
         }
     }
 
@@ -128,7 +188,8 @@ public class CustomerProfile extends AppCompatActivity {
         Map<String, Object> data = new HashMap<>();
         data.put("customerName", txtName.getText().toString());
         data.put("customerAddress", txtAddress.getText().toString());
-        data.put("staffPhone", txtPhone.getText().toString());
+        data.put("customerPhone", txtPhone.getText().toString());
+        data.put("customerAvatar", getImageUri);
 
         List<String> fields= new ArrayList<String>();
         fields.add("customerName");
@@ -151,5 +212,50 @@ public class CustomerProfile extends AppCompatActivity {
                         Toast.makeText(CustomerProfile.this,"Error !!!!",Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+    public void uploadImageFirebase(){
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://buffetrestaurant-e631f.appspot.com");
+        StorageReference storageRef = storage.getReference();
+
+
+// Create a reference to 'images/mountains.jpg'
+        StorageReference mountainImagesRef = storageRef.child("Avatar/"+email+".jpg");
+
+// While the file names are the same, the references point to different files
+        mountainImagesRef.getName().equals(mountainImagesRef.getName());    // true
+        mountainImagesRef.getPath().equals(mountainImagesRef.getPath());    // false
+        // Get the data from an ImageView as bytes
+        avt.setDrawingCacheEnabled(true);
+        avt.buildDrawingCache();
+
+        Bitmap bitmap = ((BitmapDrawable) avt.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return mountainImagesRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    getImageUri = downloadUri.toString();
+                    updateToDB();
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
     }
 }
