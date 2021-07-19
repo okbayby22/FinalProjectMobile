@@ -74,7 +74,7 @@ public class HomePageStaff extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.staffmenu_btnChangePass:
-                        intent=new Intent(HomePageStaff.this, UserChangePassword.class);
+                        intent=new Intent(HomePageStaff.this, StaffChangePasswordActivity.class);
                         intent.putExtra("USER_EMAIL", userEmail);
                         intent.putExtra("USER_ROLE", "staff");
                         startActivity(intent);

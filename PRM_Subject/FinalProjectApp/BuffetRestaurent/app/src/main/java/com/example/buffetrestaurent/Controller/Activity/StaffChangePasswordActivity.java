@@ -34,25 +34,26 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserChangePassword extends AppCompatActivity {
+public class StaffChangePasswordActivity extends AppCompatActivity {
 
     String staffEmail,userRole;
     Staff staff;
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
     Customer cus;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_change_password);
-        staffEmail= getIntent().getStringExtra("USER_EMAIL");
-        userRole= getIntent().getStringExtra("USER_ROLE");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strChangePass);
-        txtPassword = findViewById(R.id.changePassword_txtPassword);
-        txtConfirmPass = findViewById(R.id.changePassword_txtConfirmPassword);
-        txtPassError = findViewById(R.id.changePassword_txtPasswordError);
-        txtCPassError = findViewById(R.id.changePassword_txtConfirmPasswordError);
+        setContentView(R.layout.activity_staff_change_password);
+        staffEmail = getIntent().getStringExtra("USER_EMAIL");
+        txtPassword = findViewById(R.id.staffChangePassword_txtPassword);
+        txtConfirmPass = findViewById(R.id.staffChangePassword_txtConfirmPassword);
+        txtPassError = findViewById(R.id.staffChangePassword_txtPasswordError);
+        txtCPassError = findViewById(R.id.staffChangePassword_txtConfirmPasswordError);
         getStaff();
     }
 
@@ -61,7 +62,7 @@ public class UserChangePassword extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent;
-                intent= new Intent(this , HomePage.class );
+                intent= new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", staffEmail);
                 startActivity(intent);
                 finish();
@@ -69,7 +70,7 @@ public class UserChangePassword extends AppCompatActivity {
         }
         return true;
     }
-    public void update_Click(View view) {
+    public void update_Click_Staff(View view) {
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
         Matcher matcher = pattern.matcher(txtPassword.getText().toString());
         boolean check = true;
@@ -93,65 +94,68 @@ public class UserChangePassword extends AppCompatActivity {
             txtCPassError.setText("");
         }
         Intent intent;
-        intent= new Intent(this , HomePage.class );
+        intent= new Intent(this , HomePageStaff.class );
         intent.putExtra("USER_EMAIL", staffEmail);
         startActivity(intent);
         finish();
     }
     public void getStaff(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("customers")
-                .whereEqualTo("customerEmail",staffEmail)
+        db.collection("staffs")
+                .whereEqualTo("staffEmail",staffEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            cus = document.toObject(Customer.class);
+                            staff = document.toObject(Staff.class);
                         }
                     }
                 })
         ;
     }
+
+
+
     public void checkPassword(){
         String password = txtPassword.getText().toString();
-       if(cus.getCustomerPassword().equals(md5(password))){
-           txtPassError.setText("Password has been existed");
-       }else{
-           updateToDB();
-       }
+        if(staff.getStaffPassword().equals(md5(password))){
+            txtPassError.setText("Password has been existed");
+        }else{
+            updateToDB();
+        }
     }
 
 
     public void updateToDB(){
         Map<String, Object> data = new HashMap<>();
-        data.put("customerPassword", md5(txtPassword.getText().toString()));
+        data.put("staffPassword", md5(txtPassword.getText().toString()));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("customers").document(cus.getCustomerId())
+        db.collection("staffs").document(staff.getStaffId())
                 .update(data)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(UserChangePassword.this,"Update successful !",Toast.LENGTH_LONG).show();
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-               // auth.updateCurrentUser(user);
-                user.updatePassword(md5(txtPassword.getText().toString())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            txtPassword.setText("");
-                            txtConfirmPass.setText("");
-                        }
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(StaffChangePasswordActivity.this,"Update successful !",Toast.LENGTH_LONG).show();
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        // auth.updateCurrentUser(user);
+                        user.updatePassword(md5(txtPassword.getText().toString())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    txtPassword.setText("");
+                                    txtConfirmPass.setText("");
+                                }
+                            }
+                        });
                     }
-                });
-            }
-        })
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@androidx.annotation.NonNull @NotNull Exception e) {
                         Log.e("Error:",e.getMessage());
-                        Toast.makeText(UserChangePassword.this,"Error !!!!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(StaffChangePasswordActivity.this,"Error !!!!",Toast.LENGTH_LONG).show();
                     }
                 });;
     }
@@ -182,4 +186,5 @@ public class UserChangePassword extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
+
 }
