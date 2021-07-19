@@ -16,3 +16,7 @@ FFFFFF
 *Text Input Black:
 #000000
 #FFFFFF
+
+*Button& Nav
+#FD749B Hồng tím
+#74FDF5 Xanh ‌linear

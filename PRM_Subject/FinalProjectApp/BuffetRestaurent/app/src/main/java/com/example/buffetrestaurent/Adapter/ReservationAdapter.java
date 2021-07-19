@@ -23,10 +23,12 @@ import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Text;
 
 import java.io.Serializable;
@@ -54,7 +56,21 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder( ReservationAdapter.ViewHolder holder, int position) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Reservation reservation = list.get(position);
+        db.collection("customers")
+                .whereEqualTo("customerId",reservation.getCustomerId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful() && !task.getResult().isEmpty()){
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            Customer cus = doc.toObject(Customer.class);
+                            holder.name.setText(cus.getCustomerName());
+                        }
+                    }
+                });
         holder.date.setText("Date: "+reservation.getReservationDate().toString());
         holder.ticket.setText("Number of tickets: "+reservation.getNumberTickets()+"");
         holder.price.setText(String.valueOf("Total: "+reservation.getReservationAmount()));
@@ -73,6 +89,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         }else if(holder.status.getText().equals("Pending.....")){
             holder.status.setTextColor(Color.BLACK);
         }
+
         holder.item_Reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +107,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                             .create();
                     dialog.show();
                 }else {
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("customers")
                             .whereEqualTo("customerId",list.get(position).getCustomerId() )
                             .get()
@@ -137,6 +153,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         public TextView time;
         public TextView status;
         public LinearLayout item_Reservation;
+        public TextView name;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -147,6 +164,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             time = itemView.findViewById(R.id.CancelReservation_Time);
             status = itemView.findViewById(R.id.CancelReservation_Status);
             item_Reservation = itemView.findViewById(R.id.item_Reservation);
+            name = itemView.findViewById(R.id.CancelReservation_txtCusName);
             email = ((Activity) context).getIntent().getStringExtra("USER_EMAIL");
         }
     }
