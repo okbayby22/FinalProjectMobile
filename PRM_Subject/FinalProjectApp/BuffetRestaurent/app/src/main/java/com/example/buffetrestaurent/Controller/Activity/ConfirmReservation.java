@@ -63,7 +63,7 @@ public class ConfirmReservation extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Reservation res = document.toObject(Reservation.class);
                                 res.setReservationId(document.getId());
-                                listAll.add(res);
+                                listAll.add(res);//set data to arraylist
                             }
                             reserAdap = new ReservationAdapter(listAll, ConfirmReservation.this); //Call LecturerAdapter to set data set and show data
                             LinearLayoutManager manager = new LinearLayoutManager(ConfirmReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
@@ -282,8 +282,8 @@ public class ConfirmReservation extends AppCompatActivity {
     }
     public void updatePointCustomer(String resId){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("reservations")
-                .whereEqualTo("reservationId", resId)
+        db.collection("reservations")//connect to reservation table in database
+                .whereEqualTo("reservationId", resId)//get reservation by reservation id
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -291,8 +291,8 @@ public class ConfirmReservation extends AppCompatActivity {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                             Reservation res = doc.toObject(Reservation.class);
-                            db.collection("customers")
-                                    .whereEqualTo("customerId", res.getCustomerId())
+                            db.collection("customers")//connect to customers table in database
+                                    .whereEqualTo("customerId", res.getCustomerId())//get customer by reservation id
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -302,10 +302,10 @@ public class ConfirmReservation extends AppCompatActivity {
                                                 Customer cus = doc.toObject(Customer.class);
                                                 int point = cus.getCustomerPoint() + (res.getNumberTickets()*20);
                                                 Map<String, Object> data = new HashMap<>();
-                                                data.put("customerPoint",point);
+                                                data.put("customerPoint",point);//put point to data
                                                 db.collection("customers")
                                                         .document(cus.getCustomerId())
-                                                        .update(data)
+                                                        .update(data)//update data to database
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
