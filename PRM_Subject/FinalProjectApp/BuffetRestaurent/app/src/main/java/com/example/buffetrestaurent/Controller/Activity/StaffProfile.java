@@ -113,7 +113,7 @@ public class StaffProfile extends AppCompatActivity {
 
     public void openFileChoose(){
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("image/*");//intent to image file in user's mobile
         intent.setAction((Intent.ACTION_GET_CONTENT));
         startActivityForResult(intent,2);
     }
@@ -121,9 +121,9 @@ public class StaffProfile extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode ==2 && resultCode == RESULT_OK && data !=null){
+        if(requestCode ==2 && resultCode == RESULT_OK && data !=null){//if user choose image, display that image to screen
             imageUri=data.getData();
-            avt.setImageURI(imageUri);
+            avt.setImageURI(imageUri);//set image to imageview
         }
     }
 
@@ -275,7 +275,7 @@ public class StaffProfile extends AppCompatActivity {
             cus.setStaffName(txtName.getText().toString());
             cus.setStaffPhone(txtPhone.getText().toString());
             cus.setStaffAddress(txtAddress.getText().toString());
-            if(avt.getDrawable()!=oldimage){
+            if(avt.getDrawable()!=oldimage){//if user upload new image, load that image to database and update profile
                 uploadImageFirebase();
             }else{
                 updateToDB();
@@ -340,12 +340,12 @@ public class StaffProfile extends AppCompatActivity {
         avt.setDrawingCacheEnabled(true);
         avt.buildDrawingCache();
 
-        Bitmap bitmap = ((BitmapDrawable) avt.getDrawable()).getBitmap();
+        Bitmap bitmap = ((BitmapDrawable) avt.getDrawable()).getBitmap();//convert image in imageview into bitmap
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);//upload image to storage in database
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -361,7 +361,7 @@ public class StaffProfile extends AppCompatActivity {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    getImageUri = downloadUri.toString();
+                    getImageUri = downloadUri.toString();//get url of image after upload
                     updateToDB();
                 } else {
                     // Handle failures
