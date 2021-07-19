@@ -101,6 +101,11 @@ public class HomePageStaff extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                         break;
+                    case R.id.staffmenu_btnSignOut:
+                        intent=new Intent(HomePageStaff.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
                 }
                 homepageDrawer.closeDrawer(GravityCompat.START);
                 return true;

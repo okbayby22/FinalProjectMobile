@@ -58,4 +58,5 @@
     <string name="strConfirmReservation">Confirm Reservation</string>
     <string name="strCustomerManage">Customer Manage</string>
     <string name="strCustomerProfile">Customer Profile</string>
+    <string name="strSignOut">Sign Out</string>
 </resources>
