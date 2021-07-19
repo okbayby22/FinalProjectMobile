@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +46,9 @@ public class signUpFragment extends Fragment {
 
     Button btnSignUp;
     CustomerService service;
-    TextView txtEmail,txtPass,txtRePass,txtEmailError,txtRePassError,txtPassError;
+    TextView txtEmail,txtPass,txtRePass,txtEmailError,txtRePassError,txtPassError,txtName,txtPhone,txtNameError,txtPhoneError;
+    RadioButton txtMale,txtFemale;
+    int gender;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,6 +56,7 @@ public class signUpFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
     private static final String VALID_EMAIL_ADDRESS_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,6}$";
+    private static final String PHONE_PATTERN = "(0[1-9])+([0-9]{8})";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -97,18 +102,42 @@ public class signUpFragment extends Fragment {
         txtEmail= rootView.findViewById(R.id.signUp_txtEmail);
         txtPass= rootView.findViewById(R.id.signUp_txtPass);
         txtRePass= rootView.findViewById(R.id.signUp_txtRePass);
+        txtName = rootView.findViewById(R.id.signUp_txtName);
+        txtPhone = rootView.findViewById(R.id.signUp_txtPhone);
         txtEmailError= rootView.findViewById(R.id.signUp_EmailError);
         txtRePassError= rootView.findViewById(R.id.signUp_txtErrorRePass);
         txtPassError= rootView.findViewById(R.id.signUp_PassError);
+        txtNameError = rootView.findViewById(R.id.signUp_NameError);
+        txtPhoneError = rootView.findViewById(R.id.signUp_PhoneError);
+        txtMale = rootView.findViewById(R.id.signUp_txtMale);
+        txtFemale = rootView.findViewById(R.id.signUp_txtFemale);
 
+        txtMale.setChecked(true);
+        txtMale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                gender=0;
+            }
+        });
+        txtFemale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                gender=1;
+            }
+        });
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean emailStatus=true;
                 boolean passStatus=true;
                 boolean rePassStatus=true;
+                boolean nameStatus=true;
+                boolean phoneStatus=true;
+
                 Pattern pattern = Pattern.compile(VALID_EMAIL_ADDRESS_REGEX);
                 Matcher matcher = pattern.matcher(txtEmail.getText().toString());
+
+
                 if(txtEmail.getText().toString().isEmpty()){
                     txtEmailError.setText("Email can not empty !!!");
                     emailStatus=false;
@@ -121,6 +150,22 @@ public class signUpFragment extends Fragment {
                     txtEmailError.setText("");
                     emailStatus=true;
                 }
+
+                pattern = Pattern.compile(PHONE_PATTERN);
+                matcher = pattern.matcher(txtPhone.getText().toString());
+                if(txtPhone.getText().toString().isEmpty()){
+                    txtPhoneError.setText("Phone can not empty !!!");
+                    phoneStatus=false;
+                }
+                else if(!matcher.matches()){
+                    txtPhoneError.setText("Wrong phone format !!! Exp: 0123456789");
+                    phoneStatus=false;
+                }
+                else{
+                    txtPhoneError.setText("");
+                    phoneStatus=true;
+                }
+
                 pattern = Pattern.compile(PASSWORD_PATTERN);
                 matcher = pattern.matcher(txtPass.getText().toString());
                 if(txtPass.getText().toString().isEmpty()){
@@ -144,7 +189,16 @@ public class signUpFragment extends Fragment {
                     rePassStatus=true;
                 }
 
-                if(emailStatus && passStatus && rePassStatus) {
+                if(txtName.getText().toString().isEmpty()){
+                    txtNameError.setText("Name must more than 1 character !!!");
+                    nameStatus=false;
+                }
+                else{
+                    txtNameError.setText("");
+                    nameStatus=true;
+                }
+
+                if(emailStatus && passStatus && rePassStatus && phoneStatus && nameStatus) {
                     checkDuplicaEmail(v);
                 }
             }
@@ -211,7 +265,7 @@ public class signUpFragment extends Fragment {
     }
 
     private void AddNewCus(View v){
-        Customer newCustomer=new Customer("",txtEmail.getText().toString(),"","",md5(txtPass.getText().toString()),1,0,0,1,"");
+        Customer newCustomer=new Customer(txtName.getText().toString(),txtEmail.getText().toString(),"",txtPhone.getText().toString(),md5(txtPass.getText().toString()),gender,0,0,1,"");
 //        service= Apis.getCustomerService();
 //        Call<Customer> call=service.addCustomer(newCustomer);
 //        call.enqueue(new Callback<Customer>() {
