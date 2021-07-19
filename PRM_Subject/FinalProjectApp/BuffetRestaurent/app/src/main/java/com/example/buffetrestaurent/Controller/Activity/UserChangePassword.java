@@ -37,7 +37,6 @@ import java.util.regex.Pattern;
 public class UserChangePassword extends AppCompatActivity {
 
     String staffEmail,userRole;
-    Staff staff;
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
     Customer cus;
@@ -49,6 +48,9 @@ public class UserChangePassword extends AppCompatActivity {
         userRole= getIntent().getStringExtra("USER_ROLE");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strChangePass);
+        /*
+        Mapping view to layout
+         */
         txtPassword = findViewById(R.id.changePassword_txtPassword);
         txtConfirmPass = findViewById(R.id.changePassword_txtConfirmPassword);
         txtPassError = findViewById(R.id.changePassword_txtPasswordError);
@@ -56,6 +58,11 @@ public class UserChangePassword extends AppCompatActivity {
         getStaff();
     }
 
+    /**
+     * Event of button on supported bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -63,12 +70,18 @@ public class UserChangePassword extends AppCompatActivity {
                 Intent intent;
                 intent= new Intent(this , HomePage.class );
                 intent.putExtra("USER_EMAIL", staffEmail);
+                intent.putExtra("USER_ROLE", userRole);
                 startActivity(intent);
                 finish();
                 return true;
         }
         return true;
     }
+
+    /**
+     * Event of button to update
+     * @param view
+     */
     public void update_Click(View view) {
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
         Matcher matcher = pattern.matcher(txtPassword.getText().toString());
@@ -98,6 +111,10 @@ public class UserChangePassword extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    /**
+     * Get current user information
+     */
     public void getStaff(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("customers")
@@ -113,6 +130,10 @@ public class UserChangePassword extends AppCompatActivity {
                 })
         ;
     }
+
+    /**
+     * Check new password duplicated with old password
+     */
     public void checkPassword(){
         String password = txtPassword.getText().toString();
        if(cus.getCustomerPassword().equals(md5(password))){
@@ -122,7 +143,9 @@ public class UserChangePassword extends AppCompatActivity {
        }
     }
 
-
+    /**
+     * Update data to database
+     */
     public void updateToDB(){
         Map<String, Object> data = new HashMap<>();
         data.put("customerPassword", md5(txtPassword.getText().toString()));
@@ -156,6 +179,11 @@ public class UserChangePassword extends AppCompatActivity {
                 });;
     }
 
+    /**
+     * MD5 hash
+     * @param pass User password
+     * @return MD5 hash string of user password
+     */
     private String md5(String pass) {
         try {
 

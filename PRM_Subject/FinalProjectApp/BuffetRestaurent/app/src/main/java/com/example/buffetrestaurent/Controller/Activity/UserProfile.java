@@ -34,7 +34,6 @@ import java.util.regex.Pattern;
 public class UserProfile extends AppCompatActivity {
 
     String userEmail,userID;
-    CustomerService customerService;
     Customer customerInfor;
     TextView txtName,txtEmail,txtPhone,txtAddress;
     TextView txtNameError,txtPhoneError;
@@ -47,20 +46,32 @@ public class UserProfile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strProfile);
 
+        /*
+        Mapping view to layout
+         */
         txtName=findViewById(R.id.userInfor_txtName);
         txtEmail=findViewById(R.id.userInfor_txtEmail);
         txtPhone=findViewById(R.id.userInfor_txtPhone);
         txtAddress=findViewById(R.id.userInfor_txtAddress);
-
         txtNameError=findViewById(R.id.userInfor_txtName_error);
         txtPhoneError=findViewById(R.id.userInfor_txtPhone_error);
 
+        /*
+        User can not edit email
+         */
         txtEmail.setEnabled(false);
+        txtEmail.setClickable(false);
+        txtEmail.setAlpha((float) 0.3);
         customerInfor =new Customer();
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         loadData();
     }
 
+    /**
+     * Event of button on supported bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -74,27 +85,14 @@ public class UserProfile extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Load data of current user
+     */
     public void loadData(){
-//        customerService = Apis.getCustomerService();
-//        Call<Customer> call=customerService.getUserInfor(userEmail);
-//        call.enqueue(new Callback<Customer>() {
-//            @Override
-//            public void onResponse(Call<Customer> call, Response<Customer> response) {
-//                if(response.isSuccessful()) {
-//                    customerInfor = response.body();
-//                    txtName.setText(customerInfor.getCustomerName());
-//                    txtAddress.setText(customerInfor.getCustomerAddress());
-//                    txtPhone.setText(customerInfor.getCustomerPhone());
-//                    txtEmail.setText(customerInfor.getCustomerEmail());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Customer> call, Throwable t) {
-//                Log.e("Error:",t.getMessage());
-//            }
-//        });
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Load data of current user by email
+         */
         db.collection("customers")
                 .whereEqualTo("customerEmail", userEmail)
                 .get()
@@ -104,6 +102,9 @@ public class UserProfile extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 customerInfor = document.toObject(Customer.class);
+                                /*
+                                Binding to view
+                                 */
                                 txtName.setText(customerInfor.getCustomerName());
                                 txtAddress.setText(customerInfor.getCustomerAddress());
                                 txtPhone.setText(customerInfor.getCustomerPhone());
@@ -117,6 +118,10 @@ public class UserProfile extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Method of button OnClick event
+     * @param view
+     */
     public void update_Click(View view) {
         boolean nameStatus=true;
         boolean phoneStatus=true;
@@ -151,24 +156,13 @@ public class UserProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Update data to database
+     */
     public void updateToDB(){
-//        customerService = Apis.getCustomerService();
-//        Call<Customer> call=customerService.updateCusInfor(customerInfor);
-//        call.enqueue(new Callback<Customer>() {
-//            @Override
-//            public void onResponse(Call<Customer> call, Response<Customer> response) {
-//                if(response.isSuccessful()) {
-//                    Toast.makeText(UserProfile.this,"Update successful !",Toast.LENGTH_LONG).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Customer> call, Throwable t) {
-//                Log.e("Error:",t.getMessage());
-//                Toast.makeText(UserProfile.this,"Error !!!!",Toast.LENGTH_LONG).show();
-//            }
-//        });
-
+        /*
+        Set update data to a hashmap
+         */
         Map<String, Object> data = new HashMap<>();
         data.put("customerName", txtName.getText().toString());
         data.put("customerAddress", txtAddress.getText().toString());
@@ -181,6 +175,9 @@ public class UserProfile extends AppCompatActivity {
         fields.add("customerEmail");
         fields.add("customerPhone");
 
+        /*
+        Update to database
+         */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("customers").document(userID)
                 .update(data)

@@ -39,12 +39,14 @@ import java.util.regex.Pattern;
 
 public class StaffProfile extends AppCompatActivity {
 
-    String email,ID;
-    TextView txtName,txtEmail,txtPhone,txtAddress,txtGender;
-    TextView txtNameError,txtPhoneError;
-    Staff cus;
-    ImageView avt;
-    int intentID;
+    String email; //Get email of user
+    String ID; //Get ID of user
+    TextView txtName,txtEmail,txtPhone,txtAddress,txtGender; //Get information of user
+    TextView txtNameError,txtPhoneError; //TextView to show error
+    Staff cus; //Object to store user data
+    ImageView avt; //Avatar of user
+    int intentID; //Get Intent ID
+    String role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,40 +54,62 @@ public class StaffProfile extends AppCompatActivity {
         setContentView(R.layout.activity_staff_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strProfile);
+        /*
+        Mapping view to layout
+         */
         txtName = findViewById(R.id.staffInfor_txtName);
         txtEmail = findViewById(R.id.staffInfor_txtEmail);
         txtPhone = findViewById(R.id.staffInfor_txtPhone);
         txtAddress = findViewById(R.id.staffInfor_txtAddress);
         txtGender = findViewById(R.id.staffInfor_txtGender);
         avt = findViewById(R.id.staffInfor_imgAvt);
+        /*
+        User can not edit email
+         */
         txtEmail.setFocusable(false);
         txtEmail.setFocusableInTouchMode(false);
         txtEmail.setClickable(false);
+        /*
+        User can not edit gender
+         */
         txtGender.setFocusable(false);
         txtGender.setFocusableInTouchMode(false);
         txtGender.setClickable(false);
         intentID = getIntent().getIntExtra("INTENT",0);
         txtNameError = findViewById(R.id.staffInfor_txtName_error);
         txtPhoneError = findViewById(R.id.staffInfor_txtPhone_error);
-        ID = getIntent().getStringExtra("ID");
-        email = getIntent().getStringExtra("USER_EMAIL");
-        System.out.println(">>>>>>>>>>>>>>> "+email);
-        loadData();
+        ID = getIntent().getStringExtra("ID"); // Get ID of user from another activity
+        email = getIntent().getStringExtra("USER_EMAIL"); //Get email of user from another activity
+        role = getIntent().getStringExtra("USER_ROLE");
+        loadData(); //Load data of current user
 
     }
 
+
+    /*
+    Check where this activity was intented from
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                /*
+                Intent from Staff Manage Activity
+                 */
                 if(intentID == 1){
                     Intent intent = new Intent(this , StaffManageActivity.class );
                     intent.putExtra("USER_EMAIL", email);
+                    intent.putExtra("USER_ROLE", role);
                     startActivity(intent);
                     this.finish();
-                }else{
+                }
+                /*
+                Intent from Home Page Staff
+                 */
+                else{
                     Intent intent = new Intent(this , HomePageStaff.class );
                     intent.putExtra("USER_EMAIL", email);
+                    intent.putExtra("USER_ROLE", role);
                     startActivity(intent);
                     this.finish();
                 }
@@ -95,8 +119,16 @@ public class StaffProfile extends AppCompatActivity {
         return true;
     }
 
+
+
+    /*
+    Load data of current user
+     */
     public void loadData(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get data from data base
+         */
         db.collection("staffs")
                 .whereEqualTo("staffEmail",email)
                 .get()
@@ -106,6 +138,9 @@ public class StaffProfile extends AppCompatActivity {
                         if(task.isSuccessful() && !task.getResult().isEmpty()){
                             DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                             cus = doc.toObject(Staff.class);
+                            /*
+                            Set text to View
+                             */
                             txtName.setText(cus.getStaffName());
                             txtEmail.setText(email);
                             txtPhone.setText(cus.getStaffPhone());
@@ -127,11 +162,18 @@ public class StaffProfile extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Method of button OnClick event
+     * @param view
+     */
     public void update_Click(View view) {
         boolean nameStatus=true;
         boolean phoneStatus=true;
-        Pattern pattern = Pattern.compile("(0[1-9])+([0-9]{8})");
+        Pattern pattern = Pattern.compile("(0[1-9])+([0-9]{8})"); //Pattern to check phone format
         Matcher matcher = pattern.matcher(txtPhone.getText().toString());
+        /*
+        Check name is empty or not
+         */
         if(txtName.getText().toString().isEmpty()){
             txtNameError.setText("Name can not empty !!!");
             nameStatus=false;
@@ -140,10 +182,16 @@ public class StaffProfile extends AppCompatActivity {
             nameStatus=true;
             txtNameError.setText("");
         }
+        /*
+        Check phone is empty or not
+         */
         if(txtPhone.getText().toString().isEmpty()){
             txtPhoneError.setText("Phone number can not empty !!!");
             phoneStatus=false;
         }
+        /*
+        Check phone format
+         */
         else if(!matcher.matches()){
             txtPhoneError.setText("Wrong phone format !!! Ex: 0123456789");
             phoneStatus=false;
@@ -153,6 +201,9 @@ public class StaffProfile extends AppCompatActivity {
             phoneStatus=true;
         }
 
+        /*
+        If phone and name do not wrong at all, update it to database
+         */
         if(nameStatus&&phoneStatus){
             cus.setStaffName(txtName.getText().toString());
             cus.setStaffPhone(txtPhone.getText().toString());
@@ -161,7 +212,13 @@ public class StaffProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Update data to database
+     */
     private void updateToDB() {
+        /*
+        Set update data to a hashmap
+         */
         Map<String, Object> data = new HashMap<>();
         data.put("staffName", txtName.getText().toString());
         data.put("staffAddress", txtAddress.getText().toString());
@@ -174,6 +231,9 @@ public class StaffProfile extends AppCompatActivity {
         fields.add("customerEmail");
         fields.add("customerPhone");
 
+        /*
+        Update to database
+         */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("staffs").document(ID)
                 .update(data)

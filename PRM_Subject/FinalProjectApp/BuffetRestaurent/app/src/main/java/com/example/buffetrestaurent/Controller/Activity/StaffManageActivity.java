@@ -37,22 +37,30 @@ import java.util.Map;
 public class StaffManageActivity extends AppCompatActivity {
 
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView; //Recycler to store list of staff
 
-    StaffManageAdapter staffAdap;
+    StaffManageAdapter staffAdap; //Staff adapter of recycler view
 
-    public static ArrayList<Staff> list;
+    public static ArrayList<Staff> list; //List of staff
 
     int AllPosition;
 
-    String email;
+    String email; //Email of current user
 
-    TextView search;
+    TextView search; //Search staff
 
+    String role;
+
+    /**
+     * Method use to load list of staff to recycler view
+     */
     private void loadStaff() {
         email = getIntent().getStringExtra("USER_EMAIL");
         list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get list of staff
+         */
         db.collection("staffs")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -63,6 +71,9 @@ public class StaffManageActivity extends AppCompatActivity {
                                 Staff staff = doc.toObject(Staff.class);
                                 list.add(staff);
                             }
+                            /*
+                            Binding data to recycler view
+                             */
                             staffAdap = new StaffManageAdapter(list, StaffManageActivity.this); //Call LecturerAdapter to set data set and show data
                             LinearLayoutManager manager = new LinearLayoutManager(StaffManageActivity.this); //Linear Layout Manager use to handling layout for each Lecturer
                             recyclerView.setAdapter(staffAdap);
@@ -75,6 +86,9 @@ public class StaffManageActivity extends AppCompatActivity {
     }
 
 
+    /*
+    Filter to search name of staff
+     */
     private void filter(String s) {
         ArrayList<Staff> newlist = new ArrayList<>();
 
@@ -91,12 +105,17 @@ public class StaffManageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_manage);
-        recyclerView = findViewById(R.id.StaffManageActivity_recycler);
-        loadStaff();
+        recyclerView = findViewById(R.id.StaffManageActivity_recycler); //Mapping recycler view to layout
+        loadStaff(); //load list of staff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strStaffManage);
-        email = getIntent().getStringExtra("USER_EMAIL");
-        search = findViewById(R.id.StaffManageActivity_txtSearch);
+        email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
+        role = getIntent().getStringExtra("USER_ROLE");
+        search = findViewById(R.id.StaffManageActivity_txtSearch); //Mapping search text input to layout
+
+        /*
+        Set event of search input when user input
+         */
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -110,7 +129,7 @@ public class StaffManageActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                filter(search.getText().toString());
+                filter(search.getText().toString()); //Set search list to recycler view
             }
         });
     }
@@ -121,6 +140,7 @@ public class StaffManageActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("USER_ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
@@ -128,9 +148,14 @@ public class StaffManageActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Event of Onclick for Button
+     * @param view
+     */
     public void onClickAddStaff(View view){
         Intent intent = new Intent(this , AddStaffActivity.class );
         intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("USER_ROLE", role);
         startActivity(intent);
         this.finish();
     }

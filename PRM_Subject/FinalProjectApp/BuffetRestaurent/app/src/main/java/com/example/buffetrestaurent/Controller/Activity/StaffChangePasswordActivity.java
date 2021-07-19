@@ -49,12 +49,15 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strChangePass);
         setContentView(R.layout.activity_staff_change_password);
-        staffEmail = getIntent().getStringExtra("USER_EMAIL");
+        staffEmail = getIntent().getStringExtra("USER_EMAIL"); //Get email of user from another activity
+        /*
+        Mapping view with layout
+         */
         txtPassword = findViewById(R.id.staffChangePassword_txtPassword);
         txtConfirmPass = findViewById(R.id.staffChangePassword_txtConfirmPassword);
         txtPassError = findViewById(R.id.staffChangePassword_txtPasswordError);
         txtCPassError = findViewById(R.id.staffChangePassword_txtConfirmPasswordError);
-        getStaff();
+        getStaff(); //Get current staff information
     }
 
     @Override
@@ -70,6 +73,7 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         }
         return true;
     }
+
     public void update_Click_Staff(View view) {
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
         Matcher matcher = pattern.matcher(txtPassword.getText().toString());
@@ -99,8 +103,15 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    /**
+     * Get staff information
+     */
     public void getStaff(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get staff information with email from database
+         */
         db.collection("staffs")
                 .whereEqualTo("staffEmail",staffEmail)
                 .get()
@@ -116,7 +127,9 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Check new password is duplicate with old password
+     */
     public void checkPassword(){
         String password = txtPassword.getText().toString();
         if(staff.getStaffPassword().equals(md5(password))){
@@ -126,7 +139,9 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Update staff new password to database
+     */
     public void updateToDB(){
         Map<String, Object> data = new HashMap<>();
         data.put("staffPassword", md5(txtPassword.getText().toString()));
@@ -160,6 +175,12 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
                 });;
     }
 
+
+    /**
+     * MD5 hash
+     * @param pass Password of user
+     * @return Hash string of user's password
+     */
     private String md5(String pass) {
         try {
 
