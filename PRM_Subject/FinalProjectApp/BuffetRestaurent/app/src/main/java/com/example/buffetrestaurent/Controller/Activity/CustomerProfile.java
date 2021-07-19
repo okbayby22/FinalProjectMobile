@@ -13,6 +13,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -114,6 +115,19 @@ public class CustomerProfile extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , UserManageActivity.class );
+                intent.putExtra("USER_EMAIL", email);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
     }
 
     public void openFileChoose(){

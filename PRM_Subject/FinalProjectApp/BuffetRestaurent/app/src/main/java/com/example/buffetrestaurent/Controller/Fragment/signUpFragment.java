@@ -265,7 +265,7 @@ public class signUpFragment extends Fragment {
     }
 
     private void AddNewCus(View v){
-        Customer newCustomer=new Customer(txtName.getText().toString(),txtEmail.getText().toString(),"",txtPhone.getText().toString(),md5(txtPass.getText().toString()),gender,0,0,1,"");
+        Customer newCustomer=new Customer(txtName.getText().toString(),txtEmail.getText().toString(),"",txtPhone.getText().toString(),md5(txtPass.getText().toString()),gender,0,0,1,"https://firebasestorage.googleapis.com/v0/b/buffetrestaurant-e631f.appspot.com/o/Avatar%2Fuser.jpg?alt=media&token=99aa5cca-86b5-45a1-b83c-b287bfbd6a02");
 //        service= Apis.getCustomerService();
 //        Call<Customer> call=service.addCustomer(newCustomer);
 //        call.enqueue(new Callback<Customer>() {
