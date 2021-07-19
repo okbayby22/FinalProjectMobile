@@ -41,26 +41,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-        <EditText
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="@string/strSearch"
-            android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="@+id/homepage_FoodTabBar"
-            app:layout_constraintTop_toBottomOf="@+id/homepage_txtStoreSlogan" />
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/homepage_FoodTabBar"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:background="@color/ThemeBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/homepage_txtStoreSlogan"
             app:tabIndicatorColor="@color/Theme"
             app:tabTextColor="@color/black"></com.google.android.material.tabs.TabLayout>
 
