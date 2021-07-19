@@ -30,15 +30,22 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/staffmenu_btnStaffManage"
-            android:icon="@drawable/group"
+            android:icon="@drawable/ic_menumanage_staff"
             android:title="@string/strStaffManage" />
     </group>
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/staffmenu_btnConfirmReservation"
-            android:icon="@drawable/group"
+            android:icon="@drawable/reservation_icon"
             android:title="@string/strConfirmReservation" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnSignOut"
+            android:icon="@drawable/ic_baseline_login_24"
+            android:title="@string/strSignOut" />
     </group>
 
 </menu>

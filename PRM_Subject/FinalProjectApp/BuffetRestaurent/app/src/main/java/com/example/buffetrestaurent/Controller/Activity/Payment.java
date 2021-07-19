@@ -106,6 +106,7 @@ public class Payment extends AppCompatActivity {
             }
         }
 
+        discoutString = txtcode.getText().toString();
 
         //Press Your discount to discount inventory to choose discount
         chooseDiscount.setOnClickListener(new View.OnClickListener() {

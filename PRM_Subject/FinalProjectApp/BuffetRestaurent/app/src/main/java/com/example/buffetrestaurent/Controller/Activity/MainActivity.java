@@ -2,6 +2,7 @@ package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
@@ -49,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).attach();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     private String md5(String pass) {
