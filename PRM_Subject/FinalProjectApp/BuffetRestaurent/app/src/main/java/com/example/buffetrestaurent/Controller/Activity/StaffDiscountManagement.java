@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -37,14 +39,19 @@ public class StaffDiscountManagement extends AppCompatActivity {
     Button btnADD, btnList;
     //Contain email of using user
     String userEmail;
+    double staffRole;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_discount_management);
         btnADD = findViewById(R.id.discountStaffManagement_ButtonAdd);
         btnList = findViewById(R.id.discountStaffManagement_ButtonBack);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.strDiscountManage);
         //Get intent from sender
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        staffRole = getIntent().getDoubleExtra("ROLE",0);
+
         //Disable button list when it first start
         btnList.setEnabled(false);
         //set default is fragement that display list of discount
@@ -89,4 +96,29 @@ public class StaffDiscountManagement extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @Override
+    /*
+    Back button on supported bar
+     */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePageStaff.class );
+                intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", staffRole);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", staffRole);
+        startActivity(intent);
+        this.finish();
+    }
 }

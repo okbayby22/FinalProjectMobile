@@ -22,6 +22,7 @@ public class MenuMangeForStaff extends AppCompatActivity {
     CollapsibleCalendar collapsibleCalendar;
     FloatingActionButton btnAdd;
     String date;
+    double staffRole;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,7 @@ public class MenuMangeForStaff extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.strMenuStaff);
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        staffRole = getIntent().getDoubleExtra("ROLE",0);
 
         btnAdd = findViewById(R.id.staff_menu_btnAdd);
         collapsibleCalendar=findViewById(R.id.staff_menu_calendarView);
@@ -107,15 +109,28 @@ public class MenuMangeForStaff extends AppCompatActivity {
     }
 
     @Override
+    /*
+    Back button on supported bar
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", staffRole);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", staffRole);
+        startActivity(intent);
+        this.finish();
     }
 }

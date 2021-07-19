@@ -41,6 +41,7 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
     Customer cus;
+    double staffRole;
 
 
     @Override
@@ -50,6 +51,7 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.strChangePass);
         setContentView(R.layout.activity_staff_change_password);
         staffEmail = getIntent().getStringExtra("USER_EMAIL"); //Get email of user from another activity
+        staffRole = getIntent().getDoubleExtra("ROLE",0);
         /*
         Mapping view with layout
          */
@@ -61,17 +63,29 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
     }
 
     @Override
+    /*
+    Back button on supported bar
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent;
-                intent= new Intent(this , HomePageStaff.class );
+                Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", staffEmail);
+                intent.putExtra("ROLE", staffRole);
                 startActivity(intent);
-                finish();
+                this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", staffEmail);
+        intent.putExtra("ROLE", staffRole);
+        startActivity(intent);
+        this.finish();
     }
 
     public void update_Click_Staff(View view) {

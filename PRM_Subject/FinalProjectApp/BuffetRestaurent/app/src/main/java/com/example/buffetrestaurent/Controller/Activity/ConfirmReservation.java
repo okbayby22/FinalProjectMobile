@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -45,6 +46,8 @@ public class ConfirmReservation extends AppCompatActivity {
     public static ArrayList<Reservation> listAll; //List of reservations of all customers
 
     String email; //Email of current user
+
+    double role;
 
     /**
      * Load list of reservations
@@ -122,6 +125,7 @@ public class ConfirmReservation extends AppCompatActivity {
         setContentView(R.layout.activity_confirm_reservation);
         EditText search = findViewById(R.id.ConfirmReservation_txtSearch); //Mapping search input to layout
         email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
+        role = getIntent().getDoubleExtra("ROLE",0);
         /*
         Set event of search input when user input
          */
@@ -368,6 +372,29 @@ public class ConfirmReservation extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePageStaff.class );
+                intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("ROLE", role);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 }
 

@@ -40,6 +40,8 @@ public class UserManageActivity extends AppCompatActivity {
 
     TextView search; //Search input for search by customer's name
 
+    double role;
+
 
     /**
      * Load list of customer to recycler view
@@ -97,6 +99,7 @@ public class UserManageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCustomerManage);
         email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
+        role = getIntent().getDoubleExtra("ROLE",0);
         search = findViewById(R.id.UserManageActivity_txtSearch); //Mapping search input to layout
 
         /*
@@ -130,10 +133,20 @@ public class UserManageActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 }

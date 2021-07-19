@@ -3,6 +3,7 @@ package com.example.buffetrestaurent.Controller.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,7 +61,7 @@ public class StaffProfile extends AppCompatActivity {
     Staff cus; //Object to store user data
     ImageView avt; //Avatar of user
     int intentID; //Get Intent ID
-    String role;
+    double role;
     Button uploadImage;
     Uri imageUri;
     Drawable oldimage;
@@ -99,7 +100,7 @@ public class StaffProfile extends AppCompatActivity {
         txtPhoneError = findViewById(R.id.staffInfor_txtPhone_error);
         ID = getIntent().getStringExtra("ID"); // Get ID of user from another activity
         email = getIntent().getStringExtra("USER_EMAIL"); //Get email of user from another activity
-        role = getIntent().getStringExtra("USER_ROLE");
+        role = getIntent().getDoubleExtra("ROLE",0);
         loadData(); //Load data of current user
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +140,7 @@ public class StaffProfile extends AppCompatActivity {
                 if(intentID == 1){
                     Intent intent = new Intent(this , StaffManageActivity.class );
                     intent.putExtra("USER_EMAIL", email);
-                    intent.putExtra("USER_ROLE", role);
+                    intent.putExtra("ROLE", role);
                     startActivity(intent);
                     this.finish();
                 }
@@ -149,7 +150,7 @@ public class StaffProfile extends AppCompatActivity {
                 else{
                     Intent intent = new Intent(this , HomePageStaff.class );
                     intent.putExtra("USER_EMAIL", email);
-                    intent.putExtra("USER_ROLE", role);
+                    intent.putExtra("ROLE", role);
                     startActivity(intent);
                     this.finish();
                 }
@@ -157,6 +158,30 @@ public class StaffProfile extends AppCompatActivity {
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        /*
+                Intent from Staff Manage Activity
+                 */
+        if(intentID == 1){
+            Intent intent = new Intent(this , StaffManageActivity.class );
+            intent.putExtra("USER_EMAIL", email);
+            intent.putExtra("ROLE", role);
+            startActivity(intent);
+            this.finish();
+        }
+                /*
+                Intent from Home Page Staff
+                 */
+        else{
+            Intent intent = new Intent(this , HomePageStaff.class );
+            intent.putExtra("USER_EMAIL", email);
+            intent.putExtra("ROLE", role);
+            startActivity(intent);
+            this.finish();
+        }
     }
 
 

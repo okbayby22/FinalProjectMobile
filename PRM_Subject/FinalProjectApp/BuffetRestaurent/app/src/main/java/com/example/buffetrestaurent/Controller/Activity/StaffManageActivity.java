@@ -49,7 +49,7 @@ public class StaffManageActivity extends AppCompatActivity {
 
     TextView search; //Search staff
 
-    String role;
+    double role;
 
     /**
      * Method use to load list of staff to recycler view
@@ -110,7 +110,7 @@ public class StaffManageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strStaffManage);
         email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
-        role = getIntent().getStringExtra("USER_ROLE");
+        role = getIntent().getDoubleExtra("ROLE",0);
         search = findViewById(R.id.StaffManageActivity_txtSearch); //Mapping search text input to layout
 
         /*
@@ -140,12 +140,21 @@ public class StaffManageActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", email);
-                intent.putExtra("USER_ROLE", role);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 
     /**

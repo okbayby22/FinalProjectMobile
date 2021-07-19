@@ -39,6 +39,7 @@ public class StaffManageFoodActivity extends AppCompatActivity {
     StaffManageFoodAdapter fAdapter;
     EditText txtSearch;
     FloatingActionButton btnAdd;
+    double staffRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class StaffManageFoodActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.strFoodManage);
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        staffRole = getIntent().getDoubleExtra("ROLE",0);
 
         listFood=new ArrayList<>();
 
@@ -122,15 +124,29 @@ public class StaffManageFoodActivity extends AppCompatActivity {
     }
 
     @Override
+    /*
+    Back button on supported bar
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", staffRole);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", staffRole);
+        startActivity(intent);
+        this.finish();
+    }
+
 }

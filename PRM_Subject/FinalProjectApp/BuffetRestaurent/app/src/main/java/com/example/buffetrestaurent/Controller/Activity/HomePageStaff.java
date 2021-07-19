@@ -32,6 +32,8 @@ public class HomePageStaff extends AppCompatActivity {
     DrawerLayout homepageDrawer;
     NavigationView homepageNavigationView;
     private long pressedTime;
+    double staffRole;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,19 @@ public class HomePageStaff extends AppCompatActivity {
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,homepageDrawer,homepageToolBar,R.string.strOpenMenu,R.string.strCloseMenu);
         homepageDrawer.addDrawerListener(toggle);
         toggle.syncState();
+
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        staffRole = getIntent().getDoubleExtra("ROLE",0);
+
+        homepageNavigationView.getMenu().clear();
+        if(staffRole==0){
+            homepageNavigationView.inflateMenu(R.menu.manager_menu);
+        }
+        else if(staffRole==1){
+            homepageNavigationView.inflateMenu(R.menu.staff_menu);
+        }
+
+
         homepageNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
@@ -56,7 +70,7 @@ public class HomePageStaff extends AppCompatActivity {
                     case R.id.staffmenu_btnprofile:
                         intent=new Intent(HomePageStaff.this, StaffProfile.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         intent.putExtra("INTENT",2);
                         startActivity(intent);
                         finish();
@@ -64,56 +78,56 @@ public class HomePageStaff extends AppCompatActivity {
                     case R.id.staffmenu_btnBalance:
                         intent=new Intent(HomePageStaff.this, AddBalanceActivity.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.staffmenu_btnMyDiscount:
                         intent=new Intent(HomePageStaff.this, StaffDiscountManagement.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.staffmenu_btnChangePass:
                         intent=new Intent(HomePageStaff.this, StaffChangePasswordActivity.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.staffmenu_btnMenu:
                         intent=new Intent(HomePageStaff.this, MenuMangeForStaff.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.staffmenu_btnStaffManage:
                         intent=new Intent(HomePageStaff.this, StaffManageActivity.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.staffmenu_btnConfirmReservation:
                         intent=new Intent(HomePageStaff.this, ConfirmReservation.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.staffmenu_btnManageFood:
                         intent=new Intent(HomePageStaff.this, StaffManageFoodActivity.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.staffmenu_btnCustomerManage:
                         intent=new Intent(HomePageStaff.this, UserManageActivity.class);
                         intent.putExtra("USER_EMAIL", userEmail);
-                        intent.putExtra("USER_ROLE", "staff");
+                        intent.putExtra("ROLE", staffRole);
                         startActivity(intent);
                         finish();
                         break;
