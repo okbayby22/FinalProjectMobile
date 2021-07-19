@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.ViewPageAdapter;
 import com.example.buffetrestaurent.R;
@@ -30,6 +31,7 @@ public class HomePageStaff extends AppCompatActivity {
     Toolbar homepageToolBar;
     DrawerLayout homepageDrawer;
     NavigationView homepageNavigationView;
+    private long pressedTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,5 +144,24 @@ public class HomePageStaff extends AppCompatActivity {
             }
         }).attach();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(homepageDrawer.isDrawerOpen(GravityCompat.START)){
+            homepageDrawer.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            if (pressedTime + 2000 > System.currentTimeMillis()) {
+                super.onBackPressed();
+                Intent intent=new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(getBaseContext(), "Press back again to sign out", Toast.LENGTH_SHORT).show();
+            }
+            pressedTime = System.currentTimeMillis();
+        }
     }
 }
