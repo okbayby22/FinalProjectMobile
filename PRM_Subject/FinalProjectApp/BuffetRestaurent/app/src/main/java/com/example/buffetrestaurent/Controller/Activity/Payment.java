@@ -228,12 +228,12 @@ public class Payment extends AppCompatActivity {
                 String getCode = txtcode.getText().toString();
                 checkDiscount = false;
                 for(int i =0;i<listDiscount.size();i++){
-                    if(listDiscount.get(i).getDiscountId().equals(getCode)){
+                    if(listDiscount.get(i).getDiscountId().equals(getCode)){//if code that user input match with code of discount
                         discoutString=getCode;
-                        discountprice = Double.valueOf(intentprice)*(Double.valueOf(listDiscount.get(i).getDiscountPercent())/100);
-                        displayDiscount.setText(vnd.format(discountprice) + " VND");
-                        payprice = intentprice - discountprice;
-                        finalprice.setText(vnd.format(payprice) + " VND");
+                        discountprice = Double.valueOf(intentprice)*(Double.valueOf(listDiscount.get(i).getDiscountPercent())/100);// update discount price
+                        displayDiscount.setText(vnd.format(discountprice) + " VND");//display discount price to screen
+                        payprice = intentprice - discountprice;//minus total price and discount price if has
+                        finalprice.setText(vnd.format(payprice) + " VND");//display total price after minus with discount if has
                         checkDiscount=true;
                         break;
                     }else{
