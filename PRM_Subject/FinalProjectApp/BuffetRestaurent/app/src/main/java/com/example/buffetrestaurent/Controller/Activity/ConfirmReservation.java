@@ -55,7 +55,6 @@ public class ConfirmReservation extends AppCompatActivity {
         listAll = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("reservations")
-                .whereEqualTo("reservationStatus", 0)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -76,28 +75,6 @@ public class ConfirmReservation extends AppCompatActivity {
                     }
                 });
     }
-
-//    private void readData(FireStoreCallBack fireStoreCallBack) {
-//
-//        colRef.whereEqualTo("reservationStatus",0).get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                System.out.println(">>>>>>>>>>>>> Toi day");
-//                                Reservation res = document.toObject(Reservation.class);
-//                                listAll.add(res);
-//                            }
-//                            fireStoreCallBack.onCallback(listAll);
-//                        } else {
-//                            Log.d("TAG", "Error getting documents: ", task.getException());
-//                        }
-//
-//                    }
-//                });
-//    }
-
 
     private interface FireStoreCallBack {
         void onCallback(ArrayList<Reservation> list);

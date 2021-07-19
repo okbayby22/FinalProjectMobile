@@ -69,7 +69,6 @@ public class Payment extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCheckout); //Set title for supported bar
 
-
         intentprice = Double.valueOf(getIntent().getIntExtra("PRICE", 0)); //get price from another activity
         discountprice = 0; //Initialize value for discount price
         email = getIntent().getStringExtra("USER_EMAIL"); //get email of user

@@ -42,6 +42,9 @@ public class CancelReservation extends AppCompatActivity {
 
     String email;
 
+    /**
+     * Load list of Reservation
+     */
     private void loadReservation() {
         email = getIntent().getStringExtra("USER_EMAIL");
         list = new ArrayList<>();

@@ -81,15 +81,24 @@ public class AddReservation extends AppCompatActivity {
         calendarView = findViewById(R.id.AddReservation_CalendarView); //Calendar view
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date curdate = Calendar.getInstance().getTime(); //Get current day
+        /*
+        Set Name Input is uneditable
+         */
         name.setFocusable(false);
         name.setFocusableInTouchMode(false);
         name.setClickable(false);
+        /*
+        Set Phone Input is uneditable
+         */
         phone.setFocusable(false);
         phone.setFocusableInTouchMode(false);
         phone.setClickable(false);
         date = sdf.format(curdate);
         email = getIntent().getStringExtra("USER_EMAIL");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get data and binding to edit text
+         */
         db.collection("customers")
                 .whereEqualTo("customerEmail", email)
                 .get()
@@ -142,6 +151,9 @@ public class AddReservation extends AppCompatActivity {
                     }).show();
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    /*
+                    Check balance of customer
+                     */
                     db.collection("customers")
                             .whereEqualTo("customerEmail", email)
                             .get()
@@ -161,17 +173,9 @@ public class AddReservation extends AppCompatActivity {
                                                         }
                                                     }).show();
                                         }else{
-                                            Map<String, Object> user = new HashMap<>();
-                                            user.put("reservationId", "");
-                                            user.put("reservationDate", date);
-                                            user.put("reservationTime", timepick.getText().toString());
-                                            user.put("reservationStatus", status);
-                                            user.put("numberTickets", numogticket);
-                                            user.put("reservationAmount", amount);
-                                            user.put("deskId", 0);
-                                            user.put("customerId", docID);
-                                            user.put("discountId", 1);
-                                            user.put("staffId", 1);
+                                            /*
+                                            Intent data to payment checkout
+                                             */
                                             Intent intent = new Intent(v.getContext(), Payment.class);
                                             intent.putExtra("USER_EMAIL", email);
                                             intent.putExtra("PRICE", numogticket*200000);
