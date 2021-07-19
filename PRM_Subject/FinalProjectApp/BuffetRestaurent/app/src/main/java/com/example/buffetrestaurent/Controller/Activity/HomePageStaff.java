@@ -51,10 +51,10 @@ public class HomePageStaff extends AppCompatActivity {
         toggle.syncState();
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
-        staffRole = getIntent().getDoubleExtra("ROLE",0);
+        staffRole = getIntent().getDoubleExtra("ROLE",1);
 
         homepageNavigationView.getMenu().clear();
-        if(staffRole==0){
+        if(staffRole==2){
             homepageNavigationView.inflateMenu(R.menu.manager_menu);
         }
         else if(staffRole==1){
