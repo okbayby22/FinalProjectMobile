@@ -32,20 +32,24 @@ import java.util.Map;
 public class CancelReservation extends AppCompatActivity {
 
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView; //Recyclerview store reservations list of current customer
 
-    ReservationAdapter reserAdap;
+    ReservationAdapter reserAdap; //Reservation adapter of recyclerview
 
-    public static ArrayList<Reservation> list;
+    public static ArrayList<Reservation> list; //List of reservation of current customer
 
-    int AllPosition;
+    String email; //Email of current user
 
-    String email;
-
+    /**
+     * Load list of Reservation
+     */
     private void loadReservation() {
         email = getIntent().getStringExtra("USER_EMAIL");
         list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get list reservations of current customer
+         */
         db.collection("customers")
                 .whereEqualTo("customerEmail", email)
                 .get()
@@ -67,6 +71,9 @@ public class CancelReservation extends AppCompatActivity {
                                                     res.setReservationId(document.getId());
                                                     list.add(res);
                                                 }
+                                                /*
+                                                Binding data to recyclerview
+                                                 */
                                                 reserAdap = new ReservationAdapter(list, CancelReservation.this); //Call LecturerAdapter to set data set and show data
                                                 LinearLayoutManager manager = new LinearLayoutManager(CancelReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
                                                 recyclerView.setAdapter(reserAdap);
@@ -83,12 +90,6 @@ public class CancelReservation extends AppCompatActivity {
 
     }
 
-    public void showData() {
-        reserAdap = new ReservationAdapter(list, CancelReservation.this); //Call LecturerAdapter to set data set and show data
-        LinearLayoutManager manager = new LinearLayoutManager(CancelReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
-        recyclerView.setAdapter(reserAdap);
-        recyclerView.setLayoutManager(manager);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,9 @@ public class CancelReservation extends AppCompatActivity {
         loadReservation(); //Call method to load Lecturer Information to list
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strViewRes);
+        /*
+        Swipe left to cancel reservation and refund balance to customer
+         */
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -107,17 +111,26 @@ public class CancelReservation extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 Reservation res = list.get(viewHolder.getAdapterPosition());
+                /*
+                Can not delete successful or cancelled reseravtion
+                 */
                 if (res.getReservationStatus() != 0) {
                     new AlertDialog.Builder(CancelReservation.this).setTitle("Delete Reservation Notice").setMessage("You can't delete this reservation").show();
                     reserAdap.notifyDataSetChanged();
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    /*
+                    Ask for delete reservation
+                     */
                     new AlertDialog.Builder(CancelReservation.this).setTitle("Delete Reservation Notice").setMessage("Confirm Cancel Reservation")
-                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() { //User press OK then cancel reservation and refund balance
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Map<String, Object> updateData = new HashMap<>();
                                     updateData.put("reservationStatus", 2);
+                                    /*
+                                    Set status of reservation to 2 (cancel)
+                                     */
                                     db.collection("reservations")
                                             .document(list.get(viewHolder.getAdapterPosition()).getReservationId())
                                             .update(updateData)
@@ -125,6 +138,9 @@ public class CancelReservation extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                     Reservation reservation = list.get(viewHolder.getAdapterPosition());
+                                                    /*
+                                                    Refund balance to customer
+                                                     */
                                                     db.collection("customers")
                                                             .whereEqualTo("customerEmail", email)
                                                             .get()
@@ -145,8 +161,11 @@ public class CancelReservation extends AppCompatActivity {
                                                                                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                                                         if (task.isSuccessful()) {
                                                                                             new AlertDialog.Builder(CancelReservation.this).setTitle("Refund Notice")
-                                                                                                    .setMessage("Cancel Reservation Successful, Your Balance Has Been Refund")
+                                                                                                    .setMessage("Cancel Reservation Successful, Your Balance Has Been Refund") //Annouce that balance has been refund to customer
                                                                                                     .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                                                                        /*
+                                                                                                        Update reservation list
+                                                                                                         */
                                                                                                         @Override
                                                                                                         public void onClick(DialogInterface dialog, int which) {
                                                                                                             res.setReservationStatus(2);
@@ -162,7 +181,7 @@ public class CancelReservation extends AppCompatActivity {
                                                 }
                                             });
                                 }
-                            }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() { //if user click cancel
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             reserAdap.notifyDataSetChanged();
@@ -175,6 +194,10 @@ public class CancelReservation extends AppCompatActivity {
 
     }
 
+    /**
+     * Method of button OnClick event
+     * @param item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

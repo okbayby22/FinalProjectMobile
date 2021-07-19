@@ -81,15 +81,24 @@ public class AddReservation extends AppCompatActivity {
         calendarView = findViewById(R.id.AddReservation_CalendarView); //Calendar view
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date curdate = Calendar.getInstance().getTime(); //Get current day
+        /*
+        Set Name Input is uneditable
+         */
         name.setFocusable(false);
         name.setFocusableInTouchMode(false);
         name.setClickable(false);
+        /*
+        Set Phone Input is uneditable
+         */
         phone.setFocusable(false);
         phone.setFocusableInTouchMode(false);
         phone.setClickable(false);
         date = sdf.format(curdate);
         email = getIntent().getStringExtra("USER_EMAIL");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get data and binding to edit text
+         */
         db.collection("customers")
                 .whereEqualTo("customerEmail", email)
                 .get()
@@ -121,20 +130,14 @@ public class AddReservation extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(">>>>>>>>>>>>>>> Start click");
-                int deskid = 0;
                 int numogticket = Integer.parseInt(tickets.getText().toString());
-                Double amount = new Double(numsOftickets * 200000);
-                int status = 0;
-                String time = timepick.getText().toString();
-                int cusid = 1;
-                int discountid = 1;
-                int staffid = 0;
                 /*
                 If Customer does not pick time
                  */
                 if (timepick.getText().toString().equals("Touch Here To Pick Time")) {
-                    new AlertDialog.Builder(AddReservation.this).setTitle("Pick Time").setMessage("Please pick a time").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(AddReservation.this).setTitle("Pick Time")
+                            .setMessage("Please pick a time")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -142,6 +145,9 @@ public class AddReservation extends AppCompatActivity {
                     }).show();
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    /*
+                    Check balance of customer
+                     */
                     db.collection("customers")
                             .whereEqualTo("customerEmail", email)
                             .get()
@@ -153,7 +159,8 @@ public class AddReservation extends AppCompatActivity {
                                         String docID = doc.getId();
                                         Customer cus = doc.toObject(Customer.class);
                                         if(cus.getCustomerBalance() < numogticket*200000){
-                                            new AlertDialog.Builder(AddReservation.this).setTitle("Add Reservation Notice").setMessage("You don't have enought balance")
+                                            new AlertDialog.Builder(AddReservation.this).setTitle("Add Reservation Notice")
+                                                    .setMessage("You don't have enought balance")
                                                     .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which) {
@@ -161,17 +168,9 @@ public class AddReservation extends AppCompatActivity {
                                                         }
                                                     }).show();
                                         }else{
-                                            Map<String, Object> user = new HashMap<>();
-                                            user.put("reservationId", "");
-                                            user.put("reservationDate", date);
-                                            user.put("reservationTime", timepick.getText().toString());
-                                            user.put("reservationStatus", status);
-                                            user.put("numberTickets", numogticket);
-                                            user.put("reservationAmount", amount);
-                                            user.put("deskId", 0);
-                                            user.put("customerId", docID);
-                                            user.put("discountId", 1);
-                                            user.put("staffId", 1);
+                                            /*
+                                            Intent data to payment checkout
+                                             */
                                             Intent intent = new Intent(v.getContext(), Payment.class);
                                             intent.putExtra("USER_EMAIL", email);
                                             intent.putExtra("PRICE", numogticket*200000);
@@ -189,6 +188,7 @@ public class AddReservation extends AppCompatActivity {
                 }
             }
         });
+
         /*
         Increase number of tickets
          */
@@ -200,6 +200,7 @@ public class AddReservation extends AppCompatActivity {
                 price.setText(vnd.format(numsOftickets * 200000) + " VND");
             }
         });
+
         /*
         Decrease number of tickets
          */
@@ -214,6 +215,7 @@ public class AddReservation extends AppCompatActivity {
                 price.setText(vnd.format(numsOftickets * 200000) + " VND");
             }
         });
+
         /*
         Append time picker dialog when click on textview
          */
@@ -236,6 +238,11 @@ public class AddReservation extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method of button OnClick event
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

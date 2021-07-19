@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.example.buffetrestaurent.Controller.Activity.HomePage;
 import com.example.buffetrestaurent.Controller.Activity.HomePageStaff;
+import com.example.buffetrestaurent.Controller.Activity.MainActivity;
+import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.CustomerService;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
@@ -154,17 +157,22 @@ public class signInFragment extends Fragment {
                                             btnSignIn.setAlpha((float) 1);
                                         } else {
                                             db.collection("staffs")
-                                                    .whereEqualTo("StaffEmail",txtEmail.getText().toString())
+                                                    .whereEqualTo("staffEmail",txtEmail.getText().toString())
                                                     .get()
                                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                             if (task.isSuccessful()) {
+                                                                double staffRole=0;
+                                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                    staffRole=document.getDouble("staffRole");
+                                                                }
                                                                 String userEmail = txtEmail.getText().toString();
                                                                 txtEmail.setText("");
                                                                 txtPass.setText("");
                                                                 Intent intent = new Intent(v.getContext(), HomePageStaff.class);
                                                                 intent.putExtra("USER_EMAIL", userEmail);
+                                                                intent.putExtra("ROLE", staffRole);
                                                                 startActivity(intent);
                                                                 btnSignIn.setClickable(true);
                                                                 btnSignIn.setAlpha((float) 1);

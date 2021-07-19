@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,24 +39,26 @@ import java.util.Map;
 
 public class ConfirmReservation extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView; //Recyclerview store list of reservations of all customer
 
-    ReservationAdapter reserAdap;
+    ReservationAdapter reserAdap; //Reservation adapter of recyclerview
 
-    public static ArrayList<Reservation> listAll;
+    public static ArrayList<Reservation> listAll; //List of reservations of all customers
 
+    String email; //Email of current user
 
-    CollectionReference colRef;
+    double role;
 
-    int AllPosition;
-
-    String email;
-
+    /**
+     * Load list of reservations
+     */
     private void loadReservation() {
         listAll = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get list reservations of all customers
+         */
         db.collection("reservations")
-                .whereEqualTo("reservationStatus", 0)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -64,8 +67,11 @@ public class ConfirmReservation extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Reservation res = document.toObject(Reservation.class);
                                 res.setReservationId(document.getId());
-                                listAll.add(res);
+                                listAll.add(res);//set data to arraylist
                             }
+                            /*
+                            Binding data to recyclerview
+                             */
                             reserAdap = new ReservationAdapter(listAll, ConfirmReservation.this); //Call LecturerAdapter to set data set and show data
                             LinearLayoutManager manager = new LinearLayoutManager(ConfirmReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
                             recyclerView.setAdapter(reserAdap);
@@ -77,57 +83,52 @@ public class ConfirmReservation extends AppCompatActivity {
                 });
     }
 
-//    private void readData(FireStoreCallBack fireStoreCallBack) {
-//
-//        colRef.whereEqualTo("reservationStatus",0).get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                System.out.println(">>>>>>>>>>>>> Toi day");
-//                                Reservation res = document.toObject(Reservation.class);
-//                                listAll.add(res);
-//                            }
-//                            fireStoreCallBack.onCallback(listAll);
-//                        } else {
-//                            Log.d("TAG", "Error getting documents: ", task.getException());
-//                        }
-//
-//                    }
-//                });
-//    }
-
-
-    private interface FireStoreCallBack {
-        void onCallback(ArrayList<Reservation> list);
-    }
-
-    public void showData() {
-        reserAdap = new ReservationAdapter(listAll, ConfirmReservation.this); //Call LecturerAdapter to set data set and show data
-        LinearLayoutManager manager = new LinearLayoutManager(ConfirmReservation.this); //Linear Layout Manager use to handling layout for each Lecturer
-        recyclerView.setAdapter(reserAdap);
-        recyclerView.setLayoutManager(manager);
-    }
-
+    /**
+     * Search reservation by customer name
+     * @param s
+     */
     private void filter(String s) {
+        ArrayList<Customer> cusList = new ArrayList<>();
         ArrayList<Reservation> newlist = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("customers")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Customer cus = document.toObject(Customer.class);
+                                cusList.add(cus);
+                            }
+                            for (Customer cus : cusList) {
+                                if (cus.getCustomerName().toLowerCase().contains(s)) {
+                                    for (Reservation item : listAll) {
+                                        if (String.valueOf(item.getCustomerId()).contains(cus.getCustomerId())) {
+                                            newlist.add(item);
+                                        }
+                                    }
+                                }
+                            }
+                            System.out.println(newlist.size());
+                            reserAdap.ArrayFilter(newlist);
+                        }
+                    }
+                });
 
-        for (Reservation item : listAll) {
-            if (String.valueOf(item.getCustomerId()).toLowerCase().contains(s.toLowerCase())) {
-                newlist.add(item);
-            }
-        }
-        System.out.println(newlist.size());
-        reserAdap.ArrayFilter(newlist);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_reservation);
-        EditText search = findViewById(R.id.ConfirmReservation_txtSearch);
-        email = getIntent().getStringExtra("USER_EMAIL");
+        EditText search = findViewById(R.id.ConfirmReservation_txtSearch); //Mapping search input to layout
+        email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
+        role = getIntent().getDoubleExtra("ROLE",0);
+        /*
+        Set event of search input when user input
+         */
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -136,20 +137,18 @@ public class ConfirmReservation extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                filter(s.toString()); //Set search list to recycler view
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                filter(s.toString());
             }
         });
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.ConfirmReservation_recycler); //Get the recycler View by ID
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>Here");
-        getSupportActionBar().hide();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Confirm Reservation");
         loadReservation();
-
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -159,20 +158,32 @@ public class ConfirmReservation extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 switch (direction) {
+                    /*
+                    Swipe Left to cancel reservation
+                     */
                     case ItemTouchHelper.LEFT:
                         Reservation res = listAll.get(viewHolder.getAdapterPosition());
+                        /*
+                        Can not delete Successful or cancelled reservation
+                         */
                         if (res.getReservationStatus() != 0) {
                             new AlertDialog.Builder(ConfirmReservation.this).setTitle("Cancel Reservation Notice")
                                     .setMessage("Can not cancel this reservation")
                                     .show();
                             reserAdap.notifyDataSetChanged();
                         } else {
+                            /*
+                            Ask for delete reservation
+                             */
                             new AlertDialog.Builder(ConfirmReservation.this)
                                     .setTitle("Cancel Reservation Notice")
                                     .setMessage("Do you want to cancel this reservation?")
                                     .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+                                            /*
+                                            Cancel reservation and add staff id to reservation
+                                             */
                                             db.collection("staffs")
                                                     .whereEqualTo("staffEmail", email)
                                                     .get()
@@ -192,6 +203,9 @@ public class ConfirmReservation extends AppCompatActivity {
                                                                             @Override
                                                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                                                 if (task.isSuccessful()) {
+                                                                                    /*
+                                                                                    Refund balance to customer
+                                                                                     */
                                                                                     db.collection("customers")
                                                                                             .whereEqualTo("customerId", res.getCustomerId())
                                                                                             .get()
@@ -233,7 +247,7 @@ public class ConfirmReservation extends AppCompatActivity {
                                                         }
                                                     });
                                         }
-                                    }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                    }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() { //User press cancel
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     reserAdap.notifyDataSetChanged();
@@ -241,20 +255,32 @@ public class ConfirmReservation extends AppCompatActivity {
                             }).show();
                         }
                         break;
+                        /*
+                        Swipe right to confirm reservation
+                         */
                     case ItemTouchHelper.RIGHT:
                         res = listAll.get(viewHolder.getAdapterPosition());
+                        /*
+                        Can not confirm successful or cancelled reservation
+                         */
                         if (res.getReservationStatus() != 0) {
                             new AlertDialog.Builder(ConfirmReservation.this).setTitle("Confirm Reservation Notice")
                                     .setMessage("Can not confirm this reservation")
                                     .show();
                             reserAdap.notifyDataSetChanged();
                         } else {
+                            /*
+                            Ask for confirm reservation
+                             */
                             new AlertDialog.Builder(ConfirmReservation.this)
                                     .setTitle("Confirm Reservation Notice")
                                     .setMessage("Do you want to Confirm this reservation?")
-                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() { //User press OK
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+                                            /*
+                                            Add staff ID to reservation
+                                             */
                                             db.collection("staffs")
                                                     .whereEqualTo("staffEmail", email)
                                                     .get()
@@ -287,7 +313,7 @@ public class ConfirmReservation extends AppCompatActivity {
                                                         }
                                                     });
                                         }
-                                    }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                    }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() { //User press Cancel
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     reserAdap.notifyDataSetChanged();
@@ -300,13 +326,16 @@ public class ConfirmReservation extends AppCompatActivity {
 
             }
         }).attachToRecyclerView(recyclerView);
-
-
     }
-    public void updatePointCustomer(String resId){
+
+    /**
+     * Update point after confirm reservation for customer
+     * @param resId
+     */
+    public void updatePointCustomer(String resId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("reservations")
-                .whereEqualTo("reservationId", resId)
+        db.collection("reservations")//connect to reservation table in database
+                .whereEqualTo("reservationId", resId)//get reservation by reservation id
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -314,8 +343,8 @@ public class ConfirmReservation extends AppCompatActivity {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                             Reservation res = doc.toObject(Reservation.class);
-                            db.collection("customers")
-                                    .whereEqualTo("customerId", res.getCustomerId())
+                            db.collection("customers")//connect to customers table in database
+                                    .whereEqualTo("customerId", res.getCustomerId())//get customer by reservation id
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -323,12 +352,12 @@ public class ConfirmReservation extends AppCompatActivity {
                                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
                                                 DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                                 Customer cus = doc.toObject(Customer.class);
-                                                int point = cus.getCustomerPoint() + (res.getNumberTickets()*20);
+                                                int point = cus.getCustomerPoint() + (res.getNumberTickets() * 20);
                                                 Map<String, Object> data = new HashMap<>();
-                                                data.put("customerPoint",point);
+                                                data.put("customerPoint",point);//put point to data
                                                 db.collection("customers")
                                                         .document(cus.getCustomerId())
-                                                        .update(data)
+                                                        .update(data)//update data to database
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
@@ -343,6 +372,29 @@ public class ConfirmReservation extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , HomePageStaff.class );
+                intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("ROLE", role);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 }
 

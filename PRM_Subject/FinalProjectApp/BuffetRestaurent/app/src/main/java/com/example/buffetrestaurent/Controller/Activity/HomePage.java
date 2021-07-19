@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.example.buffetrestaurent.Adapter.FoodTabAdapter;
@@ -30,6 +31,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     DrawerLayout homepageDrawer;
     NavigationView homepageNavigationView;
     Toolbar homepageToolBar;
+    private long pressedTime;
 
     String userEmail;
 
@@ -122,7 +124,15 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         }
         else
         {
-            super.onBackPressed();
+            if (pressedTime + 2000 > System.currentTimeMillis()) {
+                super.onBackPressed();
+                Intent intent=new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(getBaseContext(), "Press back again to sign out", Toast.LENGTH_SHORT).show();
+            }
+            pressedTime = System.currentTimeMillis();
         }
     }
 
@@ -135,8 +145,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.mainmenu_btnReserHis:
-                break;
             case R.id.mainmenu_btnMyDiscount:
                 intent=new Intent(this,CustomerDiscountHistoryActivity.class);
                 intent.putExtra("USER_EMAIL", userEmail);
@@ -147,6 +155,11 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.mainmenu_btnChangePass:
                 intent=new Intent(this, UserChangePassword.class);
                 intent.putExtra("USER_EMAIL", userEmail);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.mainmenu_btnSignOut:
+                intent=new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,9 +37,9 @@ import java.util.regex.Pattern;
 public class UserChangePassword extends AppCompatActivity {
 
     String staffEmail,userRole;
-    Staff staff;
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
+    Customer cus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,9 @@ public class UserChangePassword extends AppCompatActivity {
         userRole= getIntent().getStringExtra("USER_ROLE");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strChangePass);
+        /*
+        Mapping view to layout
+         */
         txtPassword = findViewById(R.id.changePassword_txtPassword);
         txtConfirmPass = findViewById(R.id.changePassword_txtConfirmPassword);
         txtPassError = findViewById(R.id.changePassword_txtPasswordError);
@@ -54,23 +58,30 @@ public class UserChangePassword extends AppCompatActivity {
         getStaff();
     }
 
+    /**
+     * Event of button on supported bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent;
-                if(userRole.equals("staff")){
-                    intent= new Intent(this , HomePageStaff.class );
-                }else{
-                    intent= new Intent(this , HomePage.class );
-                }
+                intent= new Intent(this , HomePage.class );
                 intent.putExtra("USER_EMAIL", staffEmail);
+                intent.putExtra("USER_ROLE", userRole);
                 startActivity(intent);
                 finish();
                 return true;
         }
         return true;
     }
+
+    /**
+     * Event of button to update
+     * @param view
+     */
     public void update_Click(View view) {
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
         Matcher matcher = pattern.matcher(txtPassword.getText().toString());
@@ -94,39 +105,52 @@ public class UserChangePassword extends AppCompatActivity {
             checkPassword();
             txtCPassError.setText("");
         }
-
-
+        Intent intent;
+        intent= new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", staffEmail);
+        startActivity(intent);
+        finish();
     }
+
+    /**
+     * Get current user information
+     */
     public void getStaff(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("staffs")
-                .whereEqualTo("staffEmail",staffEmail)
+        db.collection("customers")
+                .whereEqualTo("customerEmail",staffEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            staff = document.toObject(Staff.class);
+                            cus = document.toObject(Customer.class);
                         }
                     }
                 })
         ;
     }
+
+    /**
+     * Check new password duplicated with old password
+     */
     public void checkPassword(){
         String password = txtPassword.getText().toString();
-       if(staff.getStaffPassword().equals(md5(password))){
+       if(cus.getCustomerPassword().equals(md5(password))){
            txtPassError.setText("Password has been existed");
        }else{
            updateToDB();
        }
     }
 
-
+    /**
+     * Update data to database
+     */
     public void updateToDB(){
         Map<String, Object> data = new HashMap<>();
-        data.put("staffPassword", md5(txtPassword.getText().toString()));
+        data.put("customerPassword", md5(txtPassword.getText().toString()));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("staffs").document(staff.getStaffId())
+        db.collection("customers").document(cus.getCustomerId())
                 .update(data)
         .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -155,6 +179,11 @@ public class UserChangePassword extends AppCompatActivity {
                 });;
     }
 
+    /**
+     * MD5 hash
+     * @param pass User password
+     * @return MD5 hash string of user password
+     */
     private String md5(String pass) {
         try {
 

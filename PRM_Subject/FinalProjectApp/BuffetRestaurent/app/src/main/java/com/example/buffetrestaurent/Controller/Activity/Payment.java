@@ -69,7 +69,6 @@ public class Payment extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCheckout); //Set title for supported bar
 
-
         intentprice = Double.valueOf(getIntent().getIntExtra("PRICE", 0)); //get price from another activity
         discountprice = 0; //Initialize value for discount price
         email = getIntent().getStringExtra("USER_EMAIL"); //get email of user
@@ -107,6 +106,7 @@ public class Payment extends AppCompatActivity {
             }
         }
 
+        discoutString = txtcode.getText().toString();
 
         //Press Your discount to discount inventory to choose discount
         chooseDiscount.setOnClickListener(new View.OnClickListener() {
@@ -201,12 +201,12 @@ public class Payment extends AppCompatActivity {
                 String getCode = txtcode.getText().toString();
                 boolean check = false;
                 for(int i =0;i<listDiscount.size();i++){
-                    if(listDiscount.get(i).getDiscountId().equals(getCode)){
+                    if(listDiscount.get(i).getDiscountId().equals(getCode)){//if code that user input match with code of discount
                         discoutString=getCode;
-                        discountprice = Double.valueOf(intentprice)*(Double.valueOf(listDiscount.get(i).getDiscountPercent())/100);
-                        displayDiscount.setText(vnd.format(discountprice) + " VND");
-                        payprice = intentprice - discountprice;
-                        finalprice.setText(vnd.format(payprice) + " VND");
+                        discountprice = Double.valueOf(intentprice)*(Double.valueOf(listDiscount.get(i).getDiscountPercent())/100);// update discount price
+                        displayDiscount.setText(vnd.format(discountprice) + " VND");//display discount price to screen
+                        payprice = intentprice - discountprice;//minus total price and discount price if has
+                        finalprice.setText(vnd.format(payprice) + " VND");//display total price after minus with discount if has
                         check=true;
                         break;
                     }else{
@@ -216,10 +216,10 @@ public class Payment extends AppCompatActivity {
                 if(check==false){
                     discoutString="";
                     discountprice=0;
-                    displayDiscount.setText(vnd.format(discountprice) + " VND");
-                    wrongCode.setText("Code is not valid");
-                    payprice = intentprice - discountprice;
-                    finalprice.setText(vnd.format(payprice) + " VND");
+                    displayDiscount.setText(vnd.format(discountprice) + " VND");//display discount price to screen
+                    wrongCode.setText("Code is not valid");//display error if code is wrong
+                    payprice = intentprice - discountprice;//minus total price and discount price if has
+                    finalprice.setText(vnd.format(payprice) + " VND");//display total price after minus with discount if has
                 }else{
                     wrongCode.setText("");
                 }

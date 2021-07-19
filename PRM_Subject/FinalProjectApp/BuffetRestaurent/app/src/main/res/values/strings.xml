@@ -56,6 +56,14 @@
     <string name="strBalance">Add balance</string>
     <string name="strStaffManageMenu">Manage staff</string>
     <string name="strConfirmReservation">Confirm Reservation</string>
-    <string name="strCustomerManage">Customer Manage</string>
+    <string name="strCustomerManage">Customer Management</string>
     <string name="strCustomerProfile">Customer Profile</string>
+    <string name="strSignOut">Sign Out</string>
+    <string name="strFoodManage">Food Management</string>
+    <string name="strFoodType1">Food</string>
+    <string name="strFoodType2">Drink</string>
+    <string name="strFoodType3">Dessert</string>
+    <string name="strUpdateFood">Update food</string>
+    <string name="strAddFood">Add food</string>
+    <string name="strDiscountManage">Discount Management</string>
 </resources>

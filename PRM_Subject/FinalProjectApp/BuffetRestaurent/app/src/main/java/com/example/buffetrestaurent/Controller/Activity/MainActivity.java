@@ -2,9 +2,11 @@ package com.example.buffetrestaurent.Controller.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.buffetrestaurent.Adapter.PagerAdapter;
 import com.example.buffetrestaurent.R;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout mainTabLayout;
     ViewPager2 tabView;
     PagerAdapter pagerAdapter;
+    private long pressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).attach();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
     }
 
     private String md5(String pass) {

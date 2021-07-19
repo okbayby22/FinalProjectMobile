@@ -23,7 +23,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/UserManageActivity_recycler"
         android:layout_width="410dp"
-        android:layout_height="583dp"
+        android:layout_height="590dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="1dp"
