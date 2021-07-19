@@ -23,8 +23,6 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".Controller.Activity.UserManageActivity">
-        </activity>
         <activity android:name=".Controller.Activity.StaffManageActivity" />
         <activity android:name=".Controller.Activity.CustomerBuyDiscountActivity" />
         <activity android:name=".Controller.Activity.EditDiscountStaffManage" />
