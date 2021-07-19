@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +40,7 @@ public class UserChangePassword extends AppCompatActivity {
     Staff staff;
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
+    Customer cus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +61,7 @@ public class UserChangePassword extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent;
-                if(userRole.equals("staff")){
-                    intent= new Intent(this , HomePageStaff.class );
-                }else{
-                    intent= new Intent(this , HomePage.class );
-                }
+                intent= new Intent(this , HomePage.class );
                 intent.putExtra("USER_EMAIL", staffEmail);
                 startActivity(intent);
                 finish();
@@ -94,19 +92,22 @@ public class UserChangePassword extends AppCompatActivity {
             checkPassword();
             txtCPassError.setText("");
         }
-
-
+        Intent intent;
+        intent= new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", staffEmail);
+        startActivity(intent);
+        finish();
     }
     public void getStaff(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("staffs")
-                .whereEqualTo("staffEmail",staffEmail)
+        db.collection("customers")
+                .whereEqualTo("customerEmail",staffEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            staff = document.toObject(Staff.class);
+                            cus = document.toObject(Customer.class);
                         }
                     }
                 })
@@ -114,7 +115,7 @@ public class UserChangePassword extends AppCompatActivity {
     }
     public void checkPassword(){
         String password = txtPassword.getText().toString();
-       if(staff.getStaffPassword().equals(md5(password))){
+       if(cus.getCustomerPassword().equals(md5(password))){
            txtPassError.setText("Password has been existed");
        }else{
            updateToDB();
@@ -124,9 +125,9 @@ public class UserChangePassword extends AppCompatActivity {
 
     public void updateToDB(){
         Map<String, Object> data = new HashMap<>();
-        data.put("staffPassword", md5(txtPassword.getText().toString()));
+        data.put("customerPassword", md5(txtPassword.getText().toString()));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("staffs").document(staff.getStaffId())
+        db.collection("customers").document(cus.getCustomerId())
                 .update(data)
         .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

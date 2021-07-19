@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuffetRestaurent"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Controller.Activity.CustomerProfile"></activity>
+        <activity android:name=".Controller.Activity.StaffChangePasswordActivity"></activity>
+        <activity android:name=".Controller.Activity.CustomerProfile" />
         <activity android:name=".Controller.Activity.UserManageActivity" />
         <activity android:name=".Controller.Activity.MainActivity">
             <intent-filter>

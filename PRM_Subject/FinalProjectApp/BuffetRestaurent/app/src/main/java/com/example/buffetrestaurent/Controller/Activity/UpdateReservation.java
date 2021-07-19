@@ -173,16 +173,10 @@ public class UpdateReservation extends AppCompatActivity {
                                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                                         String docID = doc.getId();
                                         Map<String, Object> user = new HashMap<>();
-                                        user.put("reservationId", "");
                                         user.put("reservationDate", date);
                                         user.put("reservationTime", timepick.getText().toString());
                                         user.put("reservationStatus", status);
-                                        user.put("numberTickets", numogticket);
-                                        user.put("reservationAmount", amount);
-                                        user.put("deskId", "0");
-                                        user.put("customerId", docID);
-                                        user.put("discountId", "1");
-                                        user.put("staffId", "1");
+                                        user.put("discountId", "");
                                         db.collection("reservations")
                                                 .document(reservationId)
                                                 .update(user)
@@ -200,31 +194,6 @@ public class UpdateReservation extends AppCompatActivity {
                                 }
                             });
                 }
-            }
-        });
-        /*
-        Increase number of tickets
-         */
-        plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                numsOftickets += 1;
-                tickets.setText(numsOftickets + "");
-                price.setText(vnd.format(numsOftickets * 200000) + " VND");
-            }
-        });
-        /*
-        Decrease number of tickets
-         */
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                numsOftickets -= 1;
-                if (numsOftickets <= 0) {
-                    numsOftickets = 0;
-                }
-                tickets.setText(numsOftickets + "");
-                price.setText(vnd.format(numsOftickets * 200000) + " VND");
             }
         });
         /*

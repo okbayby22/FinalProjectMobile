@@ -152,7 +152,8 @@ public class StaffManageAdapter extends RecyclerView.Adapter<StaffManageAdapter.
             public void onClick(View v) {
                 Intent intent = new Intent(context, StaffProfile.class);
                 intent.putExtra("ID", list.get(position).getStaffId());
-                intent.putExtra("EMAIL", list.get(position).getStaffEmail());
+                intent.putExtra("USER_EMAIL", list.get(position).getStaffEmail());
+                intent.putExtra("INTENT",1);
                 context.startActivity(intent);
             }
         });

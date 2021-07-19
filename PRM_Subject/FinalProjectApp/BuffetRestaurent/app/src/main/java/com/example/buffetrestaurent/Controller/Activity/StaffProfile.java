@@ -44,6 +44,7 @@ public class StaffProfile extends AppCompatActivity {
     TextView txtNameError,txtPhoneError;
     Staff cus;
     ImageView avt;
+    int intentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +64,12 @@ public class StaffProfile extends AppCompatActivity {
         txtGender.setFocusable(false);
         txtGender.setFocusableInTouchMode(false);
         txtGender.setClickable(false);
+        intentID = getIntent().getIntExtra("INTENT",0);
         txtNameError = findViewById(R.id.staffInfor_txtName_error);
         txtPhoneError = findViewById(R.id.staffInfor_txtPhone_error);
         ID = getIntent().getStringExtra("ID");
-        email = getIntent().getStringExtra("EMAIL");
+        email = getIntent().getStringExtra("USER_EMAIL");
+        System.out.println(">>>>>>>>>>>>>>> "+email);
         loadData();
 
     }
@@ -75,10 +78,18 @@ public class StaffProfile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this , StaffManageActivity.class );
-                intent.putExtra("USER_EMAIL", email);
-                startActivity(intent);
-                this.finish();
+                if(intentID == 1){
+                    Intent intent = new Intent(this , StaffManageActivity.class );
+                    intent.putExtra("USER_EMAIL", email);
+                    startActivity(intent);
+                    this.finish();
+                }else{
+                    Intent intent = new Intent(this , HomePageStaff.class );
+                    intent.putExtra("USER_EMAIL", email);
+                    startActivity(intent);
+                    this.finish();
+                }
+
                 return true;
         }
         return true;
