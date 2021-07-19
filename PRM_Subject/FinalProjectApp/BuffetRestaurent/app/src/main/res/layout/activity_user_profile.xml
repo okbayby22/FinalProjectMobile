@@ -8,34 +8,54 @@
     android:background="@color/ThemeBackground"
     >
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="131dp"
-        android:layout_marginRight="131dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_account_circle_line"
-        tools:ignore="VectorDrawableCompat" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/userInfor_txtImage"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_account_circle_line"
+            app:strokeWidth="10dp"
+            app:strokeColor="@color/onPrimary"
+            app:shapeAppearanceOverlay="@style/roundedSquare"
+            tools:ignore="VectorDrawableCompat" />
+
+        <Button
+            android:id="@+id/userInfor_Imagebtn"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="97dp"
+            android:layout_marginEnd="79dp"
+            android:layout_marginBottom="4dp"
+            app:icon="@drawable/ic_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/userInfor_txtImage"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="479dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
         android:background="@drawable/border_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
 
         <TextView
             android:id="@+id/userInfor_txtPhone_error"
