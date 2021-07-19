@@ -33,39 +33,59 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class StaffDiscountManagement extends AppCompatActivity {
-    Button btnADD, btnBack;
+    //Button component
+    Button btnADD, btnList;
+    //Contain email of using user
     String userEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_discount_management);
         btnADD = findViewById(R.id.discountStaffManagement_ButtonAdd);
-        btnBack = findViewById(R.id.discountStaffManagement_ButtonBack);
+        btnList = findViewById(R.id.discountStaffManagement_ButtonBack);
+        //Get intent from sender
         userEmail= getIntent().getStringExtra("USER_EMAIL");
-
-        btnBack.setEnabled(false);
+        //Disable button list when it first start
+        btnList.setEnabled(false);
+        //set default is fragement that display list of discount
         replaceFragement(new discountStaffManagement());
+        //create event click fo add button
         btnADD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnBack.setEnabled(true);
+                //enable click list button to return list discount
+                btnList.setEnabled(true);
+                //disable button add
                 btnADD.setEnabled(false);
+                //call to fragment add discount
                 replaceFragement(new addDiscountStaffManagement(userEmail));
             }
         });
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        //create event of click on list button
+        btnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnBack.setEnabled(false);
+                //disable list button
+                btnList.setEnabled(false);
+                //enable add button
                 btnADD.setEnabled(true);
-                replaceFragement(new discountStaffManagement());
+                //call to fragment list discount
+                replaceFragement(new discountStaffManagement(userEmail));
             }
         });
     }
+
+    /**
+     * replace fragemnt
+     * @param fragment
+     */
     private void replaceFragement(Fragment fragment){
+        //Get support fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
+        //create fragment transaction
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.discountStaffManagement_Framelayout,fragment);
+        //Commit
         fragmentTransaction.commit();
     }
 
