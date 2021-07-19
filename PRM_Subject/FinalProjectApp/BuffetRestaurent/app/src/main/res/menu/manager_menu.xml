@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/staffmenu_btnprofile"
+            android:title="@string/strProfile"
+            android:icon="@drawable/profile_icon"
+            />
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/staffmenu_btnBalance"
+            android:title="@string/strBalance"
+            android:icon="@drawable/reservation_icon"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/staffmenu_btnMyDiscount"
+            android:title="@string/strDiscountManage"
+            android:icon="@drawable/discount_menu_icon"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/staffmenu_btnChangePass"
+            android:title="@string/strChangePass"
+            android:icon="@drawable/changepass_icon"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnMenu"
+            android:icon="@drawable/group"
+            android:title="@string/strMenuStaff" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnConfirmReservation"
+            android:icon="@drawable/reservation_icon"
+            android:title="@string/strConfirmReservation" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnManageFood"
+            android:icon="@drawable/reservation_icon"
+            android:title="@string/strFoodManage" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnStaffManage"
+            android:icon="@drawable/ic_menumanage_staff"
+            android:title="@string/strStaffManage" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnCustomerManage"
+            android:icon="@drawable/ic_menumanage_staff"
+            android:title="@string/strCustomerManage" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/staffmenu_btnSignOut"
+            android:icon="@drawable/ic_baseline_login_24"
+            android:title="@string/strSignOut" />
+    </group>
+</menu>

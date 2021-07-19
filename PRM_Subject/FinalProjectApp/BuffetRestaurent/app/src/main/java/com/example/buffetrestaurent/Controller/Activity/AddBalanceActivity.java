@@ -36,6 +36,7 @@ public class AddBalanceActivity extends AppCompatActivity {
     Button submit, add;
     TextView emailError, balanceError;
     String userEmail;
+    double staffRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,10 @@ public class AddBalanceActivity extends AppCompatActivity {
          */
         email = findViewById(R.id.AddBalance_txtEmail); //Input customer email
         email.setHint("Email");
+
         userEmail= getIntent().getStringExtra("USER_EMAIL"); //Get staff email
+        staffRole = getIntent().getDoubleExtra("ROLE",0);
+
         emailError = findViewById(R.id.AddBalance_txtEmail_Error); //Show email error or customer's balance
         balanceError = findViewById(R.id.AddBalance_txtAddBalance_Error); //Show balance Error or after add balance
         balance = findViewById(R.id.AddBalance_txtBalance); //Input balance
@@ -213,10 +217,20 @@ public class AddBalanceActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", staffRole);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", staffRole);
+        startActivity(intent);
+        this.finish();
     }
 }

@@ -7,32 +7,28 @@
             />
     </group>
     <group android:checkableBehavior="single">
+        <item android:id="@+id/staffmenu_btnChangePass"
+            android:title="@string/strChangePass"
+            android:icon="@drawable/changepass_icon"/>
+    </group>
+    <group android:checkableBehavior="single">
         <item android:id="@+id/staffmenu_btnBalance"
             android:title="@string/strBalance"
             android:icon="@drawable/reservation_icon"/>
     </group>
     <group android:checkableBehavior="single">
         <item android:id="@+id/staffmenu_btnMyDiscount"
-            android:title="@string/strDiscountHis"
+            android:title="@string/strDiscountManage"
             android:icon="@drawable/discount_menu_icon"/>
     </group>
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/staffmenu_btnChangePass"
-            android:title="@string/strChangePass"
-            android:icon="@drawable/changepass_icon"/>
-    </group>
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/staffmenu_btnMenu"
             android:icon="@drawable/group"
-            android:title="@string/strMenu" />
+            android:title="@string/strMenuStaff" />
     </group>
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/staffmenu_btnStaffManage"
-            android:icon="@drawable/ic_menumanage_staff"
-            android:title="@string/strStaffManage" />
-    </group>
+    <group android:checkableBehavior="single"/>
 
     <group android:checkableBehavior="single">
         <item
@@ -43,10 +39,12 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/staffmenu_btnCustomerManage"
-            android:icon="@drawable/ic_menumanage_staff"
-            android:title="@string/strCustomerManage" />
+            android:id="@+id/staffmenu_btnManageFood"
+            android:icon="@drawable/reservation_icon"
+            android:title="@string/strFoodManage" />
     </group>
+
+    <group android:checkableBehavior="single"/>
 
     <group android:checkableBehavior="single">
         <item

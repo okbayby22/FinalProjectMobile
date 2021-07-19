@@ -30,22 +30,29 @@ import java.util.ArrayList;
 public class UserManageActivity extends AppCompatActivity {
 
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView; //Recycler view to store list of customer
 
-    CustomerAdapter cusAdapt;
+    CustomerAdapter cusAdapt; //Customer adapter of recyclerview
 
-    public static ArrayList<Customer> list;
+    public static ArrayList<Customer> list; //List of customers
 
-    int AllPosition;
+    String email; //Email of current user
 
-    String email;
+    TextView search; //Search input for search by customer's name
 
-    TextView search;
+    double role;
 
+
+    /**
+     * Load list of customer to recycler view
+     */
     private void loadCustomer() {
         email = getIntent().getStringExtra("USER_EMAIL");
         list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get list of customer
+         */
         db.collection("customers")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -56,6 +63,9 @@ public class UserManageActivity extends AppCompatActivity {
                                 Customer cus = doc.toObject(Customer.class);
                                 list.add(cus);
                             }
+                            /*
+                            Biding data to recycler view
+                             */
                             cusAdapt = new CustomerAdapter(list, UserManageActivity.this); //Call LecturerAdapter to set data set and show data
                             LinearLayoutManager manager = new LinearLayoutManager(UserManageActivity.this); //Linear Layout Manager use to handling layout for each Lecturer
                             recyclerView.setAdapter(cusAdapt);
@@ -84,12 +94,17 @@ public class UserManageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_manage);
-        recyclerView = findViewById(R.id.UserManageActivity_recycler);
-        loadCustomer();
+        recyclerView = findViewById(R.id.UserManageActivity_recycler); //Mapping recyclerview to layout
+        loadCustomer(); //load list of customer
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCustomerManage);
-        email = getIntent().getStringExtra("USER_EMAIL");
-        search = findViewById(R.id.UserManageActivity_txtSearch);
+        email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
+        role = getIntent().getDoubleExtra("ROLE",0);
+        search = findViewById(R.id.UserManageActivity_txtSearch); //Mapping search input to layout
+
+        /*
+        Set event of search input when user input
+         */
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -103,21 +118,35 @@ public class UserManageActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                filter(search.getText().toString());
+                filter(search.getText().toString()); //Set search list to recycler view
             }
         });
     }
 
+    /**
+     * Event of Onclick for Button
+     * @param item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePageStaff.class );
                 intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePageStaff.class );
+        intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 }
