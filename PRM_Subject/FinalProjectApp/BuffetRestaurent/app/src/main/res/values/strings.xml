@@ -40,6 +40,7 @@
     <string name="strGender">Gender</string>
     <string name="strAddBalance">Add Balance</string>
     <string name="strDiscountStaffManagement">Discount Management</string>
+    <string name="strListDiscountStaffManagement">List Discount</string>
     <string name="strEditDiscountStaffManagement">Edit Discount Management</string>
     <string name="strAddDiscountStaffManagement">Add Discount</string>
     <string name="strHeaderDiscountName">Name</string>
@@ -58,4 +59,10 @@
     <string name="strCustomerManage">Customer Manage</string>
     <string name="strCustomerProfile">Customer Profile</string>
     <string name="strSignOut">Sign Out</string>
+    <string name="strFoodManage">Food Management</string>
+    <string name="strFoodType1">Food</string>
+    <string name="strFoodType2">Drink</string>
+    <string name="strFoodType3">Dessert</string>
+    <string name="strUpdateFood">Update food</string>
+    <string name="strAddFood">Add food</string>
 </resources>

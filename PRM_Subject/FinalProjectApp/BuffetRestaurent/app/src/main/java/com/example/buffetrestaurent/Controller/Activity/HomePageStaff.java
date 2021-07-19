@@ -101,6 +101,20 @@ public class HomePageStaff extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                         break;
+                    case R.id.staffmenu_btnManageFood:
+                        intent=new Intent(HomePageStaff.this, StaffManageFoodActivity.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case R.id.staffmenu_btnCustomerManage:
+                        intent=new Intent(HomePageStaff.this, UserManageActivity.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("USER_ROLE", "staff");
+                        startActivity(intent);
+                        finish();
+                        break;
                     case R.id.staffmenu_btnSignOut:
                         intent=new Intent(HomePageStaff.this, MainActivity.class);
                         startActivity(intent);

@@ -14,4 +14,5 @@
     <color name="orangePrimary">#FA4A0C</color>
     <color name="success">#23C633</color>
     <color name="failed">#FB0202</color>
+    <color name="borderOutline">#606060</color>
 </resources>
