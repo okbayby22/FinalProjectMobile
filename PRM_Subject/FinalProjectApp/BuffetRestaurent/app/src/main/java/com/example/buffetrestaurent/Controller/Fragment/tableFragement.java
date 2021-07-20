@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.buffetrestaurent.Adapter.DeskAdapter;
 import com.example.buffetrestaurent.Model.Desk;
 import com.example.buffetrestaurent.R;
 import com.example.buffetrestaurent.Utils.DeskService;
