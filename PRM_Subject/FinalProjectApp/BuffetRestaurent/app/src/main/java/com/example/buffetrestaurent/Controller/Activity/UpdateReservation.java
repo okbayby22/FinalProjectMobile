@@ -102,7 +102,7 @@ public class UpdateReservation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_reservation);
-        getSupportActionBar().hide();
+        getSupportActionBar().setTitle(R.string.strUpdateRes);
         timepick = findViewById(R.id.UpdateReservation_txtTimePick);           //Text to show time
         plus = findViewById(R.id.UpdateReservation_btnIncrease);               //Plus button to increase number of tickets
         minus = findViewById(R.id.UpdateReservation_btnDecrease);              //Minus button to increase number of tickets
@@ -134,7 +134,6 @@ public class UpdateReservation extends AppCompatActivity {
         });
         name.setHint("Enter your name");
         phone.setHint("Enter your phone number");
-
         /*
         Set Event on Click on Button Add
          */

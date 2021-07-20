@@ -81,7 +81,6 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         }
         return true;
     }
-
     /**
      * Override onBackPressed event
      */
@@ -125,11 +124,7 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
             checkPassword();
             txtCPassError.setText("");
         }
-        Intent intent;
-        intent= new Intent(this , HomePageStaff.class );
-        intent.putExtra("USER_EMAIL", staffEmail);
-        startActivity(intent);
-        finish();
+
     }
 
     /**
@@ -164,6 +159,12 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
             txtPassError.setText("Password has been existed");
         }else{
             updateToDB();
+            Intent intent;
+            intent= new Intent(this , HomePageStaff.class );
+            intent.putExtra("USER_EMAIL", staffEmail);
+            intent.putExtra("ROLE",staffRole);
+            startActivity(intent);
+            finish();
         }
     }
 
