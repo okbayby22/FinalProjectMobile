@@ -115,8 +115,6 @@ public class ConfirmReservation extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 
     @Override
