@@ -99,4 +99,16 @@ public class CustomerMenu extends AppCompatActivity {
         }
         return true;
     }
+
+
+    /**
+     * Event on click of back button
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        startActivity(intent);
+        this.finish();
+    }
 }

@@ -201,4 +201,14 @@ public class CustomerBuyDiscountActivity extends AppCompatActivity implements Bu
         }
         return true;
     }
+    /**
+     * Event of back button
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        startActivity(intent);
+        this.finish();
+    }
 }

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.R;
-import com.example.buffetrestaurent.Utils.CustomerService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
