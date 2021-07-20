@@ -125,7 +125,7 @@ public class CustomerProfile extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , UserManageActivity.class );
                 intent.putExtra("USER_EMAIL", email);
-                intent.putExtra("USER_ROLE", role);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
@@ -136,7 +136,7 @@ public class CustomerProfile extends AppCompatActivity {
     public void onClickAddStaff(View view){
         Intent intent = new Intent(this , UserManageActivity.class );
         intent.putExtra("USER_EMAIL", email);
-        intent.putExtra("USER_ROLE", role);
+        intent.putExtra("ROLE", role);
         startActivity(intent);
         this.finish();
     }

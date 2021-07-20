@@ -182,6 +182,7 @@ public class AddFoodActivity extends AppCompatActivity {
                                             .update(updateData);
                                     Intent intent = new Intent(AddFoodActivity.this, StaffManageFoodActivity.class);
                                     intent.putExtra("USER_EMAIL", userEmail);
+                                    intent.putExtra("ROLE", role);
                                     startActivity(intent);
                                     finish();
                                 } else {

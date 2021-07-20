@@ -57,6 +57,7 @@ public class UserProfile extends AppCompatActivity {
     Uri imageUri;
     Drawable oldimage;
     String getImageUri;
+    double role;
     //Button btnUpdate;
 
     @Override
@@ -86,6 +87,7 @@ public class UserProfile extends AppCompatActivity {
         btnuploadImage = findViewById(R.id.userInfor_Imagebtn);
         customerInfor =new Customer();
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        role = getIntent().getDoubleExtra("ROLE",0);
         loadData();
         btnuploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +123,7 @@ public class UserProfile extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , HomePage.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
