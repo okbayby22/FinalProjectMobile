@@ -7,8 +7,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.buffetrestaurent.Controller.Fragment.tableFragement;
-
 import org.jetbrains.annotations.NotNull;
 
 public class ViewPageAdapter extends FragmentStateAdapter {
