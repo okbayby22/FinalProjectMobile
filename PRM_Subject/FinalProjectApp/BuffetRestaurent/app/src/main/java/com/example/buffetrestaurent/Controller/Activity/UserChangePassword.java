@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 
 public class UserChangePassword extends AppCompatActivity {
 
-    String staffEmail,userRole;
+    String staffEmail;
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
     Customer cus;
@@ -44,8 +44,7 @@ public class UserChangePassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_change_password);
-        staffEmail= getIntent().getStringExtra("USER_EMAIL");
-        userRole= getIntent().getStringExtra("USER_ROLE");
+        staffEmail= getIntent().getStringExtra("USER_EMAIL"); //Get email of current user (Customer)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strChangePass);
         /*
@@ -70,7 +69,6 @@ public class UserChangePassword extends AppCompatActivity {
                 Intent intent;
                 intent= new Intent(this , HomePage.class );
                 intent.putExtra("USER_EMAIL", staffEmail);
-                intent.putExtra("USER_ROLE", userRole);
                 startActivity(intent);
                 finish();
                 return true;
@@ -79,11 +77,22 @@ public class UserChangePassword extends AppCompatActivity {
     }
 
     /**
+     * Event of back button
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", staffEmail);
+        startActivity(intent);
+        this.finish();
+    }
+
+    /**
      * Event of button to update
      * @param view
      */
     public void update_Click(View view) {
-        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
+        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$"); //pattern for strong password
         Matcher matcher = pattern.matcher(txtPassword.getText().toString());
         boolean check = true;
         if(txtPassword.getText().toString().isEmpty()){
@@ -105,11 +114,7 @@ public class UserChangePassword extends AppCompatActivity {
             checkPassword();
             txtCPassError.setText("");
         }
-        Intent intent;
-        intent= new Intent(this , HomePage.class );
-        intent.putExtra("USER_EMAIL", staffEmail);
-        startActivity(intent);
-        finish();
+
     }
 
     /**
@@ -140,6 +145,11 @@ public class UserChangePassword extends AppCompatActivity {
            txtPassError.setText("Password has been existed");
        }else{
            updateToDB();
+           Intent intent;
+           intent= new Intent(this , HomePage.class );
+           intent.putExtra("USER_EMAIL", staffEmail);
+           startActivity(intent);
+           finish();
        }
     }
 

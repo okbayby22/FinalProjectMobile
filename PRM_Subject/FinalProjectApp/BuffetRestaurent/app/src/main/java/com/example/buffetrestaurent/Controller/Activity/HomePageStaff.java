@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class HomePageStaff extends AppCompatActivity {
+
     //contain user name of signing user
     TextView userName;
     //contain user email of signing user

@@ -44,7 +44,6 @@ public class AddBalanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_balance);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strAddBalance);
-
         /*
         Mapping view with layout
          */
@@ -88,7 +87,7 @@ public class AddBalanceActivity extends AppCompatActivity {
                                     /*
                                     Enable balance input
                                      */
-                                    balance.setTextColor(Color.BLACK);
+                                    emailError.setTextColor(Color.BLACK);
                                     balance.setFocusable(true);
                                     balance.setFocusableInTouchMode(true);
                                     balance.setClickable(true);
@@ -107,13 +106,13 @@ public class AddBalanceActivity extends AppCompatActivity {
                                          */
                                         @Override
                                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                            if (!balance.getText().toString().equals("")) {
+                                            if (!balance.getText().toString().equals("")) { //If user didn't enter balance
                                                 add.setClickable(true);
                                                 add.setAlpha(1);
                                             }
-                                            if (balance.getText().toString().equals("")) {
+                                            if (balance.getText().toString().equals("")) {  //If user didn't enter balance
                                                 balanceError.setText("");
-                                            } else if (Integer.parseInt(balance.getText().toString()) < 1000) {
+                                            } else if (Integer.parseInt(balance.getText().toString()) < 1000 || Integer.parseInt(balance.getText().toString()) > 20000000) { //If user enter balance <1000
                                                 add.setClickable(false);
                                                 add.setAlpha((float) 0.3);
                                             } else {
@@ -208,10 +207,13 @@ public class AddBalanceActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    /*
-    Back button on supported bar
+
+    /**
+     * Envent on click of button on supported bar
+     * @param item
+     * @return
      */
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -225,6 +227,9 @@ public class AddBalanceActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Event on click of back button
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this , HomePageStaff.class );

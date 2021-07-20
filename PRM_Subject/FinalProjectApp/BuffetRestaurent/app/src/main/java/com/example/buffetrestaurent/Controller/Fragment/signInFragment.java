@@ -137,7 +137,6 @@ public class signInFragment extends Fragment {
                                         QuerySnapshot query = task.getResult();
                                         if (!query.isEmpty()) { // If account is exist intent to Customer Home page
                                             Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> Toi day");
                                             String userEmail = txtEmail.getText().toString();
                                             Intent intent = new Intent(v.getContext(), HomePage.class);
                                             intent.putExtra("USER_EMAIL", userEmail);
@@ -183,14 +182,6 @@ public class signInFragment extends Fragment {
                                                                     /*
                                                                     Set button can click when backend process is done
                                                                     */
-                                                                    btnSignIn.setClickable(true);
-                                                                    btnSignIn.setAlpha((float) 1);
-                                                                }
-                                                                else{
-                                                                    /*
-                                                                    Set button can click when backend process is done
-                                                                    */
-                                                                    txtError.setText("Email or password not correct !!!");
                                                                     btnSignIn.setClickable(true);
                                                                     btnSignIn.setAlpha((float) 1);
                                                                 }
