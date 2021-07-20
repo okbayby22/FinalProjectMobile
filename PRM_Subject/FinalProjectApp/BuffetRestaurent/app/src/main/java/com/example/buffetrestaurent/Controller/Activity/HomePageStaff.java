@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,8 @@ public class HomePageStaff extends AppCompatActivity {
     //count time of click title
     int countClick=1,countClick1=1,countClick2=1;
     String ID;
+    TextView txtStaffname;
+    ImageView avt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,9 @@ public class HomePageStaff extends AppCompatActivity {
         homepageNavigationView =findViewById(R.id.homepagestaff_navView);
         homepageToolBar = findViewById(R.id.Homepagestaff_toolbar);
         userName = findViewById(R.id.homepagestaff_nameStaff);
+        View headerView = homepageNavigationView.getHeaderView(0);
+        txtStaffname=headerView.findViewById(R.id.homepage_txtCusEmail);
+        avt=headerView.findViewById(R.id.homepage_customerAvatar);
         /*
         create action bar
          */
@@ -366,6 +372,9 @@ public class HomePageStaff extends AppCompatActivity {
                                 }
                                 //store user name and creating hello sentence
                                 userName.setText("Hello, "+staff.getStaffName());
+                                txtStaffname.setText("Staff: "+staff.getStaffName());
+                                txtStaffname.setTextSize(20);
+                                Picasso.get().load(staff.getStaffImage()).into(avt);
                             }
                         }
                     });

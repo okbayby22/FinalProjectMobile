@@ -162,6 +162,7 @@ public class UserProfile extends AppCompatActivity {
                                 txtPhone.setText(customerInfor.getCustomerPhone());
                                 txtEmail.setText(customerInfor.getCustomerEmail());
                                 userID = document.getId();
+                                getImageUri = customerInfor.getCustomerAvatar();
                                 GradientDrawable imgshape = new GradientDrawable();
                                 imgshape.setShape(GradientDrawable.OVAL);
                                 imgshape.setStroke(3, Color.BLACK);
