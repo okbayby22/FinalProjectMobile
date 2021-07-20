@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.R;
-import com.example.buffetrestaurent.Utils.CustomerService;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -125,6 +124,17 @@ public class UserProfile extends AppCompatActivity {
                 return true;
         }
         return true;
+    }
+
+    /**
+     * Event of back button
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        startActivity(intent);
+        this.finish();
     }
 
     /**

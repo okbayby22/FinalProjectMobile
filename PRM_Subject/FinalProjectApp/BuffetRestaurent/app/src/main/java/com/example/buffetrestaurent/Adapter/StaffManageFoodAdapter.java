@@ -50,7 +50,7 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
      * @param email
      * @param context
      */
-    public StaffManageFoodAdapter(ArrayList<Food> list, String email, Context context) {
+    public StaffManageFoodAdapter(ArrayList<Food> list, String email, Context context, double role) {
         this.list = list;
         this.context = context;
         this.email = email;

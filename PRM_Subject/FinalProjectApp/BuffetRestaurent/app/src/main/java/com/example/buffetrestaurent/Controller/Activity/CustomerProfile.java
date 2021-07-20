@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Staff;
 import com.example.buffetrestaurent.R;
-import com.example.buffetrestaurent.Utils.CustomerService;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -147,7 +146,7 @@ public class CustomerProfile extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , UserManageActivity.class );
                 intent.putExtra("USER_EMAIL", email);
-                intent.putExtra("USER_ROLE", role);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
@@ -167,7 +166,7 @@ public class CustomerProfile extends AppCompatActivity {
     public void onClickAddStaff(View view){
         Intent intent = new Intent(this , UserManageActivity.class );
         intent.putExtra("USER_EMAIL", email);
-        intent.putExtra("USER_ROLE", role);
+        intent.putExtra("ROLE", role);
         startActivity(intent);
         this.finish();
     }

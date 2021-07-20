@@ -327,4 +327,14 @@ public class Payment extends AppCompatActivity {
         }
         return true;
     }
+    /**
+     * Event of back button
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , AddReservation.class );
+        intent.putExtra("USER_EMAIL", email);
+        startActivity(intent);
+        this.finish();
+    }
 }
