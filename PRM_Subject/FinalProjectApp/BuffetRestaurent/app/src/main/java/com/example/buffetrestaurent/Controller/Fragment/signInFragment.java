@@ -148,11 +148,11 @@ public class signInFragment extends Fragment {
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         QuerySnapshot query = task.getResult();
                                         if (!query.isEmpty()) {
-                                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> Toi day");
                                             String userEmail = txtEmail.getText().toString();
                                             Intent intent = new Intent(v.getContext(), HomePage.class);
                                             intent.putExtra("USER_EMAIL", userEmail);
                                             startActivity(intent);
+                                            getActivity().finish();
                                             btnSignIn.setClickable(true);
                                             btnSignIn.setAlpha((float) 1);
                                         } else {
@@ -174,6 +174,7 @@ public class signInFragment extends Fragment {
                                                                 intent.putExtra("USER_EMAIL", userEmail);
                                                                 intent.putExtra("ROLE", staffRole);
                                                                 startActivity(intent);
+                                                                getActivity().finish();
                                                                 btnSignIn.setClickable(true);
                                                                 btnSignIn.setAlpha((float) 1);
                                                             } else {

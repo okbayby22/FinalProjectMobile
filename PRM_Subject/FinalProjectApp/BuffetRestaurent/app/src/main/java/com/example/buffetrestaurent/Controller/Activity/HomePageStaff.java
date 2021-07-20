@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 public class HomePageStaff extends AppCompatActivity {
     TabLayout homepagetabTabLayout;
     ViewPager2 homepageViewPager;
-    TextView userName;
     String userEmail;
     Toolbar homepageToolBar;
     DrawerLayout homepageDrawer;
@@ -40,7 +39,6 @@ public class HomePageStaff extends AppCompatActivity {
         setContentView(R.layout.activity_home_page_staff);
         homepagetabTabLayout = findViewById(R.id.tabLayout);
         homepageViewPager = findViewById(R.id.viewPage);
-        //userName = findViewById(R.id.userName);
         homepageDrawer=findViewById(R.id.homepagestaff_drawView);
         homepageNavigationView =findViewById(R.id.homepagestaff_navView);
         homepageToolBar = findViewById(R.id.Homepagestaff_toolbar);

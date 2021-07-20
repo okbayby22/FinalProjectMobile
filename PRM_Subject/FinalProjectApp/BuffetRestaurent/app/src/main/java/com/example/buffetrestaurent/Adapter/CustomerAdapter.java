@@ -52,6 +52,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull @NotNull CustomerAdapter.ViewHolder holder, int position) {
         Customer Staff = list.get(position);
+        Picasso.get().load(Staff.getCustomerAvatar()).into(holder.imageCus);
         if(Staff.getCustomerName().equals("")){
             holder.nameCus.setText("None");
         }else{
@@ -74,7 +75,6 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
             holder.statusCus.setTextColor(Color.WHITE);
             holder.statusCus.setText("DISABLE");
         }
-
         holder.statusCus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

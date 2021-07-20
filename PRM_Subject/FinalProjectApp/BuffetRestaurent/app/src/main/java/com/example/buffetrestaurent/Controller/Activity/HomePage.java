@@ -57,7 +57,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
         homepageNavigationView.setNavigationItemSelectedListener(this);
         homepageNavigationView.bringToFront();
-        //getSupportActionBar().hide();
 
         foodTabAdapter=new FoodTabAdapter(this);
         tabView.setAdapter(foodTabAdapter);

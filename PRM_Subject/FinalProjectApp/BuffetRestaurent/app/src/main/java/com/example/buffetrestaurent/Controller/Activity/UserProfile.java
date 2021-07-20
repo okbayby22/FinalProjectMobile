@@ -57,7 +57,6 @@ public class UserProfile extends AppCompatActivity {
     Uri imageUri;
     Drawable oldimage;
     String getImageUri;
-    //Button btnUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
