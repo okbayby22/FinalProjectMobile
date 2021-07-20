@@ -60,6 +60,7 @@ public class CustomerProfile extends AppCompatActivity {
     Uri imageUri;
     Drawable oldimage;
     String getImageUri;
+    double role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class CustomerProfile extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.strCustomerProfile);
         email = getIntent().getStringExtra("EMAIL");
         ID = getIntent().getStringExtra("ID");
+        role = getIntent().getDoubleExtra("ROLE",0);
         txtName = findViewById(R.id.CustomerProfile_txtName);
         txtEmail = findViewById(R.id.CustomerProfile_txtEmail);
         txtPhone = findViewById(R.id.CustomerProfile_txtPhone);
@@ -123,11 +125,20 @@ public class CustomerProfile extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , UserManageActivity.class );
                 intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("USER_ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    public void onClickAddStaff(View view){
+        Intent intent = new Intent(this , UserManageActivity.class );
+        intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("USER_ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 
     public void openFileChoose(){

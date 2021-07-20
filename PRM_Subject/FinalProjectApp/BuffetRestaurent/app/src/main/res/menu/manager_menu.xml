@@ -38,7 +38,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/staffmenu_btnManageFood"
-            android:icon="@drawable/reservation_icon"
+            android:icon="@drawable/ic_food"
             android:title="@string/strFoodManage" />
     </group>
 

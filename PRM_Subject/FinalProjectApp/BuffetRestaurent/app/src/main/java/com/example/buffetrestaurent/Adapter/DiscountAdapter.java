@@ -38,10 +38,13 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.MyView
     //Contain UserEmail of staff is using app
     String userEmail;
     //Constructor of adapter
-    public DiscountAdapter(Context context,ArrayList<Discount> discountList,String userEmail){
+    double role;
+
+    public DiscountAdapter(Context context,ArrayList<Discount> discountList,String userEmail,double role){
         this.context = context;
         this.discountList = discountList;
         this.userEmail = userEmail;
+        this.role=role;
     }
     @NonNull
     @NotNull
@@ -97,6 +100,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.MyView
                            Intent intent=new Intent(view.getContext(), EditDiscountStaffManage.class);
                            //Send ID of discount
                            intent.putExtra("Discount_ID", discount.getDiscountId());
+                           intent.putExtra("ROLE", role);
                            //Send user email
                            intent.putExtra("USER_EMAIL", userEmail);
                            view.getContext().startActivity(intent);

@@ -55,7 +55,7 @@ public class StaffDiscountManagement extends AppCompatActivity {
         //Disable button list when it first start
         btnList.setEnabled(false);
         //set default is fragement that display list of discount
-        replaceFragement(new discountStaffManagement());
+        replaceFragement(new discountStaffManagement(userEmail,staffRole));
         //create event click fo add button
         btnADD.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +77,7 @@ public class StaffDiscountManagement extends AppCompatActivity {
                 //enable add button
                 btnADD.setEnabled(true);
                 //call to fragment list discount
-                replaceFragement(new discountStaffManagement(userEmail));
+                replaceFragement(new discountStaffManagement(userEmail,staffRole));
             }
         });
     }

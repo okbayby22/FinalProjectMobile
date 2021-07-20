@@ -38,6 +38,8 @@ public class AddMenuActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     String date,menuID;
     Button addtoMenu;
+    double role;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,8 @@ public class AddMenuActivity extends AppCompatActivity {
         addtoMenu =findViewById(R.id.addmenu_button);
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         date= getIntent().getStringExtra("SELECTED_DATE");
+        role = getIntent().getDoubleExtra("ROLE",0);
+
         listFood=new ArrayList<>();
         loadData();
         loadMenuID();
@@ -143,6 +147,7 @@ public class AddMenuActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , MenuMangeForStaff.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
@@ -154,6 +159,7 @@ public class AddMenuActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(this , MenuMangeForStaff.class );
         intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", role);
         startActivity(intent);
         this.finish();
     }
@@ -172,6 +178,7 @@ public class AddMenuActivity extends AppCompatActivity {
         }
         Intent intent=new Intent(this, MenuMangeForStaff.class);
         intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", role);
         startActivity(intent);
         finish();
     }

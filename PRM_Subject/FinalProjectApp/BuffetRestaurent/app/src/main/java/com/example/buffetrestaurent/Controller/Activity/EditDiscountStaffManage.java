@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,10 +48,15 @@ public class EditDiscountStaffManage extends AppCompatActivity {
     String userEmail;
     //Contain staff ID has been achieved from user email
     String staffID;
+
+    double role;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_discount_staff_manage);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.strUpdateDiscount);
         //Find ID for component
         edtDiscountName = findViewById(R.id.editdiscount_edtName);
         edtDiscountPoint = findViewById(R.id.editdiscount_edtPoint);
@@ -64,6 +70,7 @@ public class EditDiscountStaffManage extends AppCompatActivity {
         //Get intent from sender
         discountID = getIntent().getStringExtra("Discount_ID");
         userEmail = getIntent().getStringExtra("USER_EMAIL");
+        role = getIntent().getDoubleExtra("ROLE",0);
         //Create object for discountName arraylist
         discountName = new ArrayList<>();
         //Load all discount and set value for component
@@ -79,6 +86,7 @@ public class EditDiscountStaffManage extends AppCompatActivity {
                 //Start Intent to StaffDiscount managemnet
                 Intent intent=new Intent(v.getContext(), StaffDiscountManagement.class);
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 finish();
             }
@@ -218,6 +226,7 @@ public class EditDiscountStaffManage extends AppCompatActivity {
                 .update(discountObject);
         Intent intent=new Intent(this, StaffDiscountManagement.class);
         intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", role);
         startActivity(intent);
     }
 
@@ -242,5 +251,31 @@ public class EditDiscountStaffManage extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    /*
+    Back button on supported bar
+     */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , StaffDiscountManagement.class );
+                intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", role);
+                startActivity(intent);
+                this.finish();
+                return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , StaffDiscountManagement.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 }
