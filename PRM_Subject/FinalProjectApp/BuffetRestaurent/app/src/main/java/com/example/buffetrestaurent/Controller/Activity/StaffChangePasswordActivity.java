@@ -35,12 +35,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StaffChangePasswordActivity extends AppCompatActivity {
-
+    //Contain email of staff
     String staffEmail,userRole;
+    //Contain staff object
     Staff staff;
+    //View of password and confirm password
     TextView txtPassword,txtConfirmPass;
+    //Error text view
     TextView txtPassError,txtCPassError;
-    Customer cus;
+    //Contain staff role
     double staffRole;
 
 
@@ -78,9 +81,12 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    /**
+     * Override onBackPressed event
+     */
     @Override
     public void onBackPressed() {
+        //Start invent to homepage staff
         Intent intent = new Intent(this , HomePageStaff.class );
         intent.putExtra("USER_EMAIL", staffEmail);
         intent.putExtra("ROLE", staffRole);
@@ -88,9 +94,16 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         this.finish();
     }
 
+    /**
+     * event for click update button
+     * @param view
+     */
     public void update_Click_Staff(View view) {
+        //Regex for strong password
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
+        //check regex
         Matcher matcher = pattern.matcher(txtPassword.getText().toString());
+        //control condition to finish update password
         boolean check = true;
         if(txtPassword.getText().toString().isEmpty()){
             txtPassError.setText("Password can not empty !!!");
@@ -111,11 +124,7 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
             checkPassword();
             txtCPassError.setText("");
         }
-        Intent intent;
-        intent= new Intent(this , HomePageStaff.class );
-        intent.putExtra("USER_EMAIL", staffEmail);
-        startActivity(intent);
-        finish();
+
     }
 
     /**
@@ -150,6 +159,12 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
             txtPassError.setText("Password has been existed");
         }else{
             updateToDB();
+            Intent intent;
+            intent= new Intent(this , HomePageStaff.class );
+            intent.putExtra("USER_EMAIL", staffEmail);
+            intent.putExtra("ROLE",staffRole);
+            startActivity(intent);
+            finish();
         }
     }
 

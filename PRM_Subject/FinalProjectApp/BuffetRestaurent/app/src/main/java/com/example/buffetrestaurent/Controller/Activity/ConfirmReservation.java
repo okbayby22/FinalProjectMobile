@@ -372,6 +372,11 @@ public class ConfirmReservation extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Event onclick of button on supported bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

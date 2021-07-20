@@ -67,4 +67,5 @@
     <string name="strAddFood">Add food</string>
     <string name="strUpdateDiscount">Update Discount</string>
     <string name="strDiscountManage">Discount Management</string>
+    <string name="strUpdateRes">Update Reservation</string>
 </resources>

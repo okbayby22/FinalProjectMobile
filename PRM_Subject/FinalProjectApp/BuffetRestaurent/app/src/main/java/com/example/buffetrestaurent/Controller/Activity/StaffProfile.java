@@ -185,9 +185,8 @@ public class StaffProfile extends AppCompatActivity {
     }
 
 
-
-    /*
-    Load data of current user
+    /**
+     * Load data of current user
      */
     public void loadData(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();

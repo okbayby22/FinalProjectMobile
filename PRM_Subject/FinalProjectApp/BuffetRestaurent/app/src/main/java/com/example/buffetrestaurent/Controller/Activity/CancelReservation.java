@@ -210,4 +210,14 @@ public class CancelReservation extends AppCompatActivity {
         }
         return true;
     }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", email);
+        startActivity(intent);
+        this.finish();
+    }
+
 }

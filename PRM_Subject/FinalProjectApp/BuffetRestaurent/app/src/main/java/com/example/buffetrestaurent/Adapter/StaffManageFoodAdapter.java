@@ -36,12 +36,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFoodAdapter.ViewHolder>{
+    //store list of food from database
     private ArrayList<Food> list;
+    //store context from activity
     private Context context;
+    //store email of user
     String email;
     double role;
 
-    public StaffManageFoodAdapter(ArrayList<Food> list, String email, Context context,double role) {
+    /**
+     * contructor of adapter
+     * @param list
+     * @param email
+     * @param context
+     */
+    public StaffManageFoodAdapter(ArrayList<Food> list, String email, Context context, double role) {
         this.list = list;
         this.context = context;
         this.email = email;
@@ -52,16 +61,22 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
     @NotNull
     @Override
     public StaffManageFoodAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        //inflate view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.staff_menu_item_layout, parent, false);
         return new StaffManageFoodAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull StaffManageFoodAdapter.ViewHolder holder, int position) {
+        //get food from list base on position
         Food food = list.get(position);
+        //set name of food
         holder.foodName.setText(food.getFoodName());
+        //set image of food
         Picasso.get().load(food.getFoodImage()).into(holder.foodImage);
-
+        /*
+        Delete food event
+         */
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +86,9 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                               //notify to user
                                 Toast.makeText(v.getContext(), "Delete Successful", Toast.LENGTH_SHORT).show();
+                                //Remove food
                                 list.remove(position);
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, list.size());
@@ -87,10 +104,13 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
             }
         });
 
-
+        /*
+        event for click item
+         */
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Start intent to UpdateFoodAcivity
                 Intent intent = new Intent(context, UpdateFoodActivity.class);
                 intent.putExtra("ID", list.get(position).getFoodId());
                 intent.putExtra("USER_EMAIL", email);
@@ -110,14 +130,22 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
         notifyDataSetChanged();
     }
 
-
+    /**
+     * Customer class ViewHolder
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
+        /*
+        Component of ViewHolder
+         */
         public ImageView foodImage;
         public TextView foodName;
         public Button btnDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            /*
+            Find view by ID for all component in need
+             */
             foodImage = itemView.findViewById(R.id.staff_menu_item_image);
             foodName = itemView.findViewById(R.id.staff_menu_item_text);
             btnDelete = itemView.findViewById(R.id.staff_menu_item_btnDelete);

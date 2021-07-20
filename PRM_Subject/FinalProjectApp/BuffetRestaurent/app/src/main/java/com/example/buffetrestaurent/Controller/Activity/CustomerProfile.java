@@ -51,12 +51,13 @@ import java.util.regex.Pattern;
 public class CustomerProfile extends AppCompatActivity {
 
 
-    String email,ID;
+    String email,ID; //Current user email and ID
     Customer cus;
-    EditText txtName,txtEmail,txtPhone,txtAddress;
-    TextView txtNameError,txtPhoneError;
-    ImageView avt;
-    Button uploadImage;
+
+    EditText txtName,txtEmail,txtPhone,txtAddress; //Input text of customer Name, email, phone and address
+    TextView txtNameError,txtPhoneError; //Show error of name and phone input
+    ImageView avt; //avt of customer
+    Button uploadImage; //Button to choose image
     Uri imageUri;
     Drawable oldimage;
     String getImageUri;
@@ -68,8 +69,11 @@ public class CustomerProfile extends AppCompatActivity {
         setContentView(R.layout.activity_customer_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCustomerProfile);
-        email = getIntent().getStringExtra("EMAIL");
-        ID = getIntent().getStringExtra("ID");
+        email = getIntent().getStringExtra("EMAIL"); //Get email of current user
+        ID = getIntent().getStringExtra("ID"); //Get id of customer
+        /*
+        Mapping view to layout
+         */
         role = getIntent().getDoubleExtra("ROLE",0);
         txtName = findViewById(R.id.CustomerProfile_txtName);
         txtEmail = findViewById(R.id.CustomerProfile_txtEmail);
@@ -79,11 +83,14 @@ public class CustomerProfile extends AppCompatActivity {
         txtPhoneError = findViewById(R.id.CustomerProfile_txtPhone_error);
         avt = findViewById(R.id.CustomerProfile_imgAVT);
         uploadImage = findViewById(R.id.CustomerProfile_imgAVTbtn);
+        /*
+        Customer can not change their email
+         */
         txtEmail.setFocusable(false);
         txtEmail.setFocusableInTouchMode(false);
         txtEmail.setClickable(false);
         txtEmail.setAlpha((float) 0.3);
-        loadData();
+        loadData(); //Load customer profile
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,8 +99,15 @@ public class CustomerProfile extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Load customer profile
+     */
     public void loadData(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        /*
+        Get user data with email from datababase
+         */
         db.collection("customers")
                 .whereEqualTo("customerEmail",email)
                 .get()
@@ -103,6 +117,9 @@ public class CustomerProfile extends AppCompatActivity {
                         if(task.isSuccessful() && !task.getResult().isEmpty()){
                             DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                             cus = doc.toObject(Customer.class);
+                            /*
+                            Binding data to view
+                             */
                             txtName.setText(cus.getCustomerName());
                             txtEmail.setText(email);
                             txtPhone.setText(cus.getCustomerPhone());
@@ -119,6 +136,11 @@ public class CustomerProfile extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Event onclick of button on supported bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -132,6 +154,15 @@ public class CustomerProfile extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , UserManageActivity.class );
+        intent.putExtra("USER_EMAIL", email);
+        startActivity(intent);
+        this.finish();
+    }
+
 
     public void onClickAddStaff(View view){
         Intent intent = new Intent(this , UserManageActivity.class );
@@ -195,6 +226,9 @@ public class CustomerProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Update data to database
+     */
     private void updateToDB() {
         Map<String, Object> data = new HashMap<>();
         data.put("customerName", txtName.getText().toString());

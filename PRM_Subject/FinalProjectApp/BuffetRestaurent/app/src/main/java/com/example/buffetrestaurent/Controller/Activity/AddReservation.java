@@ -255,4 +255,16 @@ public class AddReservation extends AppCompatActivity {
         }
         return true;
     }
+
+
+    /**
+     * Event on click of back button
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , HomePage.class );
+        intent.putExtra("USER_EMAIL", email);
+        startActivity(intent);
+        this.finish();
+    }
 }
