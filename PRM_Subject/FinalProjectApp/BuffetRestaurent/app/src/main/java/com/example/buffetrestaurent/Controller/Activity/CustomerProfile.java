@@ -68,7 +68,7 @@ public class CustomerProfile extends AppCompatActivity {
         setContentView(R.layout.activity_customer_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCustomerProfile);
-        email = getIntent().getStringExtra("EMAIL"); //Get email of current user
+        email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
         ID = getIntent().getStringExtra("ID"); //Get id of customer
         /*
         Mapping view to layout
@@ -108,7 +108,7 @@ public class CustomerProfile extends AppCompatActivity {
         Get user data with email from datababase
          */
         db.collection("customers")
-                .whereEqualTo("customerEmail",email)
+                .whereEqualTo("customerId",ID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -120,9 +120,10 @@ public class CustomerProfile extends AppCompatActivity {
                             Binding data to view
                              */
                             txtName.setText(cus.getCustomerName());
-                            txtEmail.setText(email);
+                            txtEmail.setText(cus.getCustomerEmail());
                             txtPhone.setText(cus.getCustomerPhone());
                             txtAddress.setText(cus.getCustomerAddress());
+                            getImageUri= cus.getCustomerAvatar();
                             GradientDrawable imgshape = new GradientDrawable();
                             imgshape.setShape(GradientDrawable.OVAL);
                             imgshape.setStroke(3, Color.BLACK);
@@ -158,6 +159,7 @@ public class CustomerProfile extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(this , UserManageActivity.class );
         intent.putExtra("USER_EMAIL", email);
+        intent.putExtra("ROLE", role);
         startActivity(intent);
         this.finish();
     }

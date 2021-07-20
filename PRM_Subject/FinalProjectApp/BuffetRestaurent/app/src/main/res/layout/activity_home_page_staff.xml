@@ -9,6 +9,7 @@
     tools:context=".Controller.Activity.MainActivity"
     android:id="@+id/homepagestaff_drawView">
     <com.google.android.material.navigation.NavigationView
+        app:headerLayout="@layout/cushomepage_nav_header"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/homepagestaff_navView"

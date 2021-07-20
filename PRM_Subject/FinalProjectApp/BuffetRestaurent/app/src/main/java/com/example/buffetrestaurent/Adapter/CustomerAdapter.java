@@ -37,10 +37,13 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
     private Context context;
     double role;
 
-    public CustomerAdapter(ArrayList<Customer> list, Context context,double role) {
+    String email;
+
+    public CustomerAdapter(ArrayList<Customer> list, Context context,double role,String email) {
         this.list = list;
         this.context = context;
         this.role=role;
+        this.email=email;
     }
 
     @NonNull
@@ -82,15 +85,15 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
             public void onClick(View v) {
 
                     if (Staff.getCustomerStatus() == 1) {
-                        new AlertDialog.Builder(context).setTitle("Disable Staff Notice").setMessage("Confirm Disable This Staff")
+                        new AlertDialog.Builder(context).setTitle("Disable Customer Notice").setMessage("Confirm Disable This Customer")
                                 .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         Customer staff = list.get(position);
                                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                                         Map<String, Object> updateData = new HashMap<>();
-                                        updateData.put("staffStatus", 0);
-                                        db.collection("staffs")
+                                        updateData.put("customerStatus", 0);
+                                        db.collection("customers")
                                                 .document(list.get(position).getCustomerId())
                                                 .update(updateData)
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -108,15 +111,15 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
                             }
                         }).show();
                     } else if (Staff.getCustomerStatus() == 0) {
-                        new AlertDialog.Builder(context).setTitle("Enable Staff Notice").setMessage("Confirm Enable This Staff")
+                        new AlertDialog.Builder(context).setTitle("Enable Customer Notice").setMessage("Confirm Enable This Customer")
                                 .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         Customer staff = list.get(position);
                                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                                         Map<String, Object> updateData = new HashMap<>();
-                                        updateData.put("staffStatus", 1);
-                                        db.collection("staffs")
+                                        updateData.put("customerStatus", 1);
+                                        db.collection("customers")
                                                 .document(list.get(position).getCustomerId())
                                                 .update(updateData)
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -144,7 +147,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(context, CustomerProfile.class);
                 intent.putExtra("ID", list.get(position).getCustomerId());
-                intent.putExtra("EMAIL", list.get(position).getCustomerEmail());
+                intent.putExtra("USER_EMAIL", email);
                 intent.putExtra("ROLE", role);
                 context.startActivity(intent);
             }

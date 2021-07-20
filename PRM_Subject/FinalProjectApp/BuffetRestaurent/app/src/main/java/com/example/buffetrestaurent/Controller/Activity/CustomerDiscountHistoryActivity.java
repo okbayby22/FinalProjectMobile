@@ -109,6 +109,7 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("discount")
                 .whereEqualTo("discountId", discountId)
+                .whereEqualTo("discountStatus", 1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

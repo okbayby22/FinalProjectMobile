@@ -46,6 +46,7 @@ public class addDiscountStaffManagement extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    double role;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -53,9 +54,10 @@ public class addDiscountStaffManagement extends Fragment {
     String userEmail;
 
 
-    public addDiscountStaffManagement(String userEmail) {
+    public addDiscountStaffManagement(String userEmail,double role) {
         // Required empty public constructor
         this.userEmail =userEmail;
+        this.role=role;
     }
     public addDiscountStaffManagement() {
         // Required empty public constructor
@@ -122,7 +124,9 @@ public class addDiscountStaffManagement extends Fragment {
                 //Start activity staff discount Management
                 Intent intent=new Intent(v.getContext(), StaffDiscountManagement.class);
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         //Create event click for button Submit
@@ -228,8 +232,10 @@ public class addDiscountStaffManagement extends Fragment {
                         db.collection("discount").document(documentReference.getId())
                                 .update(data);
                         Intent intent=new Intent(getActivity(), StaffDiscountManagement.class);
+                        intent.putExtra("USER_EMAIL", userEmail);
+                        intent.putExtra("ROLE", role);
                         startActivity(intent);
-
+                        getActivity().finish();
                     }
                 });
     }

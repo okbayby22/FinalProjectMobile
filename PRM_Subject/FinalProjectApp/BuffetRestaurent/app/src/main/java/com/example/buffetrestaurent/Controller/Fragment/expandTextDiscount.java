@@ -97,7 +97,7 @@ public class expandTextDiscount extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Discount discount = new Discount();
                                 discount = document.toObject(Discount.class);
-                                if(discount.getDiscountStatus()==0){
+                                if(discount.getDiscountStatus()==2){
                                     discount0+=1;
                                 }else if(discount.getDiscountStatus()==1) {
                                     discount1 += 1;
