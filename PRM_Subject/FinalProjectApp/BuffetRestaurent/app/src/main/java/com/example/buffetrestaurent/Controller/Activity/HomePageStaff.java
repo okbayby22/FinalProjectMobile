@@ -38,6 +38,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,6 +60,8 @@ public class HomePageStaff extends AppCompatActivity {
     TextView titleReservation,titleDisocunt,titleCustomer;
     //count time of click title
     int countClick=1,countClick1=1,countClick2=1;
+    String ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +81,12 @@ public class HomePageStaff extends AppCompatActivity {
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,homepageDrawer,homepageToolBar,R.string.strOpenMenu,R.string.strCloseMenu);
         homepageDrawer.addDrawerListener(toggle);
         toggle.syncState();
+
         /*
         get intent from sender
          */
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        loadData();
         //set staff name for saying hi to user
         setStaffName();
         //get staff role
@@ -111,7 +116,8 @@ public class HomePageStaff extends AppCompatActivity {
                         intent=new Intent(HomePageStaff.this, StaffProfile.class);
                         intent.putExtra("USER_EMAIL", userEmail);
                         intent.putExtra("ROLE", staffRole);
-                        intent.putExtra("INTENT",2);
+                        intent.putExtra("ID", ID);
+                       intent.putExtra("INTENT",2);
                         startActivity(intent);
                         finish();
                         break;
@@ -363,5 +369,21 @@ public class HomePageStaff extends AppCompatActivity {
                             }
                         }
                     });
+    }
+    private void loadData(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("staffs")
+                .whereEqualTo("staffEmail", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@android.support.annotation.NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                ID=document.getString("staffId");
+                            }
+                        }
+                    }
+                });
     }
 }
