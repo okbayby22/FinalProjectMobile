@@ -36,11 +36,10 @@ import java.util.regex.Pattern;
 
 public class StaffChangePasswordActivity extends AppCompatActivity {
 
-    String staffEmail,userRole;
+    String staffEmail;
     Staff staff;
     TextView txtPassword,txtConfirmPass;
     TextView txtPassError,txtCPassError;
-    Customer cus;
     double staffRole;
 
 
@@ -79,6 +78,8 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
         return true;
     }
 
+
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this , HomePageStaff.class );
@@ -111,11 +112,7 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
             checkPassword();
             txtCPassError.setText("");
         }
-        Intent intent;
-        intent= new Intent(this , HomePageStaff.class );
-        intent.putExtra("USER_EMAIL", staffEmail);
-        startActivity(intent);
-        finish();
+
     }
 
     /**
@@ -150,6 +147,12 @@ public class StaffChangePasswordActivity extends AppCompatActivity {
             txtPassError.setText("Password has been existed");
         }else{
             updateToDB();
+            Intent intent;
+            intent= new Intent(this , HomePageStaff.class );
+            intent.putExtra("USER_EMAIL", staffEmail);
+            intent.putExtra("ROLE",staffRole);
+            startActivity(intent);
+            finish();
         }
     }
 

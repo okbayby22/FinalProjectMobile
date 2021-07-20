@@ -78,12 +78,15 @@ public class UserManageActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Search user by name
+     * @param s
+     */
     private void filter(String s) {
         ArrayList<Customer> newlist = new ArrayList<>();
 
         for (Customer item : list) {
-            if (String.valueOf(item.getCustomerEmail()).toLowerCase().contains(s.toLowerCase())) {
+            if (String.valueOf(item.getCustomerName()).toLowerCase().contains(s.toLowerCase())) {
                 newlist.add(item);
             }
         }
@@ -102,7 +105,6 @@ public class UserManageActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("USER_EMAIL"); //Get email of current user
         role = getIntent().getDoubleExtra("ROLE",0);
         search = findViewById(R.id.UserManageActivity_txtSearch); //Mapping search input to layout
-
         /*
         Set event of search input when user input
          */
@@ -142,6 +144,9 @@ public class UserManageActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Event of back button
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this , HomePageStaff.class );
