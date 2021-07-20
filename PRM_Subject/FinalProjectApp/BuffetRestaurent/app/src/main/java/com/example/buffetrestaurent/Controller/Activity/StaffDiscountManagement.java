@@ -1,38 +1,19 @@
 package com.example.buffetrestaurent.Controller.Activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.buffetrestaurent.Adapter.DeskAdapter;
-import com.example.buffetrestaurent.Adapter.DiscountAdapter;
 import com.example.buffetrestaurent.Controller.Fragment.addDiscountStaffManagement;
 import com.example.buffetrestaurent.Controller.Fragment.discountStaffManagement;
-import com.example.buffetrestaurent.Model.Desk;
-import com.example.buffetrestaurent.Model.Discount;
 import com.example.buffetrestaurent.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 public class StaffDiscountManagement extends AppCompatActivity {
     //Button component
