@@ -16,6 +16,7 @@
         android:text="Payment"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/AddBalance_txtEmail"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -24,12 +25,14 @@
         android:layout_height="63dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="48dp"
         android:layout_marginBottom="43dp"
         android:background="@drawable/border_layout"
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         app:layout_constraintBottom_toTopOf="@+id/AddBalance_btnAdd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -39,10 +42,12 @@
         android:layout_height="40dp"
         android:layout_marginStart="125dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="124dp"
         android:background="@drawable/button_shape"
         android:padding="0dp"
         android:text="@string/strSubmit"
         app:backgroundTint="@color/Theme"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddBalance_txtEmail" />
 
@@ -50,22 +55,21 @@
         android:id="@+id/AddBalance_txtBalance"
         android:layout_width="319dp"
         android:layout_height="63dp"
-        android:layout_marginStart="44dp"
         android:layout_marginTop="150dp"
         android:background="@drawable/border_layout"
         android:ems="10"
-        android:maxLength="8"
         android:inputType="number"
+        android:maxLength="8"
         android:paddingLeft="15dp"
         app:layout_constraintBottom_toTopOf="@+id/AddBalance_btnAddBalance"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/AddBalance_txtEmail"
+        app:layout_constraintStart_toStartOf="@+id/AddBalance_txtEmail"
         app:layout_constraintTop_toBottomOf="@+id/AddBalance_btnAdd" />
 
     <Button
         android:id="@+id/AddBalance_btnAddBalance"
         android:layout_width="162dp"
         android:layout_height="40dp"
-        android:layout_marginStart="125dp"
         android:layout_marginTop="34dp"
         android:layout_marginBottom="325dp"
         android:background="@drawable/button_shape"
@@ -73,7 +77,8 @@
         android:text="@string/strAddBalance"
         app:backgroundTint="@color/Theme"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/AddBalance_btnAdd"
+        app:layout_constraintStart_toStartOf="@+id/AddBalance_btnAdd"
         app:layout_constraintTop_toBottomOf="@+id/AddBalance_txtBalance" />
 
     <TextView
