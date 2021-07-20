@@ -48,6 +48,7 @@ public class UserManageActivity extends AppCompatActivity {
      */
     private void loadCustomer() {
         email = getIntent().getStringExtra("USER_EMAIL");
+        role = getIntent().getDoubleExtra("ROLE",0);
         list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         /*
@@ -66,7 +67,7 @@ public class UserManageActivity extends AppCompatActivity {
                             /*
                             Biding data to recycler view
                              */
-                            cusAdapt = new CustomerAdapter(list, UserManageActivity.this); //Call LecturerAdapter to set data set and show data
+                            cusAdapt = new CustomerAdapter(list, UserManageActivity.this,role); //Call LecturerAdapter to set data set and show data
                             LinearLayoutManager manager = new LinearLayoutManager(UserManageActivity.this); //Linear Layout Manager use to handling layout for each Lecturer
                             recyclerView.setAdapter(cusAdapt);
                             recyclerView.setLayoutManager(manager);

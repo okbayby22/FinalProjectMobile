@@ -38,10 +38,12 @@ public class StaffManageAdapter extends RecyclerView.Adapter<StaffManageAdapter.
 
     private ArrayList<Staff> list;
     private Context context;
+    double role;
 
-    public StaffManageAdapter(ArrayList<Staff> list, Context context) {
+    public StaffManageAdapter(ArrayList<Staff> list, Context context,double role) {
         this.list = list;
         this.context = context;
+        this.role=role;
     }
 
     @NonNull
@@ -153,6 +155,7 @@ public class StaffManageAdapter extends RecyclerView.Adapter<StaffManageAdapter.
                 Intent intent = new Intent(context, StaffProfile.class);
                 intent.putExtra("ID", list.get(position).getStaffId());
                 intent.putExtra("USER_EMAIL", list.get(position).getStaffEmail());
+                intent.putExtra("ROLE", role);
                 intent.putExtra("INTENT",1);
                 context.startActivity(intent);
             }

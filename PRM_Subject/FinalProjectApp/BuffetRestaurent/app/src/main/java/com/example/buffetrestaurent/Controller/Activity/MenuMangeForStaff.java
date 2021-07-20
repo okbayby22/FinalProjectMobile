@@ -65,6 +65,7 @@ public class MenuMangeForStaff extends AppCompatActivity {
                 Intent intent=new Intent(v.getContext(), AddMenuActivity.class);
                 intent.putExtra("SELECTED_DATE", date);
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", staffRole);
                 startActivity(intent);
                 finish();
             }

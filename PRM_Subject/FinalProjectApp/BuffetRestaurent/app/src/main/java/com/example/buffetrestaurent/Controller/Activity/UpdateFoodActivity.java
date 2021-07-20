@@ -48,6 +48,7 @@ public class UpdateFoodActivity extends AppCompatActivity {
     ImageView foodImage;
     TextView txtFoodName,txtFoodDes,txtFoodNameErr;
     int foodType;
+    double role;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,7 @@ public class UpdateFoodActivity extends AppCompatActivity {
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         foodId= getIntent().getStringExtra("ID");
+        role = getIntent().getDoubleExtra("ROLE",0);
 
         txtFoodName=findViewById(R.id.StaffManageFood_UpdateFood_foodName);
         txtFoodDes = findViewById(R.id.StaffManageFood_UpdateFood_txtFoodDes);
@@ -232,10 +234,20 @@ public class UpdateFoodActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , StaffManageFoodActivity.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , StaffManageFoodActivity.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 }

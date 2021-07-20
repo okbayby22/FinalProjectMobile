@@ -35,10 +35,12 @@ import java.util.Map;
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder>{
     private ArrayList<Customer> list;
     private Context context;
+    double role;
 
-    public CustomerAdapter(ArrayList<Customer> list, Context context) {
+    public CustomerAdapter(ArrayList<Customer> list, Context context,double role) {
         this.list = list;
         this.context = context;
+        this.role=role;
     }
 
     @NonNull
@@ -143,6 +145,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
                 Intent intent = new Intent(context, CustomerProfile.class);
                 intent.putExtra("ID", list.get(position).getCustomerId());
                 intent.putExtra("EMAIL", list.get(position).getCustomerEmail());
+                intent.putExtra("ROLE", role);
                 context.startActivity(intent);
             }
         });

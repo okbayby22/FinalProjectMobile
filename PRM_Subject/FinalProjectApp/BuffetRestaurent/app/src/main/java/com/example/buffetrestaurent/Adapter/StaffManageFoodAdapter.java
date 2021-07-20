@@ -39,11 +39,13 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
     private ArrayList<Food> list;
     private Context context;
     String email;
+    double role;
 
-    public StaffManageFoodAdapter(ArrayList<Food> list, String email, Context context) {
+    public StaffManageFoodAdapter(ArrayList<Food> list, String email, Context context,double role) {
         this.list = list;
         this.context = context;
         this.email = email;
+        this.role=role;
     }
 
     @NonNull
@@ -92,6 +94,7 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
                 Intent intent = new Intent(context, UpdateFoodActivity.class);
                 intent.putExtra("ID", list.get(position).getFoodId());
                 intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("ROLE", role);
                 context.startActivity(intent);
             }
         });

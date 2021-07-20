@@ -10,11 +10,13 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="49dp"
         android:text="@string/strEditDiscountStaffManagement"
         android:textSize="26sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,11 +97,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="25dp"
         android:ems="10"
-        android:inputType="number"
         android:hint="@string/strHeaderDiscountPoint"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/editdiscount_edtName"
         app:layout_constraintTop_toBottomOf="@+id/editdiscount_edtName" />
 
     <EditText
@@ -107,21 +108,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="25dp"
         android:ems="10"
         android:hint="@string/strHeaderDiscountPercent"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editdiscount_edtName"
         app:layout_constraintTop_toBottomOf="@+id/editdiscount_edtPoint" />
 
     <Switch
         android:id="@+id/editdiscount_switch"
-        android:layout_width="91dp"
+        android:layout_width="110dp"
         android:layout_height="44dp"
         android:layout_marginTop="56dp"
-        android:layout_marginEnd="140dp"
         android:text="Enable"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editdiscount_edtName"
         app:layout_constraintTop_toBottomOf="@+id/editdiscount_edtPercent" />
 
     <TextView
@@ -129,9 +128,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="171dp"
         android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editdiscount_edtName"
         app:layout_constraintTop_toBottomOf="@+id/editdiscount_edtName" />
 
     <TextView
@@ -139,9 +137,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="176dp"
         android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editdiscount_edtPoint"
         app:layout_constraintTop_toBottomOf="@+id/editdiscount_edtPoint" />
 
     <TextView
@@ -149,9 +146,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="166dp"
         android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editdiscount_edtPercent"
         app:layout_constraintTop_toBottomOf="@+id/editdiscount_edtPercent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
