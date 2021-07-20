@@ -44,11 +44,10 @@ import java.util.regex.Pattern;
  */
 public class signUpFragment extends Fragment {
 
-    Button btnSignUp;
-    CustomerService service;
-    TextView txtEmail,txtPass,txtRePass,txtEmailError,txtRePassError,txtPassError,txtName,txtPhone,txtNameError,txtPhoneError;
-    RadioButton txtMale,txtFemale;
-    int gender;
+    Button btnSignUp; //Object of button sign up
+    TextView txtEmail,txtPass,txtRePass,txtEmailError,txtRePassError,txtPassError,txtName,txtPhone,txtNameError,txtPhoneError; //Object of all textbox on view
+    RadioButton txtMale,txtFemale; //Object for 2 radio button
+    int gender; //Save user gender in type int
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,6 +97,10 @@ public class signUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
+        /*
+        Get view by id
+         */
         btnSignUp= rootView.findViewById(R.id.btnsignUp);
         txtEmail= rootView.findViewById(R.id.signUp_txtEmail);
         txtPass= rootView.findViewById(R.id.signUp_txtPass);
@@ -112,6 +115,9 @@ public class signUpFragment extends Fragment {
         txtMale = rootView.findViewById(R.id.signUp_txtMale);
         txtFemale = rootView.findViewById(R.id.signUp_txtFemale);
 
+        /*
+        Set default check and check event for radio button
+         */
         txtMale.setChecked(true);
         txtMale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -125,6 +131,10 @@ public class signUpFragment extends Fragment {
                 gender=1;
             }
         });
+
+        /*
+        Set click event for button sign up
+         */
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +147,9 @@ public class signUpFragment extends Fragment {
                 Pattern pattern = Pattern.compile(VALID_EMAIL_ADDRESS_REGEX);
                 Matcher matcher = pattern.matcher(txtEmail.getText().toString());
 
-
+                /*
+                Check all text box base on set regex
+                 */
                 if(txtEmail.getText().toString().isEmpty()){
                     txtEmailError.setText("Email can not empty !!!");
                     emailStatus=false;
@@ -198,7 +210,7 @@ public class signUpFragment extends Fragment {
                     nameStatus=true;
                 }
 
-                if(emailStatus && passStatus && rePassStatus && phoneStatus && nameStatus) {
+                if(emailStatus && passStatus && rePassStatus && phoneStatus && nameStatus) { // if all condition is correct go to check duplicate email
                     checkDuplicaEmail(v);
                 }
             }
@@ -206,32 +218,15 @@ public class signUpFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Method check duplicate Email
+     * @param v current view
+     */
     private void checkDuplicaEmail(View v){
-//        service = Apis.getCustomerService();
-//        Call<Boolean> call=service.checkDuplicateEmail(txtEmail.getText().toString());
-//        call.enqueue(new Callback<Boolean>() {
-//            @Override
-//            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-//                if(response.isSuccessful()){
-//                    Boolean check =response.body();
-//                    if(check == true){
-//                        txtEmailError.setText("Email has already exist !!!");
-//                    }
-//                    else{
-//                        AddNewCus(v);
-//                        txtEmail.setText("");
-//                        txtEmailError.setText("");
-//                        txtPass.setText("");
-//                        txtRePass.setText("");
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<Boolean> call, Throwable t) {
-//                Log.e("Error:",t.getMessage());
-//            }
-//        });
 
+        /*
+        Check email in customer database
+         */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("customers")
                 .whereEqualTo("customerEmail",txtEmail.getText().toString())
@@ -244,6 +239,9 @@ public class signUpFragment extends Fragment {
                             txtEmailError.setText("Email has already exist !!!");
                         }
                         else{
+                            /*
+                            Check email in staff database
+                             */
                             db.collection("staffs")
                                     .whereEqualTo("staffEmail",txtEmail.getText().toString())
                                     .get()
@@ -254,7 +252,7 @@ public class signUpFragment extends Fragment {
                                             if (!doc.isEmpty()) {
                                                 txtEmailError.setText("Email has already exist !!!");
                                             }
-                                            else {
+                                            else { // Add new account if email not duplicate
                                                 AddNewCus(v);
                                             }
                                         }
@@ -264,23 +262,12 @@ public class signUpFragment extends Fragment {
                 });
     }
 
+    /**
+     * Method add new customer account to database
+     * @param v Current view
+     */
     private void AddNewCus(View v){
         Customer newCustomer=new Customer(txtName.getText().toString(),txtEmail.getText().toString(),"",txtPhone.getText().toString(),md5(txtPass.getText().toString()),gender,0,0,1,"https://firebasestorage.googleapis.com/v0/b/buffetrestaurant-e631f.appspot.com/o/Avatar%2Fuser.jpg?alt=media&token=99aa5cca-86b5-45a1-b83c-b287bfbd6a02");
-//        service= Apis.getCustomerService();
-//        Call<Customer> call=service.addCustomer(newCustomer);
-//        call.enqueue(new Callback<Customer>() {
-//            @Override
-//            public void onResponse(Call<Customer> call, Response<Customer> response) {
-//                if(response.isSuccessful()){
-//                    Toast.makeText(v.getContext(),"Sign up successful !",Toast.LENGTH_LONG).show();
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<Customer> call, Throwable t) {
-//                Log.e("Error:",t.getMessage());
-//            }
-//        });
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("customers")
                 .add(newCustomer)
@@ -311,6 +298,12 @@ public class signUpFragment extends Fragment {
                     }
                 });
     }
+
+    /**
+     * Method convert input string to md5 string
+     * @param pass Input string
+     * @return md5 string
+     */
     private String md5(String pass) {
         try {
 
