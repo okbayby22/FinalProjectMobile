@@ -18,39 +18,46 @@ import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
 
 public class MenuMangeForStaff extends AppCompatActivity {
 
-    String userEmail;
-    CollapsibleCalendar collapsibleCalendar;
-    FloatingActionButton btnAdd;
-    String date;
-    double staffRole;
+    String userEmail; // Save user email
+    CollapsibleCalendar collapsibleCalendar; // object of calendar library
+    FloatingActionButton btnAdd; //floating button for add food to menu
+    String date; // Save user pick date
+    double staffRole; // Save staff role
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_mange_for_staff);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strMenuStaff);
 
+        /*
+        Get system data from parent activity
+         */
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         staffRole = getIntent().getDoubleExtra("ROLE",0);
 
+        /*
+        Get view by id
+         */
         btnAdd = findViewById(R.id.staff_menu_btnAdd);
         collapsibleCalendar=findViewById(R.id.staff_menu_calendarView);
         collapsibleCalendar.changeToToday();
         collapsibleCalendar.setExpandIconVisible(false);
         collapsibleCalendar.setExpanded(false);
 
+        /*
+        Set default fragment when first run activity set current date to today
+         */
         Day day = collapsibleCalendar.getSelectedDay();
         String selectedDay= day.getYear() + "/" + (day.getMonth()) + "/" + day.getDay();
-
         Fragment selectedFragment = staffMenuContent.newInstance(selectedDay);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.staff_menu_content, selectedFragment);
         transaction.commit();
-        // day = collapsibleCalendar.getSelectedDay();
-        Log.i(getClass().getName(), "Selected Day: "
-                + day.getYear() + "/" + (day.getMonth()) + "/" + day.getDay());
         date= day.getYear() + "/" + (day.getMonth()) + "/" + day.getDay();
+        /*
+        Set click event for button add. Intent to AddMenu activity
+         */
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +70,9 @@ public class MenuMangeForStaff extends AppCompatActivity {
             }
         });
 
+        /*
+        Set event for calendar
+         */
         collapsibleCalendar.setCalendarListener(new CollapsibleCalendar.CalendarListener() {
             @Override
             public void onDayChanged() {
@@ -74,6 +84,9 @@ public class MenuMangeForStaff extends AppCompatActivity {
 
             }
 
+            /**
+             * Change fragment base on user pick date
+             */
             @Override
             public void onDaySelect() {
                 Day day = collapsibleCalendar.getSelectedDay();
@@ -125,6 +138,9 @@ public class MenuMangeForStaff extends AppCompatActivity {
         return true;
     }
 
+    /*
+   Back button on phone
+    */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this , HomePageStaff.class );
