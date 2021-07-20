@@ -42,10 +42,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public class signInFragment extends Fragment {
 
-    Button btnSignIn;
-    CustomerService service;
-    TextView txtEmail,txtPass,txtError;
-    private FirebaseAuth mAuth;
+    Button btnSignIn; //Object of button sign in
+    TextView txtEmail,txtPass,txtError; //Component in view
+    private FirebaseAuth mAuth; //Object of FirebaseAuth
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,92 +91,104 @@ public class signInFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_in, container, false);
+
+        /*
+        Get  view by id
+         */
         btnSignIn= rootView.findViewById(R.id.btnSignIn);
         txtEmail= rootView.findViewById(R.id.signIn_txtEmail);
         txtPass= rootView.findViewById(R.id.signIn_txtPass);
         txtError= rootView.findViewById(R.id.signIn_txtError);
 
+        /*
+        Set onclick event for button sign in
+         */
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                service= Apis.getCustomerService();
-//                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
-//                call.enqueue(new Callback<Integer>() {
-//                service= Apis.getCustomerService();
-//                Call<Integer> call=service.checkLogin(txtEmail.getText().toString(),txtPass.getText().toString());
-//                call.enqueue(new Callback<Integer>() {
-//                    @Override
-//                    public void onResponse(Call<Integer> call, Response<Integer> response) {
-//                        if(response.isSuccessful()){
-//                            Integer check=response.body();
-//                            if(check==9){
-//                                Toast.makeText(v.getContext(),"Sign In successful !",Toast.LENGTH_LONG).show();
-//                                txtError.setText("");
-//                                //intent : transfer to insert_teacher_actitvity
-//                                String userEmail=txtEmail.getText().toString();
-//                                txtEmail.setText("");
-//                                txtPass.setText("");
-//                                Intent intent = new Intent(v.getContext() , HomePage.class );
-//                                intent.putExtra("USER_EMAIL", userEmail);
-//                                startActivity(intent);
-//                            }
-//                            else{
-//                                txtError.setText("Email or password is incorrect !!");
-//                            }
-//
-//                        }
-//                    }
-//                    @Override
-//                    public void onFailure(Call<Integer> call, Throwable t) {
-//                        Log.e("Error:",t.getMessage());
-//                    }
-//                });
+                /*
+                Set button can't click when backend process is running
+                 */
                 btnSignIn.setClickable(false);
                 btnSignIn.setAlpha((float) 0.3);
+
+                /*
+                Check login condition base on user enter account and password
+                 */
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 auth.signInWithEmailAndPassword(txtEmail.getText().toString(), md5(txtPass.getText().toString())).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+
+                        /*
+                        Find for available account in database customer table
+                         */
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("customers")
-                                .whereEqualTo("customerEmail",txtEmail.getText().toString())
+                                .whereEqualTo("customerEmail",txtEmail.getText().toString())//Find account base on email and status
+                                .whereEqualTo("customerStatus",1)
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        /*
+                                        Get result from database and check if account is exist
+                                         */
                                         QuerySnapshot query = task.getResult();
-                                        if (!query.isEmpty()) {
+                                        if (!query.isEmpty()) { // If account is exist intent to Customer Home page
+                                            Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                                             String userEmail = txtEmail.getText().toString();
                                             Intent intent = new Intent(v.getContext(), HomePage.class);
                                             intent.putExtra("USER_EMAIL", userEmail);
                                             startActivity(intent);
                                             getActivity().finish();
+
+                                            /*
+                                            Set button can click when backend process is done
+                                             */
                                             btnSignIn.setClickable(true);
                                             btnSignIn.setAlpha((float) 1);
                                         } else {
+                                            /*
+                                            Find for available account in database staffs table
+                                             */
                                             db.collection("staffs")
                                                     .whereEqualTo("staffEmail",txtEmail.getText().toString())
+                                                    .whereEqualTo("staffStatus",1)
                                                     .get()
                                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            /*
+                                                            Get result from database and check if account is exist
+                                                             */
+                                                            QuerySnapshot query = task.getResult();
                                                             if (task.isSuccessful()) {
-                                                                double staffRole=0;
-                                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                    staffRole=document.getDouble("staffRole");
+                                                                if(!query.isEmpty()){ // If account is exist intent to Staff Home page
+                                                                    Toast.makeText(v.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                                                                    double staffRole=0;
+                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                        staffRole=document.getDouble("staffRole");
+                                                                    }
+                                                                    String userEmail = txtEmail.getText().toString();
+                                                                    txtEmail.setText("");
+                                                                    txtPass.setText("");
+                                                                    Intent intent = new Intent(v.getContext(), HomePageStaff.class);
+                                                                    intent.putExtra("USER_EMAIL", userEmail);
+                                                                    intent.putExtra("ROLE", staffRole);
+                                                                    startActivity(intent);
+                                                                    getActivity().finish();
+
+                                                                    /*
+                                                                    Set button can click when backend process is done
+                                                                    */
+                                                                    btnSignIn.setClickable(true);
+                                                                    btnSignIn.setAlpha((float) 1);
                                                                 }
-                                                                String userEmail = txtEmail.getText().toString();
-                                                                txtEmail.setText("");
-                                                                txtPass.setText("");
-                                                                Intent intent = new Intent(v.getContext(), HomePageStaff.class);
-                                                                intent.putExtra("USER_EMAIL", userEmail);
-                                                                intent.putExtra("ROLE", staffRole);
-                                                                startActivity(intent);
-                                                                getActivity().finish();
-                                                                btnSignIn.setClickable(true);
-                                                                btnSignIn.setAlpha((float) 1);
                                                             } else {
+                                                                /*
+                                                                Set button can click when backend process is done
+                                                                */
                                                                 txtError.setText("Email or password not correct !!!");
                                                                 btnSignIn.setClickable(true);
                                                                 btnSignIn.setAlpha((float) 1);
@@ -193,6 +204,10 @@ public class signInFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
                         txtError.setText("Email or password not correct !!!");
+
+                        /*
+                        Set button can click when backend process is done
+                        */
                         btnSignIn.setClickable(true);
                         btnSignIn.setAlpha((float) 1);
                     }
