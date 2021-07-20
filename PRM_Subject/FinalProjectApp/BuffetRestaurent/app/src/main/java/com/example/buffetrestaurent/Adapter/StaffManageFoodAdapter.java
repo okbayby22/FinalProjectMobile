@@ -42,6 +42,7 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
     private Context context;
     //store email of user
     String email;
+    double role;
 
     /**
      * contructor of adapter
@@ -53,6 +54,7 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
         this.list = list;
         this.context = context;
         this.email = email;
+        this.role=role;
     }
 
     @NonNull
@@ -112,6 +114,7 @@ public class StaffManageFoodAdapter extends RecyclerView.Adapter<StaffManageFood
                 Intent intent = new Intent(context, UpdateFoodActivity.class);
                 intent.putExtra("ID", list.get(position).getFoodId());
                 intent.putExtra("USER_EMAIL", email);
+                intent.putExtra("ROLE", role);
                 context.startActivity(intent);
             }
         });

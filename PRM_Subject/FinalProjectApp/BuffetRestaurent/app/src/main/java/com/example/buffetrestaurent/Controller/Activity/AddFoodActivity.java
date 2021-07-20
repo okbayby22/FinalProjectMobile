@@ -46,6 +46,7 @@ public class AddFoodActivity extends AppCompatActivity {
     ImageView foodImage;
     TextView txtFoodName,txtFoodDes,txtFoodNameErr;
     int foodType=1;
+    double role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,10 @@ public class AddFoodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_food);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.strUpdateFood);
+        getSupportActionBar().setTitle(R.string.strAddFood);
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
+        role = getIntent().getDoubleExtra("ROLE",0);
 
         txtFoodName=findViewById(R.id.StaffManageFood_UpdateFood_foodName);
         txtFoodDes = findViewById(R.id.StaffManageFood_UpdateFood_txtFoodDes);
@@ -214,10 +216,20 @@ public class AddFoodActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this , StaffManageFoodActivity.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", role);
                 startActivity(intent);
                 this.finish();
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this , StaffManageFoodActivity.class );
+        intent.putExtra("USER_EMAIL", userEmail);
+        intent.putExtra("ROLE", role);
+        startActivity(intent);
+        this.finish();
     }
 }

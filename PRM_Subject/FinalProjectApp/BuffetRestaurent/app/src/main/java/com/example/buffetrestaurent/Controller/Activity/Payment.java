@@ -8,6 +8,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +64,7 @@ public class Payment extends AppCompatActivity {
     ArrayList<Discount> listDiscount;
     String intentID; //Throw intentID to another activity to check
     String intentDiscount; //Discount code get from another activity
+    boolean checkDiscount = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class Payment extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.strCheckout); //Set title for supported bar
 
+        displayDiscount = findViewById(R.id.Payment_txtDiscount);
         intentprice = Double.valueOf(getIntent().getIntExtra("PRICE", 0)); //get price from another activity
         discountprice = 0; //Initialize value for discount price
         email = getIntent().getStringExtra("USER_EMAIL"); //get email of user
@@ -121,6 +126,7 @@ public class Payment extends AppCompatActivity {
                 intent.putExtra("CustomerID",cusID);
                 intent.putExtra("USER_EMAIL",email);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -176,6 +182,27 @@ public class Payment extends AppCompatActivity {
                                                                     data.put("reservationId",documentReference.getId());
                                                                     db.collection("reservations").document(documentReference.getId())
                                                                             .update(data);
+                                                                    if(!txtcode.getText().toString().equals("") && checkDiscount == true){
+                                                                        db.collection("discount_inventory")
+                                                                                .whereEqualTo("discountId",txtcode.getText().toString())
+                                                                                .whereEqualTo("customerId",cusID)
+                                                                                .get()
+                                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                                                                        if(task.isSuccessful() && !task.getResult().isEmpty()){
+                                                                                            /*
+                                                                                            Delete discount when apply success
+                                                                                             */
+                                                                                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                                                                                            String discountIventID = doc.getId();
+                                                                                            db.collection("discount_inventory")
+                                                                                                    .document(discountIventID)
+                                                                                                    .delete();
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                    }
                                                                     Toast.makeText(Payment.this, "Checkout Successfully", Toast.LENGTH_SHORT).show();
                                                                     Intent intent = new Intent(v.getContext(), HomePage.class);
                                                                     intent.putExtra("USER_EMAIL", email);
@@ -199,7 +226,7 @@ public class Payment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String getCode = txtcode.getText().toString();
-                boolean check = false;
+                checkDiscount = false;
                 for(int i =0;i<listDiscount.size();i++){
                     if(listDiscount.get(i).getDiscountId().equals(getCode)){//if code that user input match with code of discount
                         discoutString=getCode;
@@ -207,25 +234,35 @@ public class Payment extends AppCompatActivity {
                         displayDiscount.setText(vnd.format(discountprice) + " VND");//display discount price to screen
                         payprice = intentprice - discountprice;//minus total price and discount price if has
                         finalprice.setText(vnd.format(payprice) + " VND");//display total price after minus with discount if has
-                        check=true;
+                        checkDiscount=true;
                         break;
                     }else{
-                        check=false;
+                        checkDiscount=false;
                     }
                 }
-                if(check==false){
+                if(checkDiscount==false){
                     discoutString="";
                     discountprice=0;
-                    displayDiscount.setText(vnd.format(discountprice) + " VND");//display discount price to screen
-                    wrongCode.setText("Code is not valid");//display error if code is wrong
-                    payprice = intentprice - discountprice;//minus total price and discount price if has
-                    finalprice.setText(vnd.format(payprice) + " VND");//display total price after minus with discount if has
+                    displayDiscount.setText(vnd.format(discountprice) + " VND");
+                    wrongCode.setText("Code is not valid");
+                    Checkout.setClickable(false);
+                    Checkout.setAlpha((float) 0.3);
+                    payprice = intentprice - discountprice;
+                    finalprice.setText(vnd.format(payprice) + " VND");
                 }else{
                     wrongCode.setText("");
+                    txtcode.setFocusable(false);
+                    txtcode.setFocusableInTouchMode(false);
+                    txtcode.setClickable(false);
+                    txtcode.setAlpha((float) 0.3);
+                    discountSubmit.setClickable(false);
+                    discountSubmit.setAlpha((float) 0.3);
                 }
             }
         });
     }
+
+
 
 
     public void loadDiscountInvetory(){
@@ -275,5 +312,19 @@ public class Payment extends AppCompatActivity {
 
                         }
                     });
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this , AddReservation.class );
+                intent.putExtra("USER_EMAIL", email);
+                startActivity(intent);
+                finish();
+                return true;
+        }
+        return true;
     }
 }

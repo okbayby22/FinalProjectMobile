@@ -20,28 +20,33 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
-    TabLayout mainTabLayout;
-    ViewPager2 tabView;
-    PagerAdapter pagerAdapter;
-    private long pressedTime;
+    TabLayout mainTabLayout; // Tab layout to switch bettween sign up and sign in
+    ViewPager2 tabView; // Content fragment of sign up and sign in
+    PagerAdapter pagerAdapter; // Adapter of tabView
+    private long pressedTime; // Save user back pressed time to exit program
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+        Get view by id
+         */
         setContentView(R.layout.activity_main);
         mainTabLayout = findViewById(R.id.tabBar);
         tabView = findViewById(R.id.viewPage);
 
-        getSupportActionBar().hide();
+        getSupportActionBar().hide(); // hiden action bar
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
-
-        pagerAdapter = new PagerAdapter(this
-        );
+        /*
+        Create and apply adapter
+         */
+        pagerAdapter = new PagerAdapter(this);
         tabView.setAdapter(pagerAdapter);
 
+        /*
+        Set title for tabView
+         */
         new TabLayoutMediator(mainTabLayout, tabView, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -54,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
         }).attach();
     }
 
-
+    /**
+     * Method check if user click back two time in 2 second app will exit
+     */
     @Override
     public void onBackPressed() {
         if (pressedTime + 2000 > System.currentTimeMillis()) {
@@ -66,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
 
+    /**
+     * Method convert input string to md5 string
+     * @param pass
+     * @return
+     */
     private String md5(String pass) {
         try {
 

@@ -49,10 +49,12 @@ public class discountStaffManagement extends Fragment {
     RecyclerView recyclerView;
     //Contain user Email data
     String userEmail;
+    double role;
 
-    public discountStaffManagement(String userEmail) {
+    public discountStaffManagement(String userEmail,double role) {
         // Required empty public constructor
         this.userEmail = userEmail;
+        this.role=role;
     }
     public discountStaffManagement(){
 
@@ -116,7 +118,7 @@ public class discountStaffManagement extends Fragment {
                                 discountList.add(discount);
                             }
                             //Call to adapter
-                            discountAdapter = new DiscountAdapter(context  ,discountList,userEmail);
+                            discountAdapter = new DiscountAdapter(context  ,discountList,userEmail,role);
                             //create layout for adapter
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
                             recyclerView.setLayoutManager(mLayoutManager);

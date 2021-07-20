@@ -56,6 +56,7 @@ public class StaffManageActivity extends AppCompatActivity {
      */
     private void loadStaff() {
         email = getIntent().getStringExtra("USER_EMAIL");
+        role = getIntent().getDoubleExtra("ROLE",0);
         list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         /*
@@ -74,7 +75,7 @@ public class StaffManageActivity extends AppCompatActivity {
                             /*
                             Binding data to recycler view
                              */
-                            staffAdap = new StaffManageAdapter(list, StaffManageActivity.this); //Call LecturerAdapter to set data set and show data
+                            staffAdap = new StaffManageAdapter(list, StaffManageActivity.this,role); //Call LecturerAdapter to set data set and show data
                             LinearLayoutManager manager = new LinearLayoutManager(StaffManageActivity.this); //Linear Layout Manager use to handling layout for each Lecturer
                             recyclerView.setAdapter(staffAdap);
                             recyclerView.setLayoutManager(manager);
@@ -164,7 +165,7 @@ public class StaffManageActivity extends AppCompatActivity {
     public void onClickAddStaff(View view){
         Intent intent = new Intent(this , AddStaffActivity.class );
         intent.putExtra("USER_EMAIL", email);
-        intent.putExtra("USER_ROLE", role);
+        intent.putExtra("ROLE", role);
         startActivity(intent);
         this.finish();
     }

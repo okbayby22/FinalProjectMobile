@@ -58,7 +58,7 @@ public class StaffManageFoodActivity extends AppCompatActivity {
         txtSearch=findViewById(R.id.staffManageFood_txtSearch);
         btnAdd=findViewById(R.id.staffManageFood_btnAdd);
 
-        fAdapter = new StaffManageFoodAdapter(listFood,userEmail,this);
+        fAdapter = new StaffManageFoodAdapter(listFood,userEmail,this,staffRole);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this,1,GridLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -86,6 +86,7 @@ public class StaffManageFoodActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext() , AddFoodActivity.class );
                 intent.putExtra("USER_EMAIL", userEmail);
+                intent.putExtra("ROLE", staffRole);
                 startActivity(intent);
                 finish();
             }
