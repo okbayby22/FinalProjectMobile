@@ -184,6 +184,14 @@ public class signInFragment extends Fragment {
                                                                     btnSignIn.setClickable(true);
                                                                     btnSignIn.setAlpha((float) 1);
                                                                 }
+                                                                else{
+                                                                    /*
+                                                                Set button can click when backend process is done
+                                                                */
+                                                                    txtError.setText("Email or password not correct !!!");
+                                                                    btnSignIn.setClickable(true);
+                                                                    btnSignIn.setAlpha((float) 1);
+                                                                }
                                                             } else {
                                                                 /*
                                                                 Set button can click when backend process is done
