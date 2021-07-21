@@ -1,4 +1,4 @@
-*Background: (text color)
+*Background: (Theme2-M-textcolor)
 #FFFFFF trắng
 #282C31 đen mờ
 
@@ -16,3 +16,4 @@
 
 *Icon theme2:
 #7F7FD5 tím
+#E786D7 hồng
