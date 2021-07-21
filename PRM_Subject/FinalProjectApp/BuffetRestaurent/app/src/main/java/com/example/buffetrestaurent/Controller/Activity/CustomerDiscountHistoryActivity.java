@@ -109,6 +109,7 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("discount")
                 .whereEqualTo("discountId", discountId)
+                .whereEqualTo("discountStatus", 1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -151,6 +152,31 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
                 return true;
         }
         return true;
+    }
+
+    /**
+     * Event of back button
+     */
+    @Override
+    public void onBackPressed() {
+        if(intentID.equals("From_Home")){
+            Intent intent = new Intent(this , HomePage.class );
+            intent.putExtra("USER_EMAIL", userEmail);
+            startActivity(intent);
+            this.finish();
+        }else{
+            Intent intent = new Intent(this , Payment.class );
+            intent.putExtra("DATE",date);
+            intent.putExtra("TIME",time);
+            intent.putExtra("TICKET",ticket);
+            intent.putExtra("PRICE",ticket*200000);
+            intent.putExtra("CUSTOMER",cusID);
+            intent.putExtra("Discount_Code",code);
+            intent.putExtra("USER_EMAIL", userEmail);
+            intent.putExtra("Payment_Intent","From_Discount");
+            startActivity(intent);
+            this.finish();
+        }
     }
 
     @Override

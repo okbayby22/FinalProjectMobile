@@ -23,7 +23,6 @@ import com.example.buffetrestaurent.Adapter.ReservationAdapter;
 import com.example.buffetrestaurent.Model.Customer;
 import com.example.buffetrestaurent.Model.Reservation;
 import com.example.buffetrestaurent.R;
-import com.example.buffetrestaurent.Utils.ReservationService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,7 +52,6 @@ public class UpdateReservation extends AppCompatActivity {
     TextView price;
     EditText name;
     EditText phone;
-    ReservationService service;
     CalendarView calendarView;
     DecimalFormat vnd = new DecimalFormat("###,###");
     String date;

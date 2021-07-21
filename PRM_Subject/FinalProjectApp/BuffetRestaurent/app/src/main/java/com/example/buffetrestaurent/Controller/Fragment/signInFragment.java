@@ -18,7 +18,6 @@ import com.example.buffetrestaurent.Controller.Activity.HomePageStaff;
 import com.example.buffetrestaurent.Controller.Activity.MainActivity;
 import com.example.buffetrestaurent.Model.Food;
 import com.example.buffetrestaurent.R;
-import com.example.buffetrestaurent.Utils.CustomerService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -182,6 +181,14 @@ public class signInFragment extends Fragment {
                                                                     /*
                                                                     Set button can click when backend process is done
                                                                     */
+                                                                    btnSignIn.setClickable(true);
+                                                                    btnSignIn.setAlpha((float) 1);
+                                                                }
+                                                                else{
+                                                                    /*
+                                                                Set button can click when backend process is done
+                                                                */
+                                                                    txtError.setText("Email or password not correct !!!");
                                                                     btnSignIn.setClickable(true);
                                                                     btnSignIn.setAlpha((float) 1);
                                                                 }
