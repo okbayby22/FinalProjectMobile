@@ -46,7 +46,7 @@ public class StaffDiscountManagement extends AppCompatActivity {
                 //disable button add
                 btnADD.setEnabled(false);
                 //call to fragment add discount
-                replaceFragement(new addDiscountStaffManagement(userEmail));
+                replaceFragement(new addDiscountStaffManagement(userEmail,staffRole));
             }
         });
         //create event of click on list button
