@@ -46,7 +46,7 @@ public class CustomerDiscountHistoryActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_discount_history);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.strMenu);
+        getSupportActionBar().setTitle("My Discount");
         intentID = getIntent().getStringExtra("IntentID");
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         code = "";

@@ -44,7 +44,7 @@ public class CustomerBuyDiscountActivity extends AppCompatActivity implements Bu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_buy_discount);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.strMenu);
+        getSupportActionBar().setTitle("Store Discount");
 
         userEmail= getIntent().getStringExtra("USER_EMAIL");
         discountRecyclerView =findViewById(R.id.customer_buy_discount_DiscountListView);
